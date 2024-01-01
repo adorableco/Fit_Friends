@@ -1,0 +1,47 @@
+package com.example.fit_friends.domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "participations")
+public class Participation {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Participation_id",updatable = false)
+    private Long participationId;
+
+    @ManyToOne
+    @JoinColumn(name = "User_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "Match_id")
+    private Match match;
+
+    @Column(name = "Status", nullable = false)
+    @ColumnDefault("wait")
+    private String status;
+
+    @Column(name = "Attendance")
+    private boolean attendance;
+
+    @Column(name = "Iswin")
+    private boolean isWin;
+
+    @Builder
+    public Participation(Long participationId, User user, Match match,
+                         String status, boolean attendance, boolean isWin) {
+        this.participationId = participationId;
+        this.user = user;
+        this.match = match;
+        this.status = status;
+        this.attendance = attendance;
+        this.isWin = isWin;
+    }
+}
