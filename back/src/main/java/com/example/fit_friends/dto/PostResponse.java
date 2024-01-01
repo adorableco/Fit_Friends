@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 public class PostResponse {
 
+    private final Long postId;
+
     private final String category;
     private final String userName;
     private final Timestamp createdDate;
@@ -25,6 +27,7 @@ public class PostResponse {
     private final List<String> tag;
 
     public PostResponse(Post post, Tag tag, Match match, User user){
+        this.postId = post.getPostId();
         this.category = match.getCategory();
         this.content = post.getContent();
         this.createdDate = post.getCreatedDate();

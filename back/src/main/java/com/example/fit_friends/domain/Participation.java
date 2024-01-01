@@ -28,10 +28,12 @@ public class Participation {
     @ColumnDefault("wait")
     private String status;
 
-    @Column(name = "Attendance")
+    @Column(name = "Attendance", nullable = false)
+    @ColumnDefault("0")
     private boolean attendance;
 
-    @Column(name = "Iswin")
+    @Column(name = "Iswin", nullable = false)
+    @ColumnDefault("0")
     private boolean isWin;
 
     @Builder
