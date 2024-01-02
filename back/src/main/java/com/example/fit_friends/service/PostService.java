@@ -1,6 +1,7 @@
 package com.example.fit_friends.service;
 
 import com.example.fit_friends.domain.Post;
+import com.example.fit_friends.dto.AddPostRequest;
 import com.example.fit_friends.dto.PostResponse;
 import com.example.fit_friends.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,9 @@ public class PostService {
 
     public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
+    }
+
+    public Post save(AddPostRequest request) {
+        return postRepository.save(request.toEntity());
     }
 }
