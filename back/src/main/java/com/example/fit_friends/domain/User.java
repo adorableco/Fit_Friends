@@ -22,6 +22,13 @@ public class User {
     @Column(name="Email")
     private String email;
 
+    @Column(nullable = false)
+    private String picture;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Column(name="Sex")
     private char gender;
 
@@ -42,13 +49,27 @@ public class User {
     @Column(name = "Late_rate")
     private float lateRate;
 
+    public User update(String name, String picture){
+        this.name = name;
+        this.picture = picture;
+
+        return this;
+    }
+
+    public String getRoleKey(){
+        return this.role.getKey();
+    }
+
+
+
     @Builder
-    public User(Long userId, String name, String email,
-                char gender, String age, boolean genderVisible,
-                boolean ageVisible, float winningRate, float lateRate) {
+
+    public User(Long userId, String name, String email, String picture, Role role, char gender, String age, boolean genderVisible, boolean ageVisible, float winningRate, float lateRate) {
         this.userId = userId;
         this.name = name;
         this.email = email;
+        this.picture = picture;
+        this.role = role;
         this.gender = gender;
         this.age = age;
         this.genderVisible = genderVisible;
@@ -56,6 +77,4 @@ public class User {
         this.winningRate = winningRate;
         this.lateRate = lateRate;
     }
-
-
 }
