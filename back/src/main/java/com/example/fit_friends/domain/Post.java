@@ -3,10 +3,7 @@ package com.example.fit_friends.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.sql.Timestamp;
 
 @Getter
 @Setter

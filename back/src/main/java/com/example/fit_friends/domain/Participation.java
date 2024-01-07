@@ -24,8 +24,7 @@ public class Participation {
     @JoinColumn(name = "Match_id")
     private Match match;
 
-    @Column(name = "Status", nullable = false)
-    @ColumnDefault("wait")
+    @Column(name = "Status")
     private String status;
 
     @Column(name = "Attendance", nullable = false)

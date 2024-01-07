@@ -1,5 +1,6 @@
 package com.example.fit_friends.dto;
 import com.example.fit_friends.domain.Post;
+import com.example.fit_friends.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

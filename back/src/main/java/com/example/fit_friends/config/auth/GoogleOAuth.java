@@ -41,7 +41,7 @@ public class GoogleOAuth implements SocialOAuth{
         params.put("client_id",clientId);
         params.put("response_type","code");
         params.put("redirect_uri",redirectUri);
-        params.put("scope","profile");
+        params.put("scope","email profile");
 
         String paramsString = params.entrySet().stream()
                 .map(x->x.getKey()+"="+x.getValue())
@@ -61,7 +61,7 @@ public class GoogleOAuth implements SocialOAuth{
         params.put("grant_type","authorization_code");
         params.put("response_type","code");
         params.put("redirect_uri",redirectUri);
-        params.put("scope","profile");
+        params.put("scope","email profile");
         params.put("client_secret",clientSecret);
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(tokenUri, params, String.class);
@@ -85,7 +85,6 @@ public class GoogleOAuth implements SocialOAuth{
 
         RestTemplate restTemplate = new RestTemplate();
 
-        Map<String,Object> params = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization","Bearer "+ authorizationCode);
 
