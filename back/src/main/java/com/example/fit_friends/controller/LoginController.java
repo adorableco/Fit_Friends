@@ -27,7 +27,10 @@ public class LoginController{
 
     @GetMapping("/login/oauth2/code/google")
     public String requestToken(@RequestParam(name="code") String code) throws Exception{
-        return socialOAuth.requestAccessToken(code);
+        final String accessToken =  socialOAuth.requestAccessToken(code);
+
+        return socialOAuth.getUserInfo(accessToken);
     }
+
 
 }
