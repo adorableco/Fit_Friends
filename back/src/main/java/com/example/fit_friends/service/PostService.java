@@ -1,9 +1,10 @@
 package com.example.fit_friends.service;
 
 import com.example.fit_friends.domain.Post;
+import com.example.fit_friends.domain.User;
 import com.example.fit_friends.dto.AddPostRequest;
-import com.example.fit_friends.dto.PostResponse;
 import com.example.fit_friends.repository.PostRepository;
+import com.example.fit_friends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,24 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     public List<Post> findAll() {
         return postRepository.findAll();
     }
 
+
     public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
 
-    public Post save(AddPostRequest request) {
-        return postRepository.save(request.toEntity());
+    public Long save(String email, AddPostRequest dto) {
+        User user = userRepository.findByEmail(email).orElseThrow(null);
+        dto.setUser(user);
+
+        Post post = dto.toEntity();
+        postRepository.save(post);
+
+        return post.getPostId();
     }
 }

@@ -51,7 +51,7 @@ public class LoginController{
                 return ResponseEntity.ok()
                         .body(new MemberStatusResponse(Role.GUEST.name(), name, email,picture,accessToken));
             }else{
-                return ResponseEntity.internalServerError()
+                return ResponseEntity.ok()
                         .body(new MemberStatusResponse(Role.USER.name(),accessToken));
             }
 

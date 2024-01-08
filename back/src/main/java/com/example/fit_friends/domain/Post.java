@@ -37,14 +37,18 @@ public class Post extends BaseEntity{
     @Column(name = "Content", nullable = false)
     private String content;
 
+
+    @Column(nullable = false)
+    private String category;
     @Builder
 
-    public Post(Long postId, User user, Tag tag, Match match, String title, String content) {
+    public Post(Long postId, User user, Tag tag, Match match, String title, String content, String category) {
         this.postId = postId;
         this.user = user;
         this.tag = tag;
         this.match = match;
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 }

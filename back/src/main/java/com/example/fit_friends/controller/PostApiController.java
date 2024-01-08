@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.LongFunction;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,11 +23,14 @@ public class PostApiController {
 
 
     @PostMapping("/api/post")
-    public ResponseEntity<Post> addPost(@RequestBody AddPostRequest addPostRequest) {
-        Post savedPost = postService.save(addPostRequest);
+    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest addPostRequest) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedPost);
+        Long savedPost = postService.save(addPostRequest.getUserEmail(), addPostRequest);
+
+        Map<String,Long> response = new HashMap<>();
+        response.put("postId",savedPost);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/api/posts")
