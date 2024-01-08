@@ -1,9 +1,11 @@
 package com.example.fit_friends.config.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,13 +30,18 @@ public class GoogleOAuth implements SocialOAuth{
 
     @Value("${google.token_uri}")
     private String tokenUri;
+
+    @Value("${google.userInfo_uri}")
+    private String userInfo_uri;
+
+
     @Override
     public String getOAuthRedirectUrl() {
         Map<String,Object> params = new HashMap<>();
         params.put("client_id",clientId);
         params.put("response_type","code");
         params.put("redirect_uri",redirectUri);
-        params.put("scope","profile");
+        params.put("scope","email profile");
 
         String paramsString = params.entrySet().stream()
                 .map(x->x.getKey()+"="+x.getValue())
@@ -44,7 +51,7 @@ public class GoogleOAuth implements SocialOAuth{
     }
 
     @Override
-    public String requestAccessToken(String code) {
+    public String requestAccessToken(String code){
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -54,15 +61,43 @@ public class GoogleOAuth implements SocialOAuth{
         params.put("grant_type","authorization_code");
         params.put("response_type","code");
         params.put("redirect_uri",redirectUri);
-        params.put("scope","profile");
+        params.put("scope","email profile");
         params.put("client_secret",clientSecret);
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(tokenUri, params, String.class);
 
         if(responseEntity.getStatusCode()== HttpStatus.OK){
-            return responseEntity.getBody();
+            try{
+                JSONObject jsonObject = new JSONObject(responseEntity.getBody());
+                return jsonObject.getString("access_token");
+            }catch (Exception e){
+                return "구글 로그인 요청 실패";
+            }
+
+
         }
 
         return "구글 로그인 요청 처리 실패";
+    }
+
+    @Override
+    public String getUserInfo(String authorizationCode) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization","Bearer "+ authorizationCode);
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(userInfo_uri, HttpMethod.GET,request,String.class);
+
+        if(responseEntity.getStatusCode() == HttpStatus.OK){
+            return responseEntity.getBody();
+        }
+
+        return "구글 사용자 정보 로드 실패";
+
     }
 }
