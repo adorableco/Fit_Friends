@@ -2,6 +2,7 @@ package com.example.fit_friends.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.sql.Timestamp;
 
@@ -17,7 +18,7 @@ public class Match {
     @Column(name = "Match_id",updatable = false)
     private Long matchId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "Post_id")
     private Post post;
 
@@ -29,6 +30,7 @@ public class Match {
     private String category;
 
     @Column(name = "Current_head_cnt",nullable = false)
+    @ColumnDefault("0")
     private int currentHeadCnt;
 
     @Column(name = "Head_cnt",nullable = false)
@@ -41,6 +43,7 @@ public class Match {
     private Timestamp matchDate;
 
     @Column(name = "Attendance_count",nullable = false)
+    @ColumnDefault("0")
     private int attendanceCnt;
 
     @Builder

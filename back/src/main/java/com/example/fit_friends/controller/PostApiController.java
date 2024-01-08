@@ -1,8 +1,12 @@
 package com.example.fit_friends.controller;
 
+import com.example.fit_friends.domain.Match;
 import com.example.fit_friends.domain.Post;
+import com.example.fit_friends.dto.AddMatchRequest;
 import com.example.fit_friends.dto.AddPostRequest;
+import com.example.fit_friends.dto.AddPostandMatchRequest;
 import com.example.fit_friends.dto.PostResponse;
+import com.example.fit_friends.service.MatchService;
 import com.example.fit_friends.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,12 +24,13 @@ import java.util.function.LongFunction;
 public class PostApiController {
 
     private final PostService postService;
-
+    private final MatchService matchService;
 
     @PostMapping("/api/post")
-    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest addPostRequest) {
+    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostandMatchRequest request) {
+        Match savedMatch = matchService.save(request.getUserEmail(), request.getCategory(), request.getAddMatchRequest());
+        Long savedPost = postService.save(savedMatch, request.getUserEmail(), request.getCategory(), request.getAddPostRequest());
 
-        Long savedPost = postService.save(addPostRequest.getUserEmail(), addPostRequest);
 
         Map<String,Long> response = new HashMap<>();
         response.put("postId",savedPost);
@@ -37,7 +42,7 @@ public class PostApiController {
     public ResponseEntity<List<PostResponse>> findAllPosts() {
         List<PostResponse> posts = postService.findAll()
                 .stream()
-                .map((Post post) -> new PostResponse(post,post.getTag(),post.getMatch(),post.getUser()))
+                .map((Post post) -> new PostResponse(post))
                 .toList();
 
         return ResponseEntity.ok()
@@ -50,7 +55,7 @@ public class PostApiController {
         Post post = byId.orElse(null);
 
         return ResponseEntity.ok()
-                .body(new PostResponse(post,post.getTag(),post.getMatch(),post.getUser()));
+                .body(new PostResponse(post));
     }
 
 }

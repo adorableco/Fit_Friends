@@ -1,36 +1,36 @@
 package com.example.fit_friends.dto;
 
 import com.example.fit_friends.domain.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class PostResponse extends BaseEntity {
+@RequiredArgsConstructor
+public class PostResponse {
 
-    private final Long postId;
+    private String title;
+    private String category;
+    private Tag tag;
+    private MatchResponse match;
+    private String userName;
+    private String userImage;
 
-    private final String category;
-    private final String userName;
-    private final String title;
-    private final String content;
-    private final int currentHeadCnt;
-    private final int headCnt;
-    private final String place;
-    private final List<String> tag;
+    private Timestamp createdDate;
+    private Timestamp modifiedDate;
 
-    public PostResponse(Post post, Tag tag, Match match, User user){
-        this.postId = post.getPostId();
-        this.category = match.getCategory();
-        this.content = post.getContent();
-        this.headCnt = match.getHeadCnt();
-        this.currentHeadCnt = match.getCurrentHeadCnt();
-        this.place = match.getPlace();
-        this.tag = Arrays.asList(tag.getGenderType(), tag.getAgeType(), tag.getLevelType());
+
+    @Builder
+    public PostResponse(Post post) {
         this.title = post.getTitle();
-        this.userName = user.getName();
-
+        this.userName = post.getUser().getName();
+        this.userImage = post.getUser().getPicture();
+        this.category = post.getCategory();
+        this.createdDate =post.getCreatedDate();
+        this.modifiedDate = post.getModifiedDate();
+        this.match = new MatchResponse(post.getMatch());
+        this.tag = post.getTag();
     }
 }

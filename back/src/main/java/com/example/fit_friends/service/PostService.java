@@ -1,5 +1,6 @@
 package com.example.fit_friends.service;
 
+import com.example.fit_friends.domain.Match;
 import com.example.fit_friends.domain.Post;
 import com.example.fit_friends.domain.User;
 import com.example.fit_friends.dto.AddPostRequest;
@@ -26,9 +27,11 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public Long save(String email, AddPostRequest dto) {
+    public Long save(Match match, String email, String category, AddPostRequest dto) {
         User user = userRepository.findByEmail(email).orElseThrow(null);
         dto.setUser(user);
+        dto.setMatch(match);
+        dto.setCategory(category);
 
         Post post = dto.toEntity();
         postRepository.save(post);
