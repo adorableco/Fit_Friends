@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class PostResponse {
 
@@ -21,9 +22,13 @@ public class PostResponse {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
+    private Long postId;
+
+
 
     @Builder
     public PostResponse(Post post) {
+        this.postId = post.getPostId();
         this.title = post.getTitle();
         this.userName = post.getUser().getName();
         this.userImage = post.getUser().getPicture();

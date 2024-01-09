@@ -1,12 +1,7 @@
 package com.example.fit_friends.controller;
 
-import com.example.fit_friends.domain.Match;
 import com.example.fit_friends.domain.Post;
-import com.example.fit_friends.dto.AddMatchRequest;
-import com.example.fit_friends.dto.AddPostRequest;
-import com.example.fit_friends.dto.AddPostandMatchRequest;
-import com.example.fit_friends.dto.PostResponse;
-import com.example.fit_friends.service.MatchService;
+import com.example.fit_friends.dto.*;
 import com.example.fit_friends.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,19 +12,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.LongFunction;
 
 @RequiredArgsConstructor
 @RestController
 public class PostApiController {
 
     private final PostService postService;
-    private final MatchService matchService;
 
     @PostMapping("/api/post")
-    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostandMatchRequest request) {
-        Match savedMatch = matchService.save(request.getUserEmail(), request.getCategory(), request.getAddMatchRequest());
-        Long savedPost = postService.save(savedMatch, request.getUserEmail(), request.getCategory(), request.getAddPostRequest());
+    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest request) {
+
+        Long savedPost = postService.save(request);
 
 
         Map<String,Long> response = new HashMap<>();
