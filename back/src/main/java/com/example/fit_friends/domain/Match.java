@@ -60,4 +60,5 @@ public class Match {
         this.matchDate = matchDate;
         this.attendanceCnt = attendanceCnt;
     }
+
 }

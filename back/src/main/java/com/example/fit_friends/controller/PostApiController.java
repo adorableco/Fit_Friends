@@ -1,5 +1,4 @@
 package com.example.fit_friends.controller;
-
 import com.example.fit_friends.domain.Post;
 import com.example.fit_friends.dto.*;
 import com.example.fit_friends.service.PostService;
@@ -49,6 +48,16 @@ public class PostApiController {
 
         return ResponseEntity.ok()
                 .body(new PostResponse(post));
+    }
+
+    @DeleteMapping("/api/post/{id}")
+    public ResponseEntity<String> deletePostById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(postService.deleteById(id));
+    }
+
+    @PutMapping("/api/post/{id}")
+    public ResponseEntity<String> modifyPostById(@PathVariable Long id, @RequestBody AddPostRequest dto) {
+        return ResponseEntity.ok().body(postService.updatePost(id,dto));
     }
 
 }

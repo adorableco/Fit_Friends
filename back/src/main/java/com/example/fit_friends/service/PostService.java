@@ -10,6 +10,7 @@ import com.example.fit_friends.repository.TagRepository;
 import com.example.fit_friends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
-
     private final MatchRepository matchRepository;
 
     public List<Post> findAll() {
@@ -46,4 +46,34 @@ public class PostService {
 
         return post.getPostId();
     }
+
+    public String deleteById(Long id){
+        try{
+            postRepository.deleteById(id);
+            return "모집글 삭제 완료";
+        }catch (Exception e){
+            return "모집글 삭제 실패 " + e;
+        }
+    }
+
+    @Transactional
+    public String updatePost(Long id, AddPostRequest dto){
+        Post post = postRepository.findById(id).get();
+        Match match = matchRepository.findById(post.getMatch().getMatchId()).get();
+        Tag tag = tagRepository.findById(post.getTag().getTagId()).get();
+
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        match.setMatchDate(dto.getMatch().getMatchDate());
+        match.setPlace(dto.getMatch().getPlace());
+        match.setHeadCnt(dto.getMatch().getHeadCnt());
+        tag.setAgeType(dto.getTag().getAgeType());
+        tag.setGenderType(dto.getTag().getGenderType());
+        tag.setLevelType(dto.getTag().getLevelType());
+
+        return "모집글 수정 완료";
+
+    }
+
+
 }

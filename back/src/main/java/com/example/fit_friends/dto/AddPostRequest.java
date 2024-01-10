@@ -1,12 +1,10 @@
 package com.example.fit_friends.dto;
 import com.example.fit_friends.domain.*;
-import com.example.fit_friends.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 
 
 @NoArgsConstructor
