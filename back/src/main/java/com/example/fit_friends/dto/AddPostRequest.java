@@ -1,12 +1,10 @@
 package com.example.fit_friends.dto;
-import com.example.fit_friends.domain.Post;
-import com.example.fit_friends.domain.Role;
-import com.example.fit_friends.domain.User;
-import com.example.fit_friends.service.UserService;
+import com.example.fit_friends.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 
 @NoArgsConstructor
@@ -16,18 +14,41 @@ import lombok.Setter;
 public class AddPostRequest {
     private String title;
     private String content;
-    private User user;
-    private String userEmail;
     private String category;
 
+    private String userEmail;
 
+    private Match match;
+    private Tag tag;
 
-    public Post toEntity() {
+    public Post postToEntity(Tag tag, Match match, User user) {
+
        return Post.builder()
-               .user(user)
                .category(category)
+               .tag(tag)
+               .match(match)
+               .user(user)
                .title(title)
                .content(content)
                .build();
+    }
+
+    public Match matchToEntity(User user) {
+        return Match.builder()
+                .user(user)
+                .category(category)
+                .headCnt(match.getHeadCnt())
+                .place(match.getPlace())
+                .matchDate(match.getMatchDate())
+                .build();
+    }
+
+
+    public Tag tagToEntity() {
+        return Tag.builder()
+                .ageType(tag.getAgeType())
+                .genderType(tag.getGenderType())
+                .levelType(tag.getLevelType())
+                .build();
     }
 }

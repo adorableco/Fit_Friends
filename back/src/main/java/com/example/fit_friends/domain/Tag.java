@@ -15,9 +15,6 @@ public class Tag {
     @Column(name = "Tag_id",updatable = false)
     private Long tagId;
 
-    @ManyToOne
-    @JoinColumn(name="Post_id")
-    private Post post;
 
     @Column(name = "Sex")
     private String genderType;
@@ -29,9 +26,7 @@ public class Tag {
     private String ageType;
 
     @Builder
-    public Tag(Long tagId, Post post, String genderType, String levelType, String ageType) {
-        this.tagId = tagId;
-        this.post = post;
+    public Tag( String genderType, String levelType, String ageType) {
         this.genderType = genderType;
         this.levelType = levelType;
         this.ageType = ageType;

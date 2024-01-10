@@ -1,8 +1,6 @@
 package com.example.fit_friends.controller;
-
 import com.example.fit_friends.domain.Post;
-import com.example.fit_friends.dto.AddPostRequest;
-import com.example.fit_friends.dto.PostResponse;
+import com.example.fit_friends.dto.*;
 import com.example.fit_friends.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.LongFunction;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,11 +18,11 @@ public class PostApiController {
 
     private final PostService postService;
 
-
     @PostMapping("/api/post")
-    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest addPostRequest) {
+    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest request) {
 
-        Long savedPost = postService.save(addPostRequest.getUserEmail(), addPostRequest);
+        Long savedPost = postService.save(request);
+
 
         Map<String,Long> response = new HashMap<>();
         response.put("postId",savedPost);
@@ -37,7 +34,7 @@ public class PostApiController {
     public ResponseEntity<List<PostResponse>> findAllPosts() {
         List<PostResponse> posts = postService.findAll()
                 .stream()
-                .map((Post post) -> new PostResponse(post,post.getTag(),post.getMatch(),post.getUser()))
+                .map((Post post) -> new PostResponse(post))
                 .toList();
 
         return ResponseEntity.ok()
@@ -50,7 +47,17 @@ public class PostApiController {
         Post post = byId.orElse(null);
 
         return ResponseEntity.ok()
-                .body(new PostResponse(post,post.getTag(),post.getMatch(),post.getUser()));
+                .body(new PostResponse(post));
+    }
+
+    @DeleteMapping("/api/post/{id}")
+    public ResponseEntity<String> deletePostById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(postService.deleteById(id));
+    }
+
+    @PutMapping("/api/post/{id}")
+    public ResponseEntity<String> modifyPostById(@PathVariable Long id, @RequestBody AddPostRequest dto) {
+        return ResponseEntity.ok().body(postService.updatePost(id,dto));
     }
 
 }

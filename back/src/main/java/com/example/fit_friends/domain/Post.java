@@ -2,6 +2,7 @@ package com.example.fit_friends.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 
 
@@ -25,6 +26,7 @@ public class Post extends BaseEntity{
 
     @OneToOne
     @JoinColumn(name = "Tag_id")
+    @ColumnDefault("null")
     private Tag tag;
 
     @OneToOne
