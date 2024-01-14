@@ -9,6 +9,7 @@ import com.example.fit_friends.repository.PostRepository;
 import com.example.fit_friends.repository.TagRepository;
 import com.example.fit_friends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,8 @@ public class PostService {
     public List<Post> findAll() {
         return postRepository.findAll();
     }
+
+    public List<Post> findByCategory(String category) { return postRepository.findByCategory(category);}
 
 
     public Optional<Post> findById(Long id) {
