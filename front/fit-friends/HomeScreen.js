@@ -17,8 +17,11 @@ const HomeScreen = () => {
                 <TouchableOpacity
                     style={[styles.buttonStyle, { marginBottom: 18 }]}
                     onPress={async () => {
+                        console.log("button clicked!")
                         try {
-                            const response = await axios.get('https://localhost:8080/api/login');
+                            console.log("들어옴 clicked!")
+
+                            const response = await axios.get('http://10.0.2.2:8080/api/login');
                             console.log(response.data);
                         } catch (error) {
                             console.error(error);
