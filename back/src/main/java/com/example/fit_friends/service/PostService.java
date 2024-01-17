@@ -31,6 +31,11 @@ public class PostService {
     public List<Post> findByCategory(String category) { return postRepository.findByCategory(category);}
 
 
+    public List<Post> findPosts(String category, String levelType, String ageType, String genderType){
+        return postRepository.findPosts(category, levelType, ageType, genderType);
+    }
+
+
     public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }

@@ -5,7 +5,6 @@ import com.example.fit_friends.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,19 +31,14 @@ public class PostApiController {
     }
 
     @GetMapping("/api/posts")
-    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category) {
+    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestBody TagFilteringRequest tagFilteringRequest) {
         List<PostResponse> posts;
-        if (category == null) {
-            posts = postService.findAll()
-                    .stream()
-                    .map((Post post) -> new PostResponse(post))
-                    .toList();
-        } else {
-            posts = postService.findByCategory(category)
-                    .stream()
-                    .map((Post post) -> new PostResponse(post))
-                    .toList();
-        }
+
+        posts = postService.findPosts(category, tagFilteringRequest.getLevelType(), tagFilteringRequest.getAgeType(), tagFilteringRequest.getGenderType())
+                .stream()
+                .map((Post post) -> new PostResponse(post))
+                .toList();
+
 
         return ResponseEntity.ok()
                 .body(posts);
