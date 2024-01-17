@@ -31,15 +31,20 @@ public class PostApiController {
     }
 
     @GetMapping("/api/posts")
-    public ResponseEntity<List<PostResponse>> findAllPosts() {
-        List<PostResponse> posts = postService.findAll()
+    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestBody TagFilteringRequest tagFilteringRequest) {
+        List<PostResponse> posts;
+
+        posts = postService.findPosts(category, tagFilteringRequest.getLevelType(), tagFilteringRequest.getAgeType(), tagFilteringRequest.getGenderType())
                 .stream()
                 .map((Post post) -> new PostResponse(post))
                 .toList();
 
+
         return ResponseEntity.ok()
                 .body(posts);
     }
+
+
 
     @GetMapping("/api/post/{id}")
     public ResponseEntity<PostResponse> findPostById(@PathVariable Long id) {
