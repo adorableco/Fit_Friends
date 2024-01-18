@@ -17,7 +17,7 @@ public class Tag {
 
 
     @Column(name = "Sex")
-    private String genderType;
+    private char genderType;
 
     @Column(name = "Level")
     private String levelType;
@@ -26,7 +26,7 @@ public class Tag {
     private String ageType;
 
     @Builder
-    public Tag( String genderType, String levelType, String ageType) {
+    public Tag(char genderType, String levelType, String ageType) {
         this.genderType = genderType;
         this.levelType = levelType;
         this.ageType = ageType;

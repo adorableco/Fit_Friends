@@ -33,13 +33,15 @@ public class AddPostRequest {
                .build();
     }
 
-    public Match matchToEntity(User user) {
+    public Match matchToEntity(Tag savedTag, User user) {
         return Match.builder()
                 .user(user)
+                .tag(savedTag)
                 .category(category)
                 .headCnt(match.getHeadCnt())
                 .place(match.getPlace())
-                .matchDate(match.getMatchDate())
+                .startTime(match.getStartTime())
+                .endTime(match.getEndTime())
                 .build();
     }
 
