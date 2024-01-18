@@ -29,6 +29,7 @@ public class User {
 
     private String age;
 
+    private String level;
 
     @Column
     private String accessToken;
@@ -57,7 +58,7 @@ public class User {
 
     @Builder
 
-    public User(Long userId, String name, String email, String picture, Role role, char gender, String age,  String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float lateRate) {
+    public User(Long userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float lateRate) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -65,6 +66,7 @@ public class User {
         this.role = role;
         this.gender = gender;
         this.age = age;
+        this.level = level;
         this.accessToken = accessToken;
         this.genderVisible = genderVisible;
         this.ageVisible = ageVisible;

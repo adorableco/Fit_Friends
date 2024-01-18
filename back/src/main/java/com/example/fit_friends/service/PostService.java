@@ -9,7 +9,6 @@ import com.example.fit_friends.repository.PostRepository;
 import com.example.fit_friends.repository.TagRepository;
 import com.example.fit_friends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,7 @@ public class PostService {
     public List<Post> findByCategory(String category) { return postRepository.findByCategory(category);}
 
 
-    public List<Post> findPosts(String category, String levelType, String ageType, String genderType){
+    public List<Post> findPosts(String category, String levelType, String ageType, char genderType){
         return postRepository.findPosts(category, levelType, ageType, genderType);
     }
 
@@ -46,7 +45,7 @@ public class PostService {
         Tag tag = dto.tagToEntity();
         Tag savedTag = tagRepository.save(tag);
 
-        Match match = dto.matchToEntity(user);
+        Match match = dto.matchToEntity(savedTag, user);
         Match savedMatch = matchRepository.save(match);
 
         Post post = dto.postToEntity(savedTag,savedMatch,user);
@@ -72,7 +71,8 @@ public class PostService {
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        match.setMatchDate(dto.getMatch().getMatchDate());
+        match.setStartTime(dto.getMatch().getStartTime());
+        match.setEndTime(dto.getMatch().getStartTime());
         match.setPlace(dto.getMatch().getPlace());
         match.setHeadCnt(dto.getMatch().getHeadCnt());
         tag.setAgeType(dto.getTag().getAgeType());
