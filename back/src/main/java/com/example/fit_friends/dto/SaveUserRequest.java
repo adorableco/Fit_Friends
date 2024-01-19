@@ -17,6 +17,7 @@ public class SaveUserRequest {
     private boolean ageVisible;
 
 
+
     public User toEntity() {
         return User.builder()
                 .name(name)

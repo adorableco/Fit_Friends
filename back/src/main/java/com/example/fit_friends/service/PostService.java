@@ -1,4 +1,5 @@
 package com.example.fit_friends.service;
+import com.example.fit_friends.config.auth.JwtAuthProvider;
 import com.example.fit_friends.domain.Match;
 import com.example.fit_friends.domain.Post;
 import com.example.fit_friends.domain.Tag;
@@ -22,6 +23,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final MatchRepository matchRepository;
+
 
     public List<Post> findAll() {
         return postRepository.findAll();
@@ -54,32 +56,41 @@ public class PostService {
         return post.getPostId();
     }
 
-    public String deleteById(Long id){
+    public String deleteById(String email , Long id){
         try{
+        if ((postRepository.findById(id).get().getUser().getEmail()).equals(email)) {
             postRepository.deleteById(id);
             return "모집글 삭제 완료";
+        }else {
+            return "모집글을 등록한 회원이 아님";
+        }
         }catch (Exception e){
             return "모집글 삭제 실패 " + e;
         }
     }
 
     @Transactional
-    public String updatePost(Long id, AddPostRequest dto){
+    public String updatePost(String email, Long id, AddPostRequest dto){
+
         Post post = postRepository.findById(id).get();
-        Match match = matchRepository.findById(post.getMatch().getMatchId()).get();
-        Tag tag = tagRepository.findById(post.getTag().getTagId()).get();
+        if ((postRepository.findById(id).get().getUser().getEmail()).equals(email)){
+            Match match = matchRepository.findById(post.getMatch().getMatchId()).get();
+            Tag tag = tagRepository.findById(post.getTag().getTagId()).get();
 
-        post.setTitle(dto.getTitle());
-        post.setContent(dto.getContent());
-        match.setStartTime(dto.getMatch().getStartTime());
-        match.setEndTime(dto.getMatch().getStartTime());
-        match.setPlace(dto.getMatch().getPlace());
-        match.setHeadCnt(dto.getMatch().getHeadCnt());
-        tag.setAgeType(dto.getTag().getAgeType());
-        tag.setGenderType(dto.getTag().getGenderType());
-        tag.setLevelType(dto.getTag().getLevelType());
+            post.setTitle(dto.getTitle());
+            post.setContent(dto.getContent());
+            match.setStartTime(dto.getMatch().getStartTime());
+            match.setEndTime(dto.getMatch().getStartTime());
+            match.setPlace(dto.getMatch().getPlace());
+            match.setHeadCnt(dto.getMatch().getHeadCnt());
+            tag.setAgeType(dto.getTag().getAgeType());
+            tag.setGenderType(dto.getTag().getGenderType());
+            tag.setLevelType(dto.getTag().getLevelType());
 
-        return "모집글 수정 완료";
+            return "모집글 수정 완료";
+        }else {
+            return "모집글을 등록한 회원이 아님";
+        }
 
     }
 

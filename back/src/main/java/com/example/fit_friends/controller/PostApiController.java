@@ -1,7 +1,10 @@
 package com.example.fit_friends.controller;
+import com.example.fit_friends.config.auth.JwtAuthProvider;
+import com.example.fit_friends.config.auth.JwtIssuer;
 import com.example.fit_friends.domain.Post;
 import com.example.fit_friends.dto.*;
 import com.example.fit_friends.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,9 @@ import java.util.Optional;
 public class PostApiController {
 
     private final PostService postService;
+
+    private final JwtAuthProvider jwtAuthProvider;
+
 
     @PostMapping("/api/post")
     public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest request) {
@@ -56,13 +62,17 @@ public class PostApiController {
     }
 
     @DeleteMapping("/api/post/{id}")
-    public ResponseEntity<String> deletePostById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(postService.deleteById(id));
+    public ResponseEntity<String> deletePostById(HttpServletRequest header, @PathVariable Long id) {
+        String token = header.getHeader("Authorization");
+        String email = jwtAuthProvider.getEmailbyToken(token);
+        return ResponseEntity.ok().body(postService.deleteById(email, id));
     }
 
     @PutMapping("/api/post/{id}")
-    public ResponseEntity<String> modifyPostById(@PathVariable Long id, @RequestBody AddPostRequest dto) {
-        return ResponseEntity.ok().body(postService.updatePost(id,dto));
+    public ResponseEntity<String> modifyPostById(HttpServletRequest header, @PathVariable Long id, @RequestBody AddPostRequest dto) {
+        String token = header.getHeader("Authorization");
+        String email = jwtAuthProvider.getEmailbyToken(token);
+        return ResponseEntity.ok().body(postService.updatePost(email,id,dto));
     }
 
 }

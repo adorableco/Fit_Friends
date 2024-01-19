@@ -3,6 +3,7 @@ import com.example.fit_friends.config.auth.GoogleOAuth;
 import com.example.fit_friends.config.auth.SocialOAuth;
 import com.example.fit_friends.domain.Role;
 import com.example.fit_friends.domain.User;
+import com.example.fit_friends.dto.JwtDto;
 import com.example.fit_friends.dto.MemberStatusResponse;
 import com.example.fit_friends.dto.SaveUserRequest;
 import com.example.fit_friends.service.UserService;
@@ -36,29 +37,30 @@ public class LoginController{
     }
 
     @GetMapping("/login/oauth2/code/google")
-    public ResponseEntity<MemberStatusResponse> requestUserInfo(@RequestParam(name="code") String code) throws Exception{
+    public ResponseEntity<JwtDto> requestUserInfo(@RequestParam(name="code") String code) throws Exception{
         final String accessToken =  socialOAuth.requestAccessToken(code);
         String userInfo = socialOAuth.getUserInfo(accessToken);
-        try{
-            JSONObject jsonObject = new JSONObject(userInfo);
-            Optional<User> user = userService.findByEmail(jsonObject.getString("email"));
+        JSONObject jsonObject = new JSONObject(userInfo);
+        String name = jsonObject.getString("name");
+        String email = jsonObject.getString("email");
+        String picture = jsonObject.getString("picture");
+        Optional<User> user = userService.findByEmail(email);
 
-            if (!user.isPresent()) {
-                String name = jsonObject.getString("name");
-                String email = jsonObject.getString("email");
-                String picture = jsonObject.getString("picture");
+        if (user.isPresent()) {
 
-                return ResponseEntity.ok()
-                        .body(new MemberStatusResponse(Role.GUEST.name(), name, email,picture,accessToken));
-            }else{
-                return ResponseEntity.ok()
-                        .body(new MemberStatusResponse(Role.USER.name(),accessToken));
-            }
 
-        }catch (Exception e){
-            return ResponseEntity.internalServerError()
-                    .body(new MemberStatusResponse(Role.GUEST.name(),"false","false","false","false"));
+            JwtDto jwtDto = userService.socialSignIn(email);
+
+            return ResponseEntity.ok()
+                    .body(jwtDto);
+        }else{
+            return ResponseEntity.internalServerError().body(JwtDto.builder()
+                            .name(name)
+                            .email(email)
+                            .picture(picture)
+                    .build());
         }
+
     }
 
     @PostMapping("/api/signup")
