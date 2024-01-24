@@ -16,8 +16,6 @@ public class AddPostRequest {
     private String content;
     private String category;
 
-    private String userEmail;
-
     private Match match;
     private Tag tag;
 
