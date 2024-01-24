@@ -21,7 +21,7 @@ const HomeScreen = () => {
                         try {
                             console.log("들어옴 clicked!")
 
-                            const response = await axios.get('http://10.0.2.2:8080/api/login');
+                            const response = await axios.get('http://192.168.219.108:8080/api/login');
                             console.log(response.data);
                         } catch (error) {
                             console.error(error);
@@ -89,10 +89,10 @@ const styles = StyleSheet.create({
     },
     buttonImageStyle: {
         marginRight: 10,
-        buttonTextStyle: {
-            color: 'white',
-            fontSize: 16,
-        }
+    },
+    buttonTextStyle: {
+        color: 'white',
+        fontSize: 16,
     },
     imageStyle: {
         width: 306,
