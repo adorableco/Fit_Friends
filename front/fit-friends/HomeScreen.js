@@ -2,7 +2,12 @@ import React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+
+    const login = () => {
+        navigation.navigate('WebView', { url: 'http://fit-friends.duckdns.org:8081/api/login' });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.textContainer}>
@@ -16,17 +21,7 @@ const HomeScreen = () => {
             <View style={styles.imageContainer}>
                 <TouchableOpacity
                     style={[styles.buttonStyle, { marginBottom: 18 }]}
-                    onPress={async () => {
-                        console.log("button clicked!")
-                        try {
-                            console.log("들어옴 clicked!")
-
-                            const response = await axios.get('http://192.168.219.108:8080/api/login');
-                            console.log(response.data);
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }}
+                    onPress={login}
                 >
                     <Image source={require('./assets/google.png')} style={styles.buttonImageStyle} />
                     <Text style={styles.buttonTextStyle}>로그인하여 시작하기</Text>

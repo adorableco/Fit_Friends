@@ -1,25 +1,25 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { View, StatusBar, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
+import WebView from './WebViewScreen';
 
-const AppNavigator = createStackNavigator(
-  {
-    HomeScreen: HomeScreen,
-  },
-  {
-    initialRouteName: 'HomeScreen',  // 초기 화면을 HomeScreen으로 설정
-  }
-);
-
-const AppContainer = createAppContainer(AppNavigator);  // createStackNavigator의 결과를 AppContainer로 감싸서 export
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppContainer />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="HomeScreen">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="WebView"
+            component={WebView}
+            options={{ title: '구글 로그인' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
       <StatusBar style="auto" />
     </View>
   );
