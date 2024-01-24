@@ -41,8 +41,8 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public Long save(AddPostRequest dto) {
-        User user = userRepository.findByEmail(dto.getUserEmail()).orElseThrow(null);
+    public Long save(AddPostRequest dto, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(null);
 
         Tag tag = dto.tagToEntity();
         Tag savedTag = tagRepository.save(tag);

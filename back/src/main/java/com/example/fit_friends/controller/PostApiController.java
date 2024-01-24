@@ -25,9 +25,11 @@ public class PostApiController {
 
 
     @PostMapping("/api/post")
-    public ResponseEntity<Map<String,Long>> addPost(@RequestBody AddPostRequest request) {
+    public ResponseEntity<Map<String,Long>> addPost(HttpServletRequest header, @RequestBody AddPostRequest request) {
+        String token = header.getHeader("Authorization");
+        String email = jwtAuthProvider.getEmailbyToken(token);
 
-        Long savedPost = postService.save(request);
+        Long savedPost = postService.save(request, email);
 
 
         Map<String,Long> response = new HashMap<>();
