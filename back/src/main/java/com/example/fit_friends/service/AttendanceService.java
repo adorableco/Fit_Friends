@@ -4,7 +4,6 @@ import com.example.fit_friends.domain.Match;
 import com.example.fit_friends.domain.Participation;
 import com.example.fit_friends.domain.User;
 import com.example.fit_friends.repository.MatchRepository;
-import com.example.fit_friends.repository.ParticipationRespository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -22,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -57,14 +54,19 @@ public class AttendanceService {
         int height = 200;
 
         long time = differenceTime(match);
+        System.out.println("time = " + time);
 
+        if (match.getUser().getUserId() != user.getUserId()){
+            return ResponseEntity.badRequest()
+                    .body("경기 리더가 아님".getBytes(StandardCharsets.UTF_8));
+        }
+        else if (time > 30 * 40 || time < -10 * 40) {
+            return ResponseEntity.badRequest().body("출석 체크 가능 시간이 아님".getBytes(StandardCharsets.UTF_8));
+        }
 
-        if (match.getUser().getUserId() == user.getUserId()) {
+        String url = "http://localhost:8080/api/attendance/"+matchId;
 
-        Map<String, String> response = new HashMap<>();
-        response.put("url","http://localhost:8080/api/attendance/"+matchId );
-
-        BitMatrix encode = new MultiFormatWriter().encode(response.toString(), BarcodeFormat.QR_CODE, width, height);
+        BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -74,13 +76,6 @@ public class AttendanceService {
                 .contentType(MediaType.IMAGE_PNG)
                 .body(out.toByteArray());
 
-        }else if (time > 30 * 60000 || time < -10 * 60000) {
-                return ResponseEntity.badRequest().body("출석 체크 가능 시간이 아님".getBytes(StandardCharsets.UTF_8));
-            }
-        else {
-            return ResponseEntity.badRequest()
-                    .body("경기 리더가 아님".getBytes(StandardCharsets.UTF_8));
-        }
     }
 
     public ResponseEntity<String> qrToAttendance(Long matchId, String userEmail) throws Exception {
@@ -90,7 +85,7 @@ public class AttendanceService {
         long time = differenceTime(match);
 
 
-        if (time > 30 * 60000 || time < -10 * 60000) {
+        if (time > 30 * 40 || time < -10 * 40 ) {
             return ResponseEntity.badRequest().body("출석 체크 가능 시간이 아님");
 
         }
