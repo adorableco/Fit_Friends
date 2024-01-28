@@ -5,10 +5,9 @@ import com.example.fit_friends.domain.Participation;
 import com.example.fit_friends.domain.Tag;
 import com.example.fit_friends.domain.User;
 import com.example.fit_friends.repository.MatchRepository;
-import com.example.fit_friends.repository.ParticipationRespository;
+import com.example.fit_friends.repository.ParticipationRepository;
 import com.example.fit_friends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +19,12 @@ import java.util.Optional;
 public class ParticipationService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
-    private final ParticipationRespository participationRespository;
+    private final ParticipationRepository participationRepository;
 
     public Optional<Participation> findByMatchAndUser(Long matchId, String userEmail) {
         Match match = matchRepository.findById(matchId).get();
         User user = userRepository.findByEmail(userEmail).get();
-        return participationRespository.findByMatchAndUser(match, user);
+        return participationRepository.findByMatchAndUser(match, user);
     }
     
     @Transactional
@@ -48,7 +47,7 @@ public class ParticipationService {
                     .user(user)
                     .match(match)
                     .build();
-            participationRespository.save(build);
+            participationRepository.save(build);
             match.setCurrentHeadCnt(match.getCurrentHeadCnt()+1);
             return "참가 신청 완료";
         }
@@ -59,7 +58,7 @@ public class ParticipationService {
         try {
             Match match = matchRepository.findById(matchId).get();
             User user = userRepository.findByEmail(userEmail).get();
-            Participation participation = participationRespository.findByMatchAndUser(match, user).get();
+            Participation participation = participationRepository.findByMatchAndUser(match, user).get();
             participation.setAttendance(true);
             int attendanceCount = match.getAttendanceCnt();
             match.setAttendanceCnt(attendanceCount + 1);
@@ -68,4 +67,6 @@ public class ParticipationService {
             return ResponseEntity.badRequest().body("출석 체크 실패");
         }
     }
+
+
 }
