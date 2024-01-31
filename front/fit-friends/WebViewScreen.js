@@ -21,7 +21,7 @@ const WebViewScreen = () => {
     return (
         url ? (
             <WebView
-                source={{ uri: 'http://fit-friends.duckdns.org:8081/api/login' }}
+                source={{ uri: url }}
                 style={{ flex: 1 }}
             />
         ) : null
