@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, StatusBar, StyleSheet } from 'react-native';
+import React from "react";
+import { View, StatusBar, StyleSheet } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
 import WebViewScreen from './WebViewScreen';
+import SignUpScreen from './SignUpScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,12 @@ export default function App() {
           <Stack.Screen
             name="WebViewScreen"
             component={WebViewScreen}
-            options={{ title: '구글 로그인' }}
+            options={{ title: "구글 로그인" }}
+          />
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignUpScreen}
+            options={{ title: "회원가입" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -31,6 +37,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 });
