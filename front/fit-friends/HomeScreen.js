@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import axios from 'axios';
+import { createStackNavigator } from '@react-navigation/stack';
+
+
+const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
-
-    const login = () => {
-        navigation.navigate('WebView', { url: 'http://fit-friends.duckdns.org:8081/api/login' });
+    const login = async () => {
+        navigation.navigate('WebViewScreen', { uri: 'http://fit-friends.duckdns.org:8081/api/login' });
     };
 
     return (
