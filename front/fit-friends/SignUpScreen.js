@@ -2,11 +2,13 @@ import React from 'react';
 import { Text, StyleSheet, Image, View } from 'react-native';
 
 const SignUpScreen = ({ route }) => {
+    const { name, email, picture } = route.params;
 
     return (
         <View>
-            <Text>{`이름: `}</Text>
-            <Text>{`이메일: `}</Text>
+            <Text>이름: {name}</Text>
+            <Text>이메일: {email}</Text>
+            <Text>프로필 사진 URL: {picture}</Text>
         </View>
     );
 };

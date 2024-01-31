@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import queryString from 'query-string';
 
 const WebViewScreen = () => {
     const [url, setUrl] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
+    const [name, email, picture] = useState(null);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -23,8 +25,23 @@ const WebViewScreen = () => {
     }, []);
 
     const handleNavigationStateChange = (navState) => {
+
+        console.log('accessToken:', accessToken);
+        console.log('navState:', navState);
+
         if (accessToken == null) {
-            navigation.navigate('SignUpScreen');
+            // URL에서 name, email, picture를 파싱합니다.
+            const urlParams = queryString.parse(navState.url.split('?')[1]);
+            const name = urlParams.name;
+            const email = urlParams.email;
+            const picture = urlParams.picture;
+
+            // 파싱한 name, email, picture를 SignUpScreen으로 전달합니다.
+            navigation.navigate('SignUpScreen', {
+                name: name,
+                email: email,
+                picture: picture,
+            });
         }
     };
 
