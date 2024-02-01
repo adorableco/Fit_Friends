@@ -48,7 +48,7 @@ public class User implements UserDetails {
 
     private float winningRate;
 
-    private float lateRate;
+    private float attendanceRate;
 
     public User update(String name, String picture){
         this.name = name;
@@ -57,9 +57,6 @@ public class User implements UserDetails {
         return this;
     }
 
-//    public String getRoleKey(){
-//        return this.role.getKey();
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -99,7 +96,7 @@ public class User implements UserDetails {
 
     @Builder
 
-    public User(Long userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float lateRate) {
+    public User(Long userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float attendanceRate) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -112,6 +109,6 @@ public class User implements UserDetails {
         this.genderVisible = genderVisible;
         this.ageVisible = ageVisible;
         this.winningRate = winningRate;
-        this.lateRate = lateRate;
+        this.attendanceRate = attendanceRate;
     }
 }

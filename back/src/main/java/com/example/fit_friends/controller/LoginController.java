@@ -31,9 +31,9 @@ public class LoginController{
     private final HttpServletResponse response;
 
     @GetMapping("/api/login")
-    public void loginGoogle() throws Exception{
+    public String loginGoogle() throws Exception{
 
-        response.sendRedirect(socialOAuth.getOAuthRedirectUrl());
+        return socialOAuth.getOAuthRedirectUrl();
     }
 
     @GetMapping("/login/oauth2/code/google")
@@ -55,9 +55,9 @@ public class LoginController{
                     .body(jwtDto);
         }else{
             return ResponseEntity.internalServerError().body(JwtDto.builder()
-                            .name(name)
-                            .email(email)
-                            .picture(picture)
+                    .name(name)
+                    .email(email)
+                    .picture(picture)
                     .build());
         }
 
