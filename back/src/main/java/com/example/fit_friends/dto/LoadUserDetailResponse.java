@@ -1,8 +1,12 @@
 package com.example.fit_friends.dto;
 
+import com.example.fit_friends.domain.Participation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.converter.json.MappingJacksonValue;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,8 +21,10 @@ public class LoadUserDetailResponse {
     private float winningRate;
     private float attendanceRate;
 
+    private List<Participation> participationList;
+
     @Builder
-    public LoadUserDetailResponse(String name, String email, String picture, char gender, String age, String level, float winningRate, float attendanceRate) {
+    public LoadUserDetailResponse(String name, String email, String picture, char gender, String age, String level, float winningRate, float attendanceRate, List<Participation> participationList) {
         this.name = name;
         this.email = email;
         this.picture = picture;
@@ -27,5 +33,6 @@ public class LoadUserDetailResponse {
         this.level = level;
         this.winningRate = winningRate;
         this.attendanceRate = attendanceRate;
+        this.participationList = participationList;
     }
 }

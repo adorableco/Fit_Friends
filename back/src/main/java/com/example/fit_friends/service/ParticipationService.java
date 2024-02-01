@@ -7,25 +7,56 @@ import com.example.fit_friends.domain.User;
 import com.example.fit_friends.repository.MatchRepository;
 import com.example.fit_friends.repository.ParticipationRepository;
 import com.example.fit_friends.repository.UserRepository;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class ParticipationService {
+
+    @Autowired
     private final MatchRepository matchRepository;
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final ParticipationRepository participationRepository;
 
+    @Transactional
     public Optional<Participation> findByMatchAndUser(Long matchId, String userEmail) {
         Match match = matchRepository.findById(matchId).get();
         User user = userRepository.findByEmail(userEmail).get();
         return participationRepository.findByMatchAndUser(match, user);
     }
+
+    @Transactional
+    public List<Participation> findByUser(Long userId) {
+        List<Participation> participationList = participationRepository.findByUser(userRepository.findById(userId).get());
+
+
+
+        return participationList;
+    }
+
+    public Float countMyPresentedMatches(Long userId) {
+        return participationRepository.countMyPresentedMatches(userId);
+    }
+
+    public Float countMyEndMatches(LocalDateTime now, Long userId) {
+        return participationRepository.countMyEndMatches(now, userId);
+    }
+
+
     
     @Transactional
     public String save(Long matchId, User user){

@@ -55,9 +55,9 @@ public class LoginController{
                     .body(jwtDto);
         }else{
             return ResponseEntity.internalServerError().body(JwtDto.builder()
-                            .name(name)
-                            .email(email)
-                            .picture(picture)
+                    .name(name)
+                    .email(email)
+                    .picture(picture)
                     .build());
         }
 
