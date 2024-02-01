@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "660940125943",
+    "project_id": "fitfriends-cf082",
+    "storage_bucket": "fitfriends-cf082.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660940125943:android:63107fc88ddefec23f85f2",
+        "android_client_info": {
+          "package_name": "com.frontend.fit_friends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660940125943-kkodk7hgc4778os9sbn9cqj05mgvqrnu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.frontend.fit_friends",
+            "certificate_hash": "74189c5c8acdb928fab902feee7c026760c92288"
+          }
+        },
+        {
+          "client_id": "660940125943-g83e6r4h3iv5fl133e2pbpn2avaqaqnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcYSsmPVjKsZExLAp9PybsGN5I6m1ENGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660940125943-g83e6r4h3iv5fl133e2pbpn2avaqaqnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
