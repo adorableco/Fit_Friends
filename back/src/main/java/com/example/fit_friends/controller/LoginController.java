@@ -30,16 +30,16 @@ public class LoginController{
 
     private final HttpServletResponse response;
 
-    @GetMapping("/api/login")
-    public String loginGoogle() throws Exception{
+//    @GetMapping("/api/login")
+//    public String loginGoogle() throws Exception{
+//
+//        return socialOAuth.getOAuthRedirectUrl();
+//    }
 
-        return socialOAuth.getOAuthRedirectUrl();
-    }
+    @GetMapping("/api/login/{code}")
+    public ResponseEntity<JwtDto> requestUserInfo(@PathVariable String code) throws Exception{
 
-    @GetMapping("/login/oauth2/code/google")
-    public ResponseEntity<JwtDto> requestUserInfo(@RequestParam(name="code") String code) throws Exception{
-        final String accessToken =  socialOAuth.requestAccessToken(code);
-        String userInfo = socialOAuth.getUserInfo(accessToken);
+        String userInfo = socialOAuth.getUserInfo(code);
         JSONObject jsonObject = new JSONObject(userInfo);
         String name = jsonObject.getString("name");
         String email = jsonObject.getString("email");
@@ -47,11 +47,10 @@ public class LoginController{
         Optional<User> user = userService.findByEmail(email);
 
         if (user.isPresent()) {
-
-
             JwtDto jwtDto = userService.socialSignIn(email);
 
             return ResponseEntity.ok()
+                    .header("Access-Control-Allow-Origin", "http://localhost:19006")
                     .body(jwtDto);
         }else{
             return ResponseEntity.internalServerError().body(JwtDto.builder()
