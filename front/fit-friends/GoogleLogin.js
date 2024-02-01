@@ -14,10 +14,9 @@ export default function GoogleLogin() {
   // 안드로이드, 웹 클라이언트 아이디를 사용하여 인증 요청 보냄.
   // Google 인증 요청을 위한 훅 초기화
   // promptAsync: 인증 요청 보냄.
-  console.log(process.env.EXPO_PUBLIC_WEB_CLIENT_ID);
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    androidClientId: EXPO_PUBLIC_ANDROID_CLIENT_ID,
   });
 
   const [userInfo, setUserInfo] = React.useState(null);
@@ -27,37 +26,27 @@ export default function GoogleLogin() {
     const user = await AsyncStorage.getItem("@accessToken");
     if (!user) {
       if (response?.type === "success") {
-        // 인증 요청에 대한 응답이 성공이면, 토큰을 이용하여 유저 정보를 가져옴.
         await sendToken(response.authentication?.accessToken);
       }
-    } else {
-      // 유저 정보가 이미 있으면, 유저 정보를 가져옴.
-      setUserInfo(JSON.parse(user));
-      console.log(userInfo);
     }
   };
 
   //구글로그인을 해서 받은 토큰을 백엔드로 보내서 디비에 있는 회원 내용 조회 예정
   const sendToken = async (token) => {
     await axios
-      .post("http://fit-friends.duckdns.org:8081/api/login", {
-        body: {
-          token: token,
-        },
-      })
+      .get(`http://fit-friends.duckdns.org:8081/api/login/${token}`)
       .then(async (res) => {
-        if (res.accessToken == null) {
+        if (res.data.accessToken == null) {
+          setUserInfo(res.data);
           // 회원가입 해야 함
         } else {
-          const accessToken = await res.json();
-
+          console.log("accessToken = ", res.data.accessToken);
           // 유저 정보를 AsyncStorage에 저장, 상태업뎃
           await AsyncStorage.setItem(
             "@accessToken",
-            JSON.stringify(accessToken),
+            JSON.stringify(res.data.accessToken),
           );
         }
-        setUserInfo(userInfoResponse);
       });
   };
 
