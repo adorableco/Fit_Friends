@@ -39,11 +39,9 @@ public class ParticipationService {
         return participationRepository.findByMatchAndUser(match, user);
     }
 
-    @Transactional
-    public List<Participation> findByUser(Long userId) {
-        List<Participation> participationList = participationRepository.findByUser(userRepository.findById(userId).get());
 
-
+    public List<Participation> findByUser(User user) {
+        List<Participation> participationList = participationRepository.findByUser(user);
 
         return participationList;
     }

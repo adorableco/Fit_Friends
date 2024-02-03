@@ -1,5 +1,6 @@
 package com.example.fit_friends.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "matches")
+@JsonFilter("UserInfo")
 public class Match {
 
     @Id
