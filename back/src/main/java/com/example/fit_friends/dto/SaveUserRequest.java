@@ -12,6 +12,8 @@ public class SaveUserRequest {
     private String picture;
 
     private char gender;
+
+    private String level;
     private String age;
     private boolean genderVisible;
     private boolean ageVisible;
@@ -23,6 +25,7 @@ public class SaveUserRequest {
                 .name(name)
                 .email(email)
                 .role(Role.USER)
+                .level(level)
                 .picture(picture)
                 .gender(gender)
                 .age(age)
