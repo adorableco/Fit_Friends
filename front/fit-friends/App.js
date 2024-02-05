@@ -6,7 +6,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import WebViewScreen from "./WebViewScreen";
 import SignUpScreen from "./SignUpScreen";
-import GoogleLogin from "./GoogleLogin";
 import HomeScreen from "./HomeScreen";
 
 const Stack = createStackNavigator();
@@ -38,5 +37,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    fontFamily: "Kim jung chul gothic",
+    display: "flex",
+    justifyContent: "center",
   },
 });

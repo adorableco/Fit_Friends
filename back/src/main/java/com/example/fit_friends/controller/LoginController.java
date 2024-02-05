@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class LoginController{
 
     @Autowired
@@ -50,10 +51,10 @@ public class LoginController{
             JwtDto jwtDto = userService.socialSignIn(email);
 
             return ResponseEntity.ok()
-                    .header("Access-Control-Allow-Origin", "http://localhost:19006")
                     .body(jwtDto);
         }else{
-            return ResponseEntity.internalServerError().body(JwtDto.builder()
+            return ResponseEntity.ok()
+                    .body(JwtDto.builder()
                     .name(name)
                     .email(email)
                     .picture(picture)
@@ -66,10 +67,12 @@ public class LoginController{
     public ResponseEntity signUp(@RequestBody SaveUserRequest request) {
         User save = userService.save(request);
         try {
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.ok()
+                    .header("Access-Control-Allow-Origin", "http://localhost:19006")
                     .body(save);
         }catch (Exception e){
             return ResponseEntity.internalServerError()
+                    .header("Access-Control-Allow-Origin", "http://localhost:19006")
                     .body(save);
         }
 
