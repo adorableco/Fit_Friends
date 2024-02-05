@@ -1,26 +1,35 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
-import HomeScreen from './HomeScreen';
+/** @format */
 
-const AppNavigator = createStackNavigator(
-  {
-    HomeScreen: HomeScreen,
-  },
-  {
-    initialRouteName: 'HomeScreen',  // 초기 화면을 HomeScreen으로 설정
-  }
-);
+import React, { useState } from "react";
+import { View, StatusBar, StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import WebViewScreen from "./WebViewScreen";
+import SignUpScreen from "./SignUpScreen";
+import GoogleLogin from "./GoogleLogin";
+import HomeScreen from "./HomeScreen";
 
-const AppContainer = createAppContainer(AppNavigator);  // createStackNavigator의 결과를 AppContainer로 감싸서 export
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <AppContainer />
-      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='HomeScreen'>
+          <Stack.Screen name='HomeScreen' component={HomeScreen} />
+          <Stack.Screen
+            name='WebViewScreen'
+            component={WebViewScreen}
+            options={{ title: "구글 로그인" }}
+          />
+          <Stack.Screen
+            name='SignUpScreen'
+            component={SignUpScreen}
+            options={{ title: "회원가입" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <StatusBar style='auto' />
     </View>
   );
 }
@@ -28,6 +37,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 });
