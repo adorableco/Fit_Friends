@@ -1,14 +1,12 @@
 package com.example.fit_friends.controller;
 
 import com.example.fit_friends.dto.LoadUserDetailResponse;
+import com.example.fit_friends.dto.ModifyUserDetailRequest;
 import com.example.fit_friends.service.UserDetailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
@@ -28,5 +26,12 @@ public class UserDetailController {
 
         return ResponseEntity.ok()
                 .body(user);
+    }
+
+    @PutMapping("/api/user")
+    String modifyUserDetail(HttpServletRequest header, @RequestBody ModifyUserDetailRequest request) {
+        String token = header.getHeader("Authorization");
+        return userDetailService.modifyUserDetail(request, token);
+
     }
 }
