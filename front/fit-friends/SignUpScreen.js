@@ -1,10 +1,11 @@
 /** @format */
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useState } from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 
-const SignUpScreen = ({ route }) => {
+const SignUpScreen = ({ route, navigation }) => {
   const [name, setName] = useState(route.params.userData.name);
   const [email, setEmail] = useState(route.params.userData.email);
   const [picture, setPicture] = useState(route.params.userData.picture);
@@ -33,15 +34,13 @@ const SignUpScreen = ({ route }) => {
           },
         },
       )
-      .then(() => console.log("회원 가입 성공"));
+      .then(async (res) => {
+        console.log(res.data);
+      });
   };
 
   const onChangeName = (e) => {
     setName(e.target.value);
-  };
-
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
   };
 
   const onChangeGender = (e) => {
