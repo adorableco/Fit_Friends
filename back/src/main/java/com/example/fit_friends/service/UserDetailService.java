@@ -62,7 +62,11 @@ public class UserDetailService {
         if (viewer.getUserId() == user.getUserId()) {
             response.setAge(user.getAge());
             response.setGender(user.getGender());
+            response.setIsMyDetail(Boolean.TRUE);
             return response;
+        }else{
+            response.setIsMyDetail(Boolean.FALSE);
+
         }
 
         if (user.isAgeVisible()) {
