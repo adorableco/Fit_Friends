@@ -1,5 +1,7 @@
 package com.example.fit_friends.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -18,6 +20,7 @@ public class Participation {
 
     @ManyToOne
     @JoinColumn(name = "User_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
