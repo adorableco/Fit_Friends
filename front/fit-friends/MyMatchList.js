@@ -1,7 +1,6 @@
 /** @format */
 
-import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 
 const MyMatchList = ({ detail }) => {

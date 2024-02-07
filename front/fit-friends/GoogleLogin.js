@@ -49,6 +49,7 @@ export default function GoogleLogin({ navigation }) {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("@accessToken");
+    // await AsyncStorage.removeItem("@userId");
   };
 
   // Google 인증 응답이 바뀔때마다 실행
