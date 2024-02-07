@@ -1,11 +1,13 @@
 package com.example.fit_friends.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -23,6 +25,7 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name = "User_id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "Category",nullable = false)
@@ -45,11 +48,11 @@ public class Match {
 
     @Column(name = "start_time",nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time",nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date endTime;
+    private LocalDateTime endTime;
 
 
     @Column(name = "Attendance_count",nullable = false)
@@ -59,7 +62,7 @@ public class Match {
 
     @Builder
 
-    public Match(Long matchId, User user, String category, int currentHeadCnt, int headCnt, String place, Tag tag, Date startTime, Date endTime, int attendanceCnt) {
+    public Match(Long matchId, User user, String category, int currentHeadCnt, int headCnt, String place, Tag tag, LocalDateTime startTime, LocalDateTime endTime, int attendanceCnt) {
         this.matchId = matchId;
         this.user = user;
         this.category = category;

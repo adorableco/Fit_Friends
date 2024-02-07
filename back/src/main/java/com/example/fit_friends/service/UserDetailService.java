@@ -10,7 +10,6 @@ import com.example.fit_friends.repository.UserRepository;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -38,7 +37,7 @@ public class UserDetailService {
     public LoadUserDetailResponse findUser(String token, Long userId) {
         User viewer = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
         User user = userRepository.findById(userId).get();
-        List<Participation> participationList = participationRepository.findByUser(user);
+        List<Participation> participationList = participationService.findByUser(user);
         LoadUserDetailResponse response = LoadUserDetailResponse.builder()
                 .name(user.getName())
                 .picture(user.getPicture())
