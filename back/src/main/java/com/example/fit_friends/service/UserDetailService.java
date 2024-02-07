@@ -4,11 +4,13 @@ import com.example.fit_friends.config.auth.JwtAuthProvider;
 import com.example.fit_friends.domain.Participation;
 import com.example.fit_friends.domain.User;
 import com.example.fit_friends.dto.LoadUserDetailResponse;
+import com.example.fit_friends.dto.ModifyUserDetailRequest;
 import com.example.fit_friends.repository.ParticipationRepository;
 import com.example.fit_friends.repository.UserRepository;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -78,4 +80,21 @@ public class UserDetailService {
 
         return response;
     }
-}
+
+    @Transactional
+    public String modifyUserDetail(ModifyUserDetailRequest request, String token) {
+        try{
+            User user = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
+            user.setName(request.getName());
+            user.setAgeVisible(request.isAgeVisible());
+            user.setGenderVisible(request.isGenderVisible());
+
+            return "회원 정보 수정 성공";
+        }catch(Exception e) {
+            return "회원 정보 수정 오류";
+        }
+
+    }
+
+    }
+
