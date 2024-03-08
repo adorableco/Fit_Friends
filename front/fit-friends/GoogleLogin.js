@@ -17,10 +17,8 @@ export default function GoogleLogin({ navigation }) {
   // Google 인증 요청을 위한 훅 초기화
   // promptAsync: 인증 요청 보냄.
   const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId:
-      "119753495255-obmu9nmpvd91eglhi4o4vjvfj7gheeeh.apps.googleusercontent.com",
-    androidClientId:
-      "19753495255-aucdjemi8mei2j4bdq877ull7mhvra03.apps.googleusercontent.com",
+    webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
   });
 
   // Google 로그인 처리하는 함수

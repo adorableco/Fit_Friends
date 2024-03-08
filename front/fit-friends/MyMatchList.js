@@ -2,15 +2,30 @@
 
 import React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
+import { AutoFocus, Camera, CameraType } from "expo-camera";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MyMatchList = ({ detail }) => {
+  const openCameraHandler = async () => {
+    // 카메라에 대한 접근 권한을 얻을 수 있는지 묻는 함수입니다.
+    const { status } = await Camera.requestCameraPermissionsAsync();
+
+    // 권한을 획득하면 status가 granted 상태가 됩니다.
+    if (status === "granted") {
+      // Camera 컴포넌트가 있는 CameraScreen으로 이동합니다.
+      navigation.navigate("CameraScreen");
+    } else {
+      alert("카메라 접근 허용은 필수입니다.");
+    }
+  };
   return (
     <View style={styles.listBox}>
       <Text style={styles.detail}>
-        <Image
+        {/* <Image
           source={require(`./assets/${detail.match.category}.png`)}
           style={{ width: 30, height: 30, marginRight: 30, marginTop: 10 }}
-        />
+        /> */}
         {detail.match.startTime}
       </Text>
       <Text style={{ marginBottom: "5px" }}>{detail.match.place}</Text>
@@ -24,7 +39,9 @@ const MyMatchList = ({ detail }) => {
       ) : detail.status == "waited" ? (
         <button style={styles.btn}>참가 취소</button>
       ) : (
-        <button style={styles.btn}>출석 체크</button>
+        <button style={styles.btn} onClick={openCameraHandler}>
+          출석 체크
+        </button>
       )}
     </View>
   );

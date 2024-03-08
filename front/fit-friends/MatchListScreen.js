@@ -14,17 +14,14 @@ export default function MatchListScreen() {
   const fetchMatchList = async (category) => {
     setIsLoading(true);
     const token = await AsyncStorage.getItem("@accessToken");
+
     await axios
-      .post(
-        `http://localhost:8080/api/posts?category=${category}`,
-        {
-          levelType: "beginner",
-          genderType: "F",
-        },
+      .get(
+        `http://localhost:8080/api/posts?category=${category}&levelType=beginner&genderType=F&ageType=teens`,
+
         {
           headers: {
             "Access-Control-Allow-Origin": "http://localhost:19006",
-            Authorization: token,
           },
         },
       )

@@ -9,6 +9,7 @@ import SignUpScreen from "./SignUpScreen";
 import HomeScreen from "./HomeScreen";
 import UserDetailScreen from "./UserDetailScreen";
 import MatchListScreen from "./MatchListScreen";
+import CameraScreen from "./CameraScreen";
 
 const Stack = createStackNavigator();
 
@@ -16,12 +17,17 @@ export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='MatchListScreen'>
+        <Stack.Navigator initialRouteName='UserDetailScreen'>
           <Stack.Screen name='HomeScreen' component={HomeScreen} />
           <Stack.Screen
             name='WebViewScreen'
             component={WebViewScreen}
             options={{ title: "구글 로그인" }}
+          />
+          <Stack.Screen
+            name='CameraScreen'
+            component={CameraScreen}
+            options={{ title: "QR 체크" }}
           />
           <Stack.Screen
             name='SignUpScreen'
@@ -49,7 +55,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    fontFamily: "Kim jung chul gothic",
     display: "flex",
     justifyContent: "center",
     width: "100%",

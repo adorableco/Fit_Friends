@@ -23,6 +23,7 @@ export default function UserDetailScreen({ route, navigation }) {
   const onClickLogout = async () => {
     await AsyncStorage.removeItem("@accessToken");
     await AsyncStorage.removeItem("@userId");
+    alert("로그아웃이 완료되었습니다.");
     navigation.navigate("HomeScreen");
   };
 
@@ -64,7 +65,7 @@ export default function UserDetailScreen({ route, navigation }) {
         })
         .then((res) => {
           setIsLoading(false);
-          console.log(res.data);
+          console.log("res.data=", res.data);
           setUserDetail(res.data);
         })
         .catch((e) => console.log(e));
