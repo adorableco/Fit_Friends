@@ -50,15 +50,6 @@ public class UserDetailService {
         Float attendanceRate = (participationService.countMyPresentedMatches(user.getUserId()) / participationService.countMyEndMatches(LocalDateTime.now(), user.getUserId()) ) * 100;
         response.setAttendanceRate(attendanceRate);
 
-        if (viewer.getUserId() != user.getUserId()) {
-            SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
-                    .filterOutAllExcept("gender","role","age","gender");
-
-            FilterProvider filters = new SimpleFilterProvider().addFilter("User",filter);
-            MappingJacksonValue mapping = new MappingJacksonValue(user);
-        }
-
-
 
         if (viewer.getUserId() == user.getUserId()) {
             response.setAge(user.getAge());

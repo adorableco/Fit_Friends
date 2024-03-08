@@ -1,5 +1,6 @@
 package com.example.fit_friends.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -46,8 +47,10 @@ public class User implements UserDetails {
     @ColumnDefault("1")
     private boolean ageVisible;
 
+    @ColumnDefault("0")
     private float winningRate;
 
+    @ColumnDefault("0")
     private float attendanceRate;
 
     public User update(String name, String picture){

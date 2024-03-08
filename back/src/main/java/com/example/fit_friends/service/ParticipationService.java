@@ -39,6 +39,7 @@ public class ParticipationService {
     public List<Participation> findByUser(User user) {
         modifyParticipationStatus(user);
         List<Participation> participationList = participationRepository.findByUser(user);
+
         return participationList;
     }
 
