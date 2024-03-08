@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { WebView } from "react-native-webview";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import queryString from "query-string";
@@ -15,9 +14,7 @@ const WebViewScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://fit-friends.duckdns.org:8081/api/login",
-        );
+        const response = await axios.get("http://localhost:8080/api/login");
         setUrl(response.data);
         setAccessToken(response.data.accessToken);
       } catch (error) {

@@ -23,6 +23,7 @@ export default function UserDetailScreen({ route, navigation }) {
   const onClickLogout = async () => {
     await AsyncStorage.removeItem("@accessToken");
     await AsyncStorage.removeItem("@userId");
+    alert("로그아웃이 완료되었습니다.");
     navigation.navigate("HomeScreen");
   };
 
@@ -30,7 +31,7 @@ export default function UserDetailScreen({ route, navigation }) {
     const token = await AsyncStorage.getItem("@accessToken");
     await axios
       .put(
-        "http://fit-friends.duckdns.org:8081/api/user",
+        "http://localhost:8080/api/user",
         {
           name: changeName,
           ageVisible: ageVisible,
@@ -57,14 +58,14 @@ export default function UserDetailScreen({ route, navigation }) {
       const userId = await AsyncStorage.getItem("@userId");
 
       await axios
-        .get(`http://fit-friends.duckdns.org:8081/api/user/${userId}`, {
+        .get(`http://localhost:8080/api/user/${userId}`, {
           headers: {
             Authorization: token,
           },
         })
         .then((res) => {
           setIsLoading(false);
-          console.log(res.data);
+          console.log("res.data=", res.data);
           setUserDetail(res.data);
         })
         .catch((e) => console.log(e));
@@ -166,7 +167,12 @@ export default function UserDetailScreen({ route, navigation }) {
       </Text>
       <Text style={styles.winningRate}>
         최근 10회 출석률{" "}
-        <Text style={styles.rate}>{userDetail.attendanceRate}%</Text>
+        <Text style={styles.rate}>
+          {userDetail.attendanceRate == "Infinity"
+            ? "경기 진행 전무"
+            : userDetail.attendanceRate}
+          %
+        </Text>
       </Text>
       {userDetail.isMyDetail &&
         userDetail.participationList.map((participation) => (

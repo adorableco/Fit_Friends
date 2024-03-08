@@ -42,11 +42,9 @@ public class Participation {
     public void modifyParticipationStatus() {
         LocalDateTime now = LocalDateTime.now();
 
-        if (now.isAfter(this.match.getEndTime())) {
+        if (now.isAfter(new java.sql.Timestamp(this.match.getEndTime().getTime()).toLocalDateTime())) {
             setStatus("end");
         } else if (!attendance) {
-            setStatus("waited");
-        }else{
             setStatus("accepted");
         }
     }
