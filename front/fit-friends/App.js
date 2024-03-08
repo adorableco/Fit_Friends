@@ -8,6 +8,7 @@ import WebViewScreen from "./WebViewScreen";
 import SignUpScreen from "./SignUpScreen";
 import HomeScreen from "./HomeScreen";
 import UserDetailScreen from "./UserDetailScreen";
+import MatchListScreen from "./MatchListScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='HomeScreen'>
+        <Stack.Navigator initialRouteName='MatchListScreen'>
           <Stack.Screen name='HomeScreen' component={HomeScreen} />
           <Stack.Screen
             name='WebViewScreen'
@@ -31,6 +32,11 @@ export default function App() {
             name='UserDetailScreen'
             component={UserDetailScreen}
             options={{ title: "회원정보" }}
+          />
+          <Stack.Screen
+            name='MatchListScreen'
+            component={MatchListScreen}
+            options={{ title: "경기모집" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

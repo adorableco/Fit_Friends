@@ -30,7 +30,7 @@ export default function UserDetailScreen({ route, navigation }) {
     const token = await AsyncStorage.getItem("@accessToken");
     await axios
       .put(
-        "http://fit-friends.duckdns.org:8081/api/user",
+        "http://localhost:8080/api/user",
         {
           name: changeName,
           ageVisible: ageVisible,
@@ -57,7 +57,7 @@ export default function UserDetailScreen({ route, navigation }) {
       const userId = await AsyncStorage.getItem("@userId");
 
       await axios
-        .get(`http://fit-friends.duckdns.org:8081/api/user/${userId}`, {
+        .get(`http://localhost:8080/api/user/${userId}`, {
           headers: {
             Authorization: token,
           },
@@ -166,7 +166,12 @@ export default function UserDetailScreen({ route, navigation }) {
       </Text>
       <Text style={styles.winningRate}>
         최근 10회 출석률{" "}
-        <Text style={styles.rate}>{userDetail.attendanceRate}%</Text>
+        <Text style={styles.rate}>
+          {userDetail.attendanceRate == "Infinity"
+            ? "경기 진행 전무"
+            : userDetail.attendanceRate}
+          %
+        </Text>
       </Text>
       {userDetail.isMyDetail &&
         userDetail.participationList.map((participation) => (

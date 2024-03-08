@@ -17,8 +17,10 @@ export default function GoogleLogin({ navigation }) {
   // Google 인증 요청을 위한 훅 초기화
   // promptAsync: 인증 요청 보냄.
   const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId: EXPO_PUBLIC_WEB_CLIENT_ID,
-    androidClientId: EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    webClientId:
+      "119753495255-obmu9nmpvd91eglhi4o4vjvfj7gheeeh.apps.googleusercontent.com",
+    androidClientId:
+      "19753495255-aucdjemi8mei2j4bdq877ull7mhvra03.apps.googleusercontent.com",
   });
 
   // Google 로그인 처리하는 함수
@@ -33,23 +35,21 @@ export default function GoogleLogin({ navigation }) {
 
   //구글로그인을 해서 받은 토큰을 백엔드로 보내서 디비에 있는 회원 내용 조회 예정
   const sendToken = async (token) => {
-    await axios
-      .get(`http://fit-friends.duckdns.org:8081/api/login/${token}`)
-      .then((res) => {
-        if (res.data.accessToken == null) {
-          navigation.navigate("SignUpScreen", { userData: res.data });
-        } else {
-          AsyncStorage.setItem("@accessToken", res.data.accessToken);
-          AsyncStorage.setItem("@userId", res.data.userId);
-          console.log(res.data.userId);
-          navigation.navigate("UserDetailScreen", { userId: res.data.userId });
-        }
-      });
+    await axios.get(`http://localhost:8080/api/login/${token}`).then((res) => {
+      if (res.data.accessToken == null) {
+        navigation.navigate("SignUpScreen", { userData: res.data });
+      } else {
+        AsyncStorage.setItem("@accessToken", res.data.accessToken);
+        AsyncStorage.setItem("@userId", res.data.userId);
+        console.log(res.data);
+        navigation.navigate("UserDetailScreen", { userId: res.data.userId });
+      }
+    });
   };
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("@accessToken");
-    // await AsyncStorage.removeItem("@userId");
+    await AsyncStorage.removeItem("@userId");
   };
 
   // Google 인증 응답이 바뀔때마다 실행

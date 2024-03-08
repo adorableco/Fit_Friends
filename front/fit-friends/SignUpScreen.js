@@ -17,7 +17,7 @@ const SignUpScreen = ({ route, navigation }) => {
   const signUp = async () => {
     await axios
       .post(
-        `http://fit-friends.duckdns.org:8081/api/signup`,
+        `http://localhost:8080/api/signup`,
         {
           name: name,
           email: email,

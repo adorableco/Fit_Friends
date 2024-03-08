@@ -13,7 +13,7 @@ const MyMatchList = ({ detail }) => {
         />
         {detail.match.startTime}
       </Text>
-      <Text>{detail.match.place}</Text>
+      <Text style={{ marginBottom: "5px" }}>{detail.match.place}</Text>
       <Text>{detail.match.status}</Text>
       {detail.status == "end" ? (
         detail.win ? (
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 33,
     color: "white",
     fontSize: 12,
+    marginBottom: 10,
   },
   loseBox: {
     display: "flex",
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 33,
     color: "white",
     fontSize: 12,
+    marginBottom: 10,
   },
   btn: {
     fontSize: 12,
