@@ -4,6 +4,7 @@ import com.example.fit_friends.config.auth.JwtAuthProvider;
 import com.example.fit_friends.domain.Participation;
 import com.example.fit_friends.domain.User;
 import com.example.fit_friends.dto.LoadUserDetailResponse;
+import com.example.fit_friends.dto.ModifyUserDetailRequest;
 import com.example.fit_friends.repository.ParticipationRepository;
 import com.example.fit_friends.repository.UserRepository;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
@@ -36,7 +37,7 @@ public class UserDetailService {
     public LoadUserDetailResponse findUser(String token, Long userId) {
         User viewer = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
         User user = userRepository.findById(userId).get();
-        List<Participation> participationList = participationRepository.findByUser(user);
+        List<Participation> participationList = participationService.findByUser(user);
         LoadUserDetailResponse response = LoadUserDetailResponse.builder()
                 .name(user.getName())
                 .picture(user.getPicture())
@@ -49,20 +50,15 @@ public class UserDetailService {
         Float attendanceRate = (participationService.countMyPresentedMatches(user.getUserId()) / participationService.countMyEndMatches(LocalDateTime.now(), user.getUserId()) ) * 100;
         response.setAttendanceRate(attendanceRate);
 
-        if (viewer.getUserId() != user.getUserId()) {
-            SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
-                    .filterOutAllExcept("gender","role","age","gender");
-
-            FilterProvider filters = new SimpleFilterProvider().addFilter("User",filter);
-            MappingJacksonValue mapping = new MappingJacksonValue(user);
-        }
-
-
 
         if (viewer.getUserId() == user.getUserId()) {
             response.setAge(user.getAge());
             response.setGender(user.getGender());
+            response.setIsMyDetail(Boolean.TRUE);
             return response;
+        }else{
+            response.setIsMyDetail(Boolean.FALSE);
+
         }
 
         if (user.isAgeVisible()) {
@@ -74,4 +70,21 @@ public class UserDetailService {
 
         return response;
     }
-}
+
+    @Transactional
+    public String modifyUserDetail(ModifyUserDetailRequest request, String token) {
+        try{
+            User user = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
+            user.setName(request.getName());
+            user.setAgeVisible(request.isAgeVisible());
+            user.setGenderVisible(request.isGenderVisible());
+
+            return "회원 정보 수정 성공";
+        }catch(Exception e) {
+            return "회원 정보 수정 오류";
+        }
+
+    }
+
+    }
+

@@ -2,10 +2,7 @@
 
 import React, { useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
 import GoogleLogin from "./GoogleLogin";
-
-const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
   return (
@@ -17,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.imageContainer}>
-        <GoogleLogin />
+        <GoogleLogin navigation={navigation} />
         <Image
           source={require("./assets/home-image.png")}
           style={styles.imageStyle}

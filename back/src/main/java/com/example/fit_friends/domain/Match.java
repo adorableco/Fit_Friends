@@ -1,11 +1,14 @@
 package com.example.fit_friends.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -14,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "matches")
+@JsonFilter("UserInfo")
 public class Match {
 
     @Id
@@ -23,6 +27,7 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name = "User_id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "Category",nullable = false)

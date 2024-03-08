@@ -1,8 +1,11 @@
 package com.example.fit_friends.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,6 +21,7 @@ public class Participation {
 
     @ManyToOne
     @JoinColumn(name = "User_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
@@ -34,6 +38,16 @@ public class Participation {
     @Column(name = "Iswin", nullable = false)
     @ColumnDefault("0")
     private boolean isWin;
+
+    public void modifyParticipationStatus() {
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isAfter(new java.sql.Timestamp(this.match.getEndTime().getTime()).toLocalDateTime())) {
+            setStatus("end");
+        } else if (!attendance) {
+            setStatus("accepted");
+        }
+    }
 
     @Builder
     public Participation(Long participationId, User user, Match match,

@@ -6,20 +6,20 @@ import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios";
 
 // 로그인 버튼 누르면 웹 브라우저가 열리고, 구글 로그인 페이지로 이동함.
 WebBrowser.maybeCompleteAuthSession();
-export default function GoogleLogin() {
+export default function GoogleLogin({ navigation }) {
+  const Stack = createStackNavigator();
   // 안드로이드, 웹 클라이언트 아이디를 사용하여 인증 요청 보냄.
   // Google 인증 요청을 위한 훅 초기화
   // promptAsync: 인증 요청 보냄.
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-    androidClientId: EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
   });
-
-  const [userInfo, setUserInfo] = React.useState(null);
 
   // Google 로그인 처리하는 함수
   const handleSignInWithGoogle = async () => {
@@ -33,46 +33,21 @@ export default function GoogleLogin() {
 
   //구글로그인을 해서 받은 토큰을 백엔드로 보내서 디비에 있는 회원 내용 조회 예정
   const sendToken = async (token) => {
-    await axios
-      .get(`http://fit-friends.duckdns.org:8081/api/login/${token}`)
-      .then(async (res) => {
-        if (res.data.accessToken == null) {
-          setUserInfo(res.data);
-          // 회원가입 해야 함
-        } else {
-          console.log("accessToken = ", res.data.accessToken);
-          // 유저 정보를 AsyncStorage에 저장, 상태업뎃
-          await AsyncStorage.setItem(
-            "@accessToken",
-            JSON.stringify(res.data.accessToken),
-          );
-        }
-      });
-  };
-
-  // 토큰을 이용하여 유저 정보를 가져오는 함수
-  // 여기서는 사용안할 예정
-  const getUserInfo = async (token) => {
-    if (!token) return;
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const userInfoResponse = await response.json();
-      // 유저 정보를 AsyncStorage에 저장, 상태업뎃
-      await AsyncStorage.setItem("@user", JSON.stringify(userInfoResponse));
-      setUserInfo(userInfoResponse);
-    } catch (e) {
-      console.log(e);
-    }
+    await axios.get(`http://localhost:8080/api/login/${token}`).then((res) => {
+      if (res.data.accessToken == null) {
+        navigation.navigate("SignUpScreen", { userData: res.data });
+      } else {
+        AsyncStorage.setItem("@accessToken", res.data.accessToken);
+        AsyncStorage.setItem("@userId", res.data.userId);
+        console.log(res.data);
+        navigation.navigate("UserDetailScreen", { userId: res.data.userId });
+      }
+    });
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("@user");
-    setUserInfo(null);
+    await AsyncStorage.removeItem("@accessToken");
+    await AsyncStorage.removeItem("@userId");
   };
 
   // Google 인증 응답이 바뀔때마다 실행

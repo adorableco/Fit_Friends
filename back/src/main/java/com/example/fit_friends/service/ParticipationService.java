@@ -7,13 +7,9 @@ import com.example.fit_friends.domain.User;
 import com.example.fit_friends.repository.MatchRepository;
 import com.example.fit_friends.repository.ParticipationRepository;
 import com.example.fit_friends.repository.UserRepository;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +36,9 @@ public class ParticipationService {
     }
 
     @Transactional
-    public List<Participation> findByUser(Long userId) {
-        List<Participation> participationList = participationRepository.findByUser(userRepository.findById(userId).get());
-
-
+    public List<Participation> findByUser(User user) {
+        modifyParticipationStatus(user);
+        List<Participation> participationList = participationRepository.findByUser(user);
 
         return participationList;
     }
@@ -54,6 +49,12 @@ public class ParticipationService {
 
     public Float countMyEndMatches(LocalDateTime now, Long userId) {
         return participationRepository.countMyEndMatches(now, userId);
+    }
+
+    @Transactional
+    public void modifyParticipationStatus(User user){
+        List<Participation> participationList = participationRepository.findByUser(user);
+        participationList.stream().forEach(participation -> {participation.modifyParticipationStatus();});
     }
 
 

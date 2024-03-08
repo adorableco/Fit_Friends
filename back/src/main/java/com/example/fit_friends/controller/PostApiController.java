@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class PostApiController {
 
     private final PostService postService;
@@ -39,10 +40,10 @@ public class PostApiController {
     }
 
     @GetMapping("/api/posts")
-    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestBody TagFilteringRequest tagFilteringRequest) {
+    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestParam String ageType, @RequestParam char genderType, @RequestParam String levelType) {
         List<PostResponse> posts;
 
-        posts = postService.findPosts(category, tagFilteringRequest.getLevelType(), tagFilteringRequest.getAgeType(), tagFilteringRequest.getGenderType())
+        posts = postService.findPosts(category, levelType, ageType, genderType)
                 .stream()
                 .map((Post post) -> new PostResponse(post))
                 .toList();
