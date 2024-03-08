@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class PostApiController {
 
     private final PostService postService;
@@ -38,7 +39,7 @@ public class PostApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/api/posts")
+    @PostMapping("/api/posts")
     public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestBody TagFilteringRequest tagFilteringRequest) {
         List<PostResponse> posts;
 

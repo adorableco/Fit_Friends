@@ -7,12 +7,15 @@ import com.example.fit_friends.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
+
 public class ParticipationController {
     private final ParticipationService participationService;
     private final UserService userService;

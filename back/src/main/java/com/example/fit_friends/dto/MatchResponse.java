@@ -15,8 +15,8 @@ public class MatchResponse {
     private int currentHeadCnt;
     private int headCnt;
     private String place;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Date startTime;
+    private Date endTime;
 
     public MatchResponse(Match match) {
         this.matchId = match.getMatchId();
