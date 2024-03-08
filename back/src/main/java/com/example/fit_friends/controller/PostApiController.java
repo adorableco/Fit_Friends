@@ -39,11 +39,11 @@ public class PostApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/api/posts")
-    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestBody TagFilteringRequest tagFilteringRequest) {
+    @GetMapping("/api/posts")
+    public ResponseEntity<List<PostResponse>> findPosts(@RequestParam("category") String category, @RequestParam String ageType, @RequestParam char genderType, @RequestParam String levelType) {
         List<PostResponse> posts;
 
-        posts = postService.findPosts(category, tagFilteringRequest.getLevelType(), tagFilteringRequest.getAgeType(), tagFilteringRequest.getGenderType())
+        posts = postService.findPosts(category, levelType, ageType, genderType)
                 .stream()
                 .map((Post post) -> new PostResponse(post))
                 .toList();
