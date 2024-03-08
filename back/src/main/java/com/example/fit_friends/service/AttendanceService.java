@@ -64,7 +64,7 @@ public class AttendanceService {
             return ResponseEntity.badRequest().body("출석 체크 가능 시간이 아님".getBytes(StandardCharsets.UTF_8));
         }
 
-        String url = "http://localhost:8080/api/attendance/"+matchId;
+        String url = "http://3.39.127.227:8081/api/attendance/"+matchId;
 
         BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 
@@ -86,11 +86,11 @@ public class AttendanceService {
 
 
         if (time > 30 * 40 || time < -10 * 40 ) {
-            return ResponseEntity.badRequest().body("출석 체크 가능 시간이 아님");
+            return ResponseEntity.ok().body("출석 체크 가능 시간이 아님");
 
         }
          else if (participation.get().isAttendance()) {
-            return ResponseEntity.badRequest().body("이미 출석 체크 완료");
+            return ResponseEntity.ok().body("이미 출석 체크 완료");
         } else {
             return participationService.checkAttendance(matchId, userEmail);
         }
