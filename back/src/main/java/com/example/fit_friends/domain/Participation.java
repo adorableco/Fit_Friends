@@ -1,10 +1,11 @@
 package com.example.fit_friends.domain;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -37,6 +38,18 @@ public class Participation {
     @Column(name = "Iswin", nullable = false)
     @ColumnDefault("0")
     private boolean isWin;
+
+    public void modifyParticipationStatus() {
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isAfter(this.match.getEndTime())) {
+            setStatus("end");
+        } else if (!attendance) {
+            setStatus("waited");
+        }else{
+            setStatus("accepted");
+        }
+    }
 
     @Builder
     public Participation(Long participationId, User user, Match match,

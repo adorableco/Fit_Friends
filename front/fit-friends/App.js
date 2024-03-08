@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import WebViewScreen from "./WebViewScreen";
 import SignUpScreen from "./SignUpScreen";
 import HomeScreen from "./HomeScreen";
+import UserDetailScreen from "./UserDetailScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ export default function App() {
             component={SignUpScreen}
             options={{ title: "회원가입" }}
           />
+          <Stack.Screen
+            name='UserDetailScreen'
+            component={UserDetailScreen}
+            options={{ title: "회원정보" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style='auto' />
@@ -40,5 +46,7 @@ const styles = StyleSheet.create({
     fontFamily: "Kim jung chul gothic",
     display: "flex",
     justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
 });
