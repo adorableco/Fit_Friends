@@ -1,5 +1,5 @@
-name: 'Test 이슈 생성'
-description: 'Test Repo에 이슈를 생성하며, 생성된 이슈는 Jira와 연동됩니다.'
+name: '이슈 생성'
+description: 'GitHub 레포지토리에 이슈를 생성하며, 생성된 이슈는 Jira와 연동됩니다.'
 labels: [ order ]
 title: '이슈 이름을 작성해주세요.'
 body:
