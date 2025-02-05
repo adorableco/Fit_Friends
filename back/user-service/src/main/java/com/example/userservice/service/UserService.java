@@ -1,6 +1,6 @@
 package com.example.userservice.service;
 
-import com.example.userservice.auth.JwtIssuer;
+import com.example.userservice.common.auth.JwtIssuer;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.JwtDto;
 import com.example.userservice.dto.SaveUserRequest;

@@ -1,7 +1,7 @@
 package com.example.userservice.service;
 
-import com.example.userservice.auth.JwtAuthProvider;
 import com.example.userservice.client.MatchServiceClient;
+import com.example.userservice.common.auth.JwtAuthProvider;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.LoadUserDetailResponse;
 import com.example.userservice.dto.ModifyUserDetailRequest;
@@ -9,6 +9,7 @@ import com.example.userservice.dto.ParticipationResponse;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

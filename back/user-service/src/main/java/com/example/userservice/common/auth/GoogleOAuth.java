@@ -1,4 +1,4 @@
-package com.example.userservice.auth;
+package com.example.userservice.common.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

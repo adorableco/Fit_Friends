@@ -1,4 +1,4 @@
-package com.example.userservice.auth;
+package com.example.userservice.common.auth;
 
 public interface SocialOAuth {
     String getOAuthRedirectUrl();

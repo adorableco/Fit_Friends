@@ -1,4 +1,4 @@
-package com.example.userservice.auth;
+package com.example.userservice.common.auth;
 
 import com.example.userservice.dto.JwtDto;
 import com.example.userservice.service.UserService;
