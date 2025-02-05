@@ -1,0 +1,4 @@
+rootProject.name = 'user-service'
+
+include ':fitfriends-util'
+project(':fitfriends-util').projectDir = file('../fitfriends-util')
