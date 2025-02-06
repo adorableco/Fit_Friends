@@ -39,7 +39,6 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-
 jwt:
   secret:
-    key: g0AngeYeqhGwho0ZQDuTJGOOk1xANoyq
+    key: ${JWT.SECRET.KEY}
