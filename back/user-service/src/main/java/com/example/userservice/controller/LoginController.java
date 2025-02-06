@@ -1,6 +1,8 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.common.auth.SocialOAuth;
+import com.example.userservice.common.dto.CustomResponseBody;
+import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.JwtDto;
 import com.example.userservice.dto.SaveUserRequest;
@@ -28,7 +30,7 @@ public class LoginController {
 
 
     @GetMapping("/api/login/{code}")
-    public ResponseEntity<JwtDto> requestUserInfo(@PathVariable String code) throws Exception{
+    public ResponseEntity<CustomResponseBody<JwtDto>> requestUserInfo(@PathVariable String code) throws Exception{
 
         String userInfo = socialOAuth.getUserInfo(code);
         JSONObject jsonObject = new JSONObject(userInfo);
@@ -40,11 +42,10 @@ public class LoginController {
         if (user.isPresent()) {
             JwtDto jwtDto = userService.socialSignIn(email);
             jwtDto.setUserId(user.get().getUserId());
-            return ResponseEntity.ok()
-                    .body(jwtDto);
+            return ResponseUtil.success(jwtDto);
         }else{
-            return ResponseEntity.ok()
-                    .body(JwtDto.builder()
+            return ResponseUtil.success(
+                    JwtDto.builder()
                     .name(name)
                     .email(email)
                     .picture(picture)
