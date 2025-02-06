@@ -5,7 +5,6 @@ import com.example.userservice.common.dto.CustomResponseBody;
 import com.example.userservice.common.util.ResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,13 +25,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomResponseBody<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
         if (ex.getMessage() != null) {
             return ResponseUtil.error(HttpStatus.BAD_REQUEST, ex.getMessage());
-
         }
         return ResponseUtil.error(HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<CustomResponseBody<Void>> UsernameNotFoundException(UsernameNotFoundException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CustomResponseBody<Void>> UserNotFoundException(UserNotFoundException ex) {
         if (ex.getMessage() != null) {
             return ResponseUtil.error(HttpStatus.NOT_FOUND, ex.getMessage());
 

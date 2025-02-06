@@ -2,14 +2,13 @@ package com.example.userservice.service;
 
 import com.example.userservice.client.MatchServiceClient;
 import com.example.userservice.common.auth.JwtAuthProvider;
+import com.example.userservice.common.exception.UserNotFoundException;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.LoadUserDetailResponse;
 import com.example.userservice.dto.ModifyUserDetailRequest;
 import com.example.userservice.dto.ParticipationResponse;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +18,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserDetailService {
 
-    @Autowired
     private final JwtAuthProvider jwtAuthProvider;
-
-    @Autowired
     private final UserRepository userRepository;
-
-    @Autowired
     private final MatchServiceClient matchServiceClient;
 
     @Transactional
-    public LoadUserDetailResponse findUser(String token, Long userId) {
+    public LoadUserDetailResponse findUser(String token, Long userId){
         User viewer = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
         List<ParticipationResponse> participationList = matchServiceClient.getParticipationList(userId);
         LoadUserDetailResponse response = LoadUserDetailResponse.builder()
                 .name(user.getName())

@@ -1,5 +1,8 @@
 package com.example.userservice.common.dto;
 
+import lombok.Data;
+
+@Data
 public class CustomResponseBody<T> {
     private String result;
     private int code;
