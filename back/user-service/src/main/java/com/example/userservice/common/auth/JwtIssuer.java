@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtIssuer {
 
-    private static String SECRET_KEY = "jwtPractice";
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
     public static final long EXPIRE_TIME = 1000 * 60 * 5;
     public static final long REFRESH_EXPIRE_TIME = 1000 * 60 * 15;
     public static final String KEY_ROLES = "roles";
