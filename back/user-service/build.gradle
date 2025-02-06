@@ -35,8 +35,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
     implementation('org.springframework.boot:spring-boot-configuration-processor')
-    implementation project(':fitfriends-util')
+    compileOnly 'org.springframework.boot:spring-boot-starter-oauth2-client'
     compileOnly 'org.projectlombok:lombok'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
