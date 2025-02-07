@@ -1,6 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.common.dto.CustomResponseBody;
+import com.example.userservice.common.resolver.memberid.MemberId;
 import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.dto.LoadUserDetailResponse;
 import com.example.userservice.dto.ModifyUserDetailRequest;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
@@ -27,9 +30,9 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{userId}")
-    ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(HttpServletRequest header, @PathVariable Long userId) {
-        String token = header.getHeader("Authorization");
-        LoadUserDetailResponse user = userDetailService.findUser(token, userId);
+    ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(@PathVariable UUID userId, @MemberId UUID memberId) {
+
+        LoadUserDetailResponse user = userDetailService.findUser(userId, memberId);
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("matchId","category","headCnt","place","tag","startTime","endTime","attendanceCnt");
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
 
@@ -40,9 +43,8 @@ public class UserController {
     }
 
     @PutMapping("/api/user")
-    String modifyUserDetail(HttpServletRequest header, @RequestBody ModifyUserDetailRequest request) {
-        String token = header.getHeader("Authorization");
-        return userDetailService.modifyUserDetail(request, token);
+    String modifyUserDetail(@MemberId UUID memberId ,@RequestBody ModifyUserDetailRequest request) {
+        return userDetailService.modifyUserDetail(request, memberId);
 
     }
 }

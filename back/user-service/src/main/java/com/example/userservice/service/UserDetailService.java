@@ -63,9 +63,9 @@ public class UserDetailService {
     }
 
     @Transactional
-    public String modifyUserDetail(ModifyUserDetailRequest request, String token) {
+    public String modifyUserDetail(ModifyUserDetailRequest request, UUID userId) {
         try{
-            User user = userRepository.findByUserId(jwtAuthProvider.getIdByToken(token)).get();
+            User user = userRepository.findByUserId(userId).get();
             user.setName(request.getName());
             user.setAgeVisible(request.isAgeVisible());
             user.setGenderVisible(request.isGenderVisible());
