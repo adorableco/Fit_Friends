@@ -1,6 +1,6 @@
 package com.example.userservice.common.auth;
 
-import com.example.userservice.dto.JwtDto;
+import com.example.userservice.common.dto.auth.JwtDto;
 import com.example.userservice.service.UserService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

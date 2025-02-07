@@ -4,7 +4,7 @@ import com.example.userservice.common.auth.SocialOAuth;
 import com.example.userservice.common.dto.CustomResponseBody;
 import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.domain.User;
-import com.example.userservice.dto.JwtDto;
+import com.example.userservice.common.dto.auth.JwtDto;
 import com.example.userservice.dto.SaveUserRequest;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
