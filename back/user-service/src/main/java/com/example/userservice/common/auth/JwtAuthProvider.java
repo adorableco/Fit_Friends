@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthProvider {
@@ -53,16 +55,15 @@ public class JwtAuthProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        String email = getEmailbyToken(token);
-        UserDetails userDetails = userService.loadUserByUsername(email);
+        UUID userId = getIdByToken(token);
+        UserDetails userDetails = userService.loadUserByUsername(userId.toString());
         return new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());
     }
 
-    public String getEmailbyToken(String token) {
+    public UUID getIdByToken(String token) {
         Claims claims = jwtIssuer.getClaims(token);
-        return jwtIssuer.getSubject(claims);
-
+        return UUID.fromString(jwtIssuer.getSubject(claims));
     }
 
 }

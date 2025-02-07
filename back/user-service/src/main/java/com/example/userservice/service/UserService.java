@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -21,12 +22,16 @@ public class UserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return findByEmail(email).get();
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        return findByUserId(UUID.fromString(id)).get();
     }
 
     public User save(SaveUserRequest saveUserRequest) {
         return userRepository.save(saveUserRequest.toEntity());
+    }
+
+    public Optional<User> findByUserId(UUID userId) {
+        return userRepository.findByUserId(userId);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -34,11 +39,9 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public JwtDto socialSignIn(String email) {
-        User user;
-
-        user = findByEmail(email).get();
-        return jwtIssuer.createToken(user.getEmail(), user.getRole().name());
+    public JwtDto socialSignIn(UUID userId) {
+        User user = findByUserId(userId).get();
+        return jwtIssuer.createToken(userId, user.getRole().name());
     }
 
 

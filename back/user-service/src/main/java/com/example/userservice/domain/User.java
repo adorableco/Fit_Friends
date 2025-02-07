@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,8 +19,8 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID userId;
 
     private String name;
 
@@ -98,7 +99,7 @@ public class User implements UserDetails {
 
     @Builder
 
-    public User(Long userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float attendanceRate) {
+    public User(UUID userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float attendanceRate) {
         this.userId = userId;
         this.name = name;
         this.email = email;

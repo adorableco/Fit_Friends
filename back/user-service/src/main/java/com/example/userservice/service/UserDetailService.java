@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +24,8 @@ public class UserDetailService {
     private final MatchServiceClient matchServiceClient;
 
     @Transactional
-    public LoadUserDetailResponse findUser(String token, Long userId){
-        User viewer = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
-        User user = userRepository.findById(userId)
+    public LoadUserDetailResponse findUser(UUID userId, UUID memberId){
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         List<ParticipationResponse> participationList = matchServiceClient.getParticipationList(userId);
@@ -42,7 +42,7 @@ public class UserDetailService {
         response.setAttendanceRate(attendanceRate);
 
 
-        if (viewer.getUserId().equals(user.getUserId())) {
+        if (userId.equals(memberId)) {
             response.setAge(user.getAge());
             response.setGender(user.getGender());
             response.setIsMyDetail(Boolean.TRUE);
@@ -65,7 +65,7 @@ public class UserDetailService {
     @Transactional
     public String modifyUserDetail(ModifyUserDetailRequest request, String token) {
         try{
-            User user = userRepository.findByEmail(jwtAuthProvider.getEmailbyToken(token)).get();
+            User user = userRepository.findByUserId(jwtAuthProvider.getIdByToken(token)).get();
             user.setName(request.getName());
             user.setAgeVisible(request.isAgeVisible());
             user.setGenderVisible(request.isGenderVisible());

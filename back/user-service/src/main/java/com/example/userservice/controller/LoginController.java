@@ -40,7 +40,7 @@ public class LoginController {
         Optional<User> user = userService.findByEmail(email);
 
         if (user.isPresent()) {
-            JwtDto jwtDto = userService.socialSignIn(email);
+            JwtDto jwtDto = userService.socialSignIn(user.get().getUserId());
             jwtDto.setUserId(user.get().getUserId());
             return ResponseUtil.success(jwtDto);
         }else{
