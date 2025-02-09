@@ -42,22 +42,17 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             String jwt = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-            String userId = getUserIdFromJwt(jwt);
-
-            if(userId == null || userId.isEmpty()){
+            if(!isJwtValid(jwt)){
                 return onError(exchange, "Jwt token is not valid.", HttpStatus.UNAUTHORIZED);
             }
 
-            ServerHttpRequest modifiedRequest = request.mutate()
-                    .header("User-Id", userId) // 추가할 헤더
-                    .build();
-
-            return chain.filter(exchange.mutate().request(modifiedRequest).build());
-
+            return chain.filter(exchange);
         });
     }
 
-    private String getUserIdFromJwt(String jwt) {
+    private boolean isJwtValid(String jwt) {
+        boolean isValid = true;
+
         String subject =null;
 
         try {
@@ -68,8 +63,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                     .getSubject();
         }catch (Exception e){
             log.error(e.getMessage());
+            isValid = false;
         }
-        return subject;
+
+        log.debug("subject: {}", subject);
+        if(subject == null || subject.isEmpty()){
+            isValid = false;
+        }
+        return isValid;
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {

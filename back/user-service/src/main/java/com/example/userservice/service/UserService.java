@@ -25,7 +25,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final MatchServiceClient matchServiceClient;
 
-
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         return findByUserId(UUID.fromString(id)).get();
@@ -40,7 +39,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public LoadUserDetailResponse findUser(UUID userId, UUID memberId){
+    public LoadUserDetailResponse findUser(UUID userId, UUID me){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
@@ -57,8 +56,7 @@ public class UserService implements UserDetailsService {
         double attendanceRate = matchServiceClient.getAttendanceRate(userId);
         response.setAttendanceRate(attendanceRate);
 
-
-        if (userId.equals(memberId)) {
+        if (userId.equals(me)) {
             response.setAge(user.getAge());
             response.setGender(user.getGender());
             response.setIsMyDetail(Boolean.TRUE);

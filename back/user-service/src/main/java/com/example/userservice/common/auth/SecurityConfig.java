@@ -26,7 +26,6 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests.anyRequest().permitAll()
-
                 );
 
         return http.build();
