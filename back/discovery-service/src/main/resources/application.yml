@@ -1,0 +1,10 @@
+server:
+  port: ${DISCOVERY.SERVER.PORT}
+
+spring:
+  application:
+    name: discovery-service
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
