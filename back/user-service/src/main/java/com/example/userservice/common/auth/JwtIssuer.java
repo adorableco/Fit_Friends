@@ -23,7 +23,7 @@ public class JwtIssuer {
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
-    public static final long EXPIRE_TIME = 1000 * 60 * 5;
+    public static final long EXPIRE_TIME = 864000000;
     public static final long REFRESH_EXPIRE_TIME = 1000 * 60 * 15;
     public static final String KEY_ROLES = "roles";
 
