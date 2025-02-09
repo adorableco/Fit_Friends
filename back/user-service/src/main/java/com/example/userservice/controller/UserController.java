@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(@PathVariable UUID userId, @RequestHeader("User-Id") String memberId) {
+    ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(@PathVariable UUID userId, @UserId String memberId) {
 
         LoadUserDetailResponse user = userService.findUser(userId, UUID.fromString(memberId));
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("matchId","category","headCnt","place","tag","startTime","endTime","attendanceCnt");
