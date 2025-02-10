@@ -1,26 +1,29 @@
 package com.example.userservice.common.auth;
 
-import com.example.userservice.dto.JwtDto;
+import com.example.userservice.common.dto.auth.JwtDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtIssuer {
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
-    public static final long EXPIRE_TIME = 1000 * 60 * 5;
+    public static final long EXPIRE_TIME = 864000000;
     public static final long REFRESH_EXPIRE_TIME = 1000 * 60 * 15;
     public static final String KEY_ROLES = "roles";
 
@@ -29,9 +32,9 @@ public class JwtIssuer {
         SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
     }
 
-    public JwtDto createToken(String userEmail, String role) {
+    public JwtDto createToken(UUID userId, String role) {
 
-        Claims claims = Jwts.claims().setSubject(userEmail);
+        Claims claims = Jwts.claims().setSubject(userId.toString());
 
         claims.put(KEY_ROLES, role);
 
@@ -66,8 +69,10 @@ public class JwtIssuer {
         Claims claims;
         try {
             claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+            log.info("claims = {}" , claims);
         } catch (ExpiredJwtException e) {
             claims = e.getClaims();
+            log.info("claims = {}", claims);
         } catch (Exception e) {
             throw new BadCredentialsException("유효한 토큰이 아닙니다.");
         }

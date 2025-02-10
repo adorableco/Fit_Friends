@@ -4,8 +4,10 @@ import com.example.userservice.common.auth.SocialOAuth;
 import com.example.userservice.common.dto.CustomResponseBody;
 import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.domain.User;
-import com.example.userservice.dto.JwtDto;
+import com.example.userservice.common.dto.auth.JwtDto;
 import com.example.userservice.dto.SaveUserRequest;
+import com.example.userservice.dto.UserIdResponse;
+import com.example.userservice.service.AuthService;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +19,14 @@ import java.util.Optional;
 
 
 @RestController
+@RequestMapping("/")
 @RequiredArgsConstructor
 @CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
-public class LoginController {
-
-    @Autowired
+public class AuthController {
     private final SocialOAuth socialOAuth;
+    private final AuthService authService;
 
-    @Autowired
-    private final UserService userService;
-
-
-
-    @GetMapping("/api/login/{code}")
+    @GetMapping("/login/{code}")
     public ResponseEntity<CustomResponseBody<JwtDto>> requestUserInfo(@PathVariable String code) throws Exception{
 
         String userInfo = socialOAuth.getUserInfo(code);
@@ -37,10 +34,10 @@ public class LoginController {
         String name = jsonObject.getString("name");
         String email = jsonObject.getString("email");
         String picture = jsonObject.getString("picture");
-        Optional<User> user = userService.findByEmail(email);
+        Optional<User> user = authService.findByEmail(email);
 
         if (user.isPresent()) {
-            JwtDto jwtDto = userService.socialSignIn(email);
+            JwtDto jwtDto = authService.socialSignIn(user.get().getUserId());
             jwtDto.setUserId(user.get().getUserId());
             return ResponseUtil.success(jwtDto);
         }else{
@@ -54,18 +51,10 @@ public class LoginController {
 
     }
 
-    @PostMapping("/api/signup")
-    public ResponseEntity<User> signUp(@RequestBody SaveUserRequest request) {
-        User save = userService.save(request);
-        try {
-            return ResponseEntity.ok()
-                    .body(save);
-        }catch (Exception e){
-            return ResponseEntity.internalServerError()
-                    .body(save);
-        }
-
-    }
+//    @GetMapping("/auth")
+//    public ResponseEntity<CustomResponseBody<UserIdResponse>> getUserId(@RequestHeader(name = "Authorization") String jwtToken) {
+//
+//    }
 
 
 }

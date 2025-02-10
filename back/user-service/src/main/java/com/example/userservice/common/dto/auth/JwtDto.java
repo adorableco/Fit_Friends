@@ -1,6 +1,8 @@
-package com.example.userservice.dto;
+package com.example.userservice.common.dto.auth;
 
 import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,7 +13,7 @@ public class JwtDto {
     private String accessToken;
     private String refreshToken;
 
-    private Long userId;
+    private UUID userId;
     private String name;
     private String email;
     private String picture;
