@@ -46,6 +46,15 @@ spring:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
           order: 3
+        - id: post-service
+          uri: lb://POST-SERVICE
+          predicates:
+            - Path=/post-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/post-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
 token:
   expiration_time: 864000000
   secret: ${TOKEN.SECRET}

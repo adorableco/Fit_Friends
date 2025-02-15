@@ -1,11 +1,11 @@
 package com.example.userservice.service;
 
 import com.example.userservice.client.MatchServiceClient;
+import com.example.userservice.client.dto.ParticipationResponse;
 import com.example.userservice.common.exception.UserNotFoundException;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.LoadUserDetailResponse;
 import com.example.userservice.dto.ModifyUserDetailRequest;
-import com.example.userservice.dto.ParticipationResponse;
 import com.example.userservice.dto.SaveUserRequest;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
                 .participationList(participationList)
                 .build();
 
-        double attendanceRate = matchServiceClient.getAttendanceRate(userId);
+        double attendanceRate = matchServiceClient.getAttendanceRate(userId).getAttendanceRate();
         response.setAttendanceRate(attendanceRate);
 
         if (userId.equals(me)) {
