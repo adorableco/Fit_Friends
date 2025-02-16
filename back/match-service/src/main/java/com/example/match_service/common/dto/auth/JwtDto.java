@@ -1,8 +1,11 @@
-package com.example.match_service.common.auth;
-
-import lombok.*;
+package com.example.match_service.common.dto.auth;
 
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

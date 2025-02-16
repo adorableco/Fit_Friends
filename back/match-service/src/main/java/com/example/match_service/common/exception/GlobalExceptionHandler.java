@@ -1,8 +1,8 @@
 package com.example.match_service.common.exception;
 
 
-import com.example.userservice.common.dto.CustomResponseBody;
-import com.example.userservice.common.util.ResponseUtil;
+import com.example.match_service.common.dto.CustomResponseBody;
+import com.example.match_service.common.util.ResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
