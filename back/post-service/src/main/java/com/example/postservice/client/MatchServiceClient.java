@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "match-service")
 public interface MatchServiceClient {
 
-    @GetMapping("/match-service/{userId}/attendance-rate")
+    @GetMapping("/{userId}/attendance-rate")
     double getAttendanceRate(@PathVariable(name = "userId") Long userId);
 
-    @PostMapping("/match-service/matches")
+    @PostMapping("/matches")
     Long saveMatch(@RequestBody SaveMatchRequest matchRequest);
 
-    @PatchMapping("/match-service/matches/{matchId}")
+    @PatchMapping("/matches/{matchId}")
     void updateMatch(UpdateMatchRequest match, @PathVariable Long matchId);
 
-    @GetMapping("/match-service/matches/{matchId}")
+    @GetMapping("/matches/{matchId}")
     MatchResponse getMatch(@PathVariable Long matchId);
 }
