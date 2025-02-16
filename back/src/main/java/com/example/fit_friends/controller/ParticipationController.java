@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
-
 public class ParticipationController {
     private final ParticipationService participationService;
     private final UserService userService;

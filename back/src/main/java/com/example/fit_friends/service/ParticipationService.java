@@ -99,6 +99,4 @@ public class ParticipationService {
             return ResponseEntity.badRequest().body("출석 체크 실패");
         }
     }
-
-
 }

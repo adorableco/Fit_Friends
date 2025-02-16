@@ -1,38 +1,63 @@
 package com.example.match_service.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
+@Getter
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter@Table(name = "matches")
-public class Match {
+@Table(name = "matches")
+@NoArgsConstructor
+public class Match extends BaseEntity {
     @Id
+    @Column(name = "match_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
-    private Long matchId;
-    private UUID leaderId;
-    private int attendanceCount;
-    @Column(name = "current_head_cnt")
-    private int currentCount;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime endTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime startTime;
+    private Long id;
+
+//    @NotNull
+//    private Integer attendanceCount;
+    @NotNull
     private String category;
-    private String place;
+
+    //현재 참여한 이용자수 (participations 레코드 수 세는 방법 사용 X 예정)
+    @NotNull
+    @Column(name = "current_head_cnt")
+    private Integer currentAttendanceCount;
+
+    @NotNull
+    @Column(name = "head_cnt")
+    private Integer requiredAttendanceCount;
+
+    @NotNull
+    private LocalDateTime startTime;
+    @NotNull
+    private LocalDateTime endTime;
+
+    @NotNull
+    private UUID leaderId;
+
+    @NotNull
+    private String place;  //TODO 주소 타입 정형화
+
+    @Builder
+    public Match(String category, int currentAttendanceCount, int requiredAttendanceCount,
+                 LocalDateTime startTime, LocalDateTime endTime,
+                 UUID leaderId,
+                 String place) {
+        this.category = category;
+        this.currentAttendanceCount = currentAttendanceCount;
+        this.requiredAttendanceCount = requiredAttendanceCount;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.leaderId = leaderId;
+        this.place = place;
+    }
+
+    public void updateCurrentCnt() {
+        this.currentAttendanceCount = this.currentAttendanceCount + 1;
+    }
 }

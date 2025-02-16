@@ -1,7 +1,7 @@
 package com.example.match_service.common.util;
 
-import com.example.userservice.common.dto.CustomResponseBody;
-import com.example.userservice.common.dto.StatusCode;
+import com.example.match_service.common.dto.CustomResponseBody;
+import com.example.match_service.common.dto.StatusCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
