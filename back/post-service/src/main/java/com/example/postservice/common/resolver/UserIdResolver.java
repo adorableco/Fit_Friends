@@ -1,9 +1,8 @@
-package com.example.userservice.common.resolver;
+package com.example.postservice.common.resolver;
 
-import com.example.userservice.common.auth.JwtAuthProvider;
-import com.example.userservice.common.resolver.userid.UserId;
+import com.example.postservice.common.auth.JwtAuthProvider;
+import com.example.postservice.common.resolver.userid.UserId;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.util.UUID;
 
 
-@Slf4j
 @Component
 public class UserIdResolver implements HandlerMethodArgumentResolver {
 

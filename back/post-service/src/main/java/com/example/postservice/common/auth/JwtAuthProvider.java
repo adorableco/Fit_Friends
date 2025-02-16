@@ -1,4 +1,4 @@
-package com.example.userservice.common.auth;
+package com.example.postservice.common.auth;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

@@ -26,7 +26,6 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody SaveUserRequest request) {
         User save = userService.save(request);
@@ -39,7 +38,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(@PathVariable UUID userId, @UserId UUID me) {
         LoadUserDetailResponse user = userService.findUser(userId, me);
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("matchId","category","headCnt","place","tag","startTime","endTime","attendanceCnt");
@@ -51,9 +50,8 @@ public class UserController {
         return ResponseUtil.success(mapping);
     }
 
-    @PutMapping("/user")
+    @PutMapping("/users")
     String modifyUserDetail(@UserId UUID memberId , @RequestBody ModifyUserDetailRequest request) {
         return userService.modifyUserDetail(request, memberId);
-
     }
 }

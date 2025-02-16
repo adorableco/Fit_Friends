@@ -1,5 +1,6 @@
 package com.example.userservice.dto;
 
+import com.example.userservice.client.dto.ParticipationResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

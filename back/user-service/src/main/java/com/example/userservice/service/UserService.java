@@ -1,17 +1,14 @@
 package com.example.userservice.service;
 
 import com.example.userservice.client.MatchServiceClient;
+import com.example.userservice.client.dto.ParticipationResponse;
 import com.example.userservice.common.exception.UserNotFoundException;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.LoadUserDetailResponse;
 import com.example.userservice.dto.ModifyUserDetailRequest;
-import com.example.userservice.dto.ParticipationResponse;
 import com.example.userservice.dto.SaveUserRequest;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,21 +18,12 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final MatchServiceClient matchServiceClient;
 
-    @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        return findByUserId(UUID.fromString(id)).get();
-    }
-
     public User save(SaveUserRequest saveUserRequest) {
         return userRepository.save(saveUserRequest.toEntity());
-    }
-
-    public Optional<User> findByUserId(UUID userId) {
-        return userRepository.findByUserId(userId);
     }
 
     @Transactional
@@ -53,7 +41,7 @@ public class UserService implements UserDetailsService {
                 .participationList(participationList)
                 .build();
 
-        double attendanceRate = matchServiceClient.getAttendanceRate(userId);
+        double attendanceRate = matchServiceClient.getAttendanceRate(userId).getAttendanceRate();
         response.setAttendanceRate(attendanceRate);
 
         if (userId.equals(me)) {

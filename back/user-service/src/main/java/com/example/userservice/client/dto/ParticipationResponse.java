@@ -1,7 +1,6 @@
-package com.example.userservice.dto;
+package com.example.userservice.client.dto;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data
