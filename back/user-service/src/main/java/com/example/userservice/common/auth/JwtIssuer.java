@@ -69,10 +69,8 @@ public class JwtIssuer {
         Claims claims;
         try {
             claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-            log.info("claims = {}" , claims);
         } catch (ExpiredJwtException e) {
             claims = e.getClaims();
-            log.info("claims = {}", claims);
         } catch (Exception e) {
             throw new BadCredentialsException("유효한 토큰이 아닙니다.");
         }
