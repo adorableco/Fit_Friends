@@ -1,6 +1,7 @@
 package com.example.userservice.client;
 
-import com.example.userservice.dto.ParticipationResponse;
+import com.example.userservice.client.dto.AttendanceRateResponse;
+import com.example.userservice.client.dto.ParticipationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,6 @@ public interface MatchServiceClient {
     List<ParticipationResponse> getParticipationList(@PathVariable(name = "userId") UUID userId);
 
     @GetMapping("/match-service/{userId}/attendance-rate")
-    double getAttendanceRate(@PathVariable(name = "userId") UUID userId);
+    AttendanceRateResponse getAttendanceRate(@PathVariable(name = "userId") UUID userId);
 
 }
