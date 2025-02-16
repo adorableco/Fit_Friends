@@ -16,4 +16,9 @@ public class CustomResponseBody<T> {
         this.data = data;
     }
 
+    public CustomResponseBody(StatusCode statusCode, String message) {
+        this.result = statusCode.name();
+        this.code = statusCode.getCode();
+        this.message = message;
+    }
 }
