@@ -39,7 +39,7 @@ public class ParticipationController {
                 participationService.getParticipations(userId, matchId)));
     }
 
-    @PostMapping("/participations/{matchId}")
+    @PostMapping("/participations/{matchId}/match-results")
     public ResponseEntity<CustomResponseBody<Void>> updateGameResult(@UserId UUID userId,
                                                                      @PathVariable Long matchId,
                                                                      @RequestBody List<GameResultRequest> results) {
