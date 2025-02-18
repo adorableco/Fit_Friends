@@ -13,4 +13,6 @@ public interface ParticipationRepository extends JpaRepository<Participation,Lon
     Optional<Participation> findByMatchIdAndUserId(Long matchId, UUID userId);
 
     List<Participation> findAllByMatchId(@NotNull Long matchId);
+    List<Participation> findAllByUserId(@NotNull UUID userId);
+
 }

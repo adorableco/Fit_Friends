@@ -5,6 +5,7 @@ import com.example.match_service.common.dto.StatusCode;
 import com.example.match_service.common.resolver.userid.UserId;
 import com.example.match_service.dto.GameResultRequest;
 import com.example.match_service.dto.ParticipationsResponse;
+import com.example.match_service.dto.UserParticipationsResponse;
 import com.example.match_service.service.ParticipationService;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class ParticipationController {
     }
 
     //참여자 조회
-    @GetMapping("/participations/{matchId}")
+    @GetMapping("/participations/matches/{matchId}")
     public ResponseEntity<CustomResponseBody<List<ParticipationsResponse>>> getParticipations(
             @UserId UUID userId,
             @PathVariable Long matchId) {
@@ -45,5 +46,13 @@ public class ParticipationController {
                                                                      @RequestBody List<GameResultRequest> results) {
         participationService.updateMatchResult(userId, matchId, results);
         return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS, "요청이 성공적으로 처리되었습니다."));
+    }
+
+    @GetMapping("/participations/users/{userId}")
+    public ResponseEntity<CustomResponseBody<List<UserParticipationsResponse>>> getUserParticipations(@PathVariable UUID userId) {
+        return ResponseEntity.ok(new CustomResponseBody<>(
+                StatusCode.SUCCESS,
+                "요청이 성공적으로 처리되었습니다.",
+                participationService.getUserParticipations(userId)));
     }
 }

@@ -5,8 +5,10 @@ import com.example.match_service.domain.Match;
 import com.example.match_service.domain.Participation;
 import com.example.match_service.dto.GameResultRequest;
 import com.example.match_service.dto.ParticipationsResponse;
+import com.example.match_service.dto.UserParticipationsResponse;
 import com.example.match_service.repository.MatchRepository;
 import com.example.match_service.repository.ParticipationRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +68,18 @@ public class ParticipationService {
         return participations.stream()
                 .map(participation -> ParticipationsResponse.fromEntity(participation))
                 .toList();
+    }
+
+    @Transactional
+    public List<UserParticipationsResponse> getUserParticipations(UUID userId) {
+        List<Participation> participations = participationRepository.findAllByUserId(userId);
+        List<UserParticipationsResponse> responses = new ArrayList<>();
+        for (Participation participation : participations) {
+            Match match = matchRepository.findById(participation.getMatchId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당하는 매치 정보가 없습니다."));
+            responses.add(UserParticipationsResponse.fromEntity(participation,match));
+        }
+
+        return responses;
     }
 }
