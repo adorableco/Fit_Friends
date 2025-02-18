@@ -1,5 +1,6 @@
 package com.example.match_service.service;
 
+import com.example.match_service.common.exception.NotMatchLeaderException;
 import com.example.match_service.domain.Match;
 import com.example.match_service.domain.Participation;
 import com.example.match_service.repository.MatchRepository;
@@ -54,7 +55,7 @@ public class AttendanceService {
         System.out.println("time = " + time);
 
         if (match.getLeaderId() != id){
-            throw new IllegalArgumentException("경기 리더가 아닙니다. 권한이 없습니다.");
+            throw new NotMatchLeaderException();
         }
         else if (time > 30 * 40 || time < -10 * 40) {
             throw new IllegalArgumentException("출석 체크 가능한 시간이 아닙니다.");

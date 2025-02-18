@@ -59,6 +59,10 @@ public class Participation {
         this.isAttendance = isAttendance;
     }
 
+    public void updateMatchResult(Result result) {
+        this.gameResult = result;
+    }
+
     private void updateStatus(String status) {
         this.status = status;
     }

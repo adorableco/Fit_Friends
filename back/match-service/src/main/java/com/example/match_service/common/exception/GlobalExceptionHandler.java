@@ -37,4 +37,9 @@ public class GlobalExceptionHandler {
         }
         return ResponseUtil.error(HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(NotMatchLeaderException.class)
+    public ResponseEntity<CustomResponseBody<Void>> NotMatchLeaderException(NotMatchLeaderException ex) {
+        return ResponseUtil.error(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
 }
