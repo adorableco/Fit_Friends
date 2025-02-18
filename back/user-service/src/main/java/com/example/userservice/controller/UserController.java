@@ -4,9 +4,7 @@ import com.example.userservice.common.dto.CustomResponseBody;
 import com.example.userservice.common.resolver.userid.UserId;
 import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.domain.User;
-import com.example.userservice.dto.LoadUserDetailResponse;
-import com.example.userservice.dto.ModifyUserDetailRequest;
-import com.example.userservice.dto.SaveUserRequest;
+import com.example.userservice.dto.*;
 import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -50,8 +48,16 @@ public class UserController {
         return ResponseUtil.success(mapping);
     }
 
+    @PostMapping("/users/game-results")
+    ResponseEntity<CustomResponseBody<String>> applyGameResult(@RequestBody ApplyGameResultRequest request) {
+        userService.applyGameResult(request);
+        return ResponseUtil.success(null);
+    }
+
     @PutMapping("/users")
     String modifyUserDetail(@UserId UUID memberId , @RequestBody ModifyUserDetailRequest request) {
         return userService.modifyUserDetail(request, memberId);
     }
+
+
 }

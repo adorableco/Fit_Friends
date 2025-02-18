@@ -1,14 +1,9 @@
 package com.example.userservice.domain;
 
+import com.example.userservice.dto.GameResult;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
 @Getter
@@ -16,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,7 +33,10 @@ public class User implements UserDetails {
 
     private String level;
 
-    @Column
+    private int matchCount = 0;
+
+    private int winCount = 0;
+
     private String accessToken;
 
     @ColumnDefault("1")
@@ -47,11 +45,9 @@ public class User implements UserDetails {
     @ColumnDefault("1")
     private boolean ageVisible;
 
-    @ColumnDefault("0")
-    private float winningRate;
+    private double winningRate = 0.0;
 
-    @ColumnDefault("0")
-    private float attendanceRate;
+    private double attendanceRate = 0.0;
 
     public User update(String name, String picture){
         this.name = name;
@@ -60,46 +56,16 @@ public class User implements UserDetails {
         return this;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(this.role.getKey()));
-    }
-
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public void updateWinningRate(GameResult gameResult){
+        this.matchCount++;
+        if(gameResult.equals(GameResult.WIN)) this.winCount++;
+        this.winningRate = Math.round(((double) this.winCount / this.matchCount * 100) * 100) / 100.0;
     }
 
     @Builder
-
-    public User(UUID userId, String name, String email, String picture, Role role, char gender, String age, String level, String accessToken, boolean genderVisible, boolean ageVisible, float winningRate, float attendanceRate) {
+    public User(UUID userId, String name, String email, String picture,
+                Role role, char gender, String age, String level, String accessToken,
+                boolean genderVisible, boolean ageVisible) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -111,7 +77,5 @@ public class User implements UserDetails {
         this.accessToken = accessToken;
         this.genderVisible = genderVisible;
         this.ageVisible = ageVisible;
-        this.winningRate = winningRate;
-        this.attendanceRate = attendanceRate;
     }
 }
