@@ -1,0 +1,65 @@
+server:
+  port: 8000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA.SERVICE.URL}
+
+spring:
+  application:
+    name: apigateway-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-login
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          order: 1
+        - id: user-service-signup
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/signup
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          order: 2
+        - id: user-service-authenticated
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+          order: 3
+        - id: post-service
+          uri: lb://POST-SERVICE
+          predicates:
+            - Path=/post-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/post-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+token:
+  expiration_time: 864000000
+  secret: ${TOKEN.SECRET}
+
+logging:
+  level:
+    com.example.userservice: DEBUG
+
