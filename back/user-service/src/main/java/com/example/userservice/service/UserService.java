@@ -22,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final MatchServiceClient matchServiceClient;
 
+    @Transactional
     public User save(SaveUserRequest saveUserRequest) {
         return userRepository.save(saveUserRequest.toEntity());
     }
