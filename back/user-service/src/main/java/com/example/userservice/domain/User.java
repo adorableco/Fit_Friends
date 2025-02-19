@@ -24,9 +24,6 @@ public class User{
     @Column(nullable = false)
     private String picture;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     private char gender;
 
     private String age;
@@ -64,13 +61,12 @@ public class User{
 
     @Builder
     public User(UUID userId, String name, String email, String picture,
-                Role role, char gender, String age, String level, String accessToken,
+                char gender, String age, String level, String accessToken,
                 boolean genderVisible, boolean ageVisible) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.picture = picture;
-        this.role = role;
         this.gender = gender;
         this.age = age;
         this.level = level;

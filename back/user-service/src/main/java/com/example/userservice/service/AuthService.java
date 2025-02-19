@@ -19,7 +19,7 @@ public class AuthService {
 
     public JwtDto socialSignIn(UUID userId) {
         User user = findByUserId(userId).get();
-        return jwtIssuer.createToken(userId, user.getRole().name());
+        return jwtIssuer.createToken(user.getUserId());
     }
 
     public Optional<User> findByEmail(String email) {
