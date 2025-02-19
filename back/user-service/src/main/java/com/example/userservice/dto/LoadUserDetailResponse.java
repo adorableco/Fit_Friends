@@ -17,14 +17,14 @@ public class LoadUserDetailResponse {
     private char gender;
     private String age;
     private String level;
-    private float winningRate;
+    private double winningRate;
     private double attendanceRate;
     private Boolean isMyDetail;
 
     private List<ParticipationResponse> participationList;
 
     @Builder
-    public LoadUserDetailResponse(String name, String email, String picture, char gender, String age, String level, float winningRate, double attendanceRate, List<ParticipationResponse> participationList, Boolean isMyDetail) {
+    public LoadUserDetailResponse(String name, String email, String picture, char gender, String age, String level, double winningRate, double attendanceRate, List<ParticipationResponse> participationList, Boolean isMyDetail) {
         this.name = name;
         this.email = email;
         this.picture = picture;

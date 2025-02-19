@@ -4,20 +4,20 @@ import com.example.userservice.client.MatchServiceClient;
 import com.example.userservice.client.dto.ParticipationResponse;
 import com.example.userservice.common.exception.UserNotFoundException;
 import com.example.userservice.domain.User;
-import com.example.userservice.dto.LoadUserDetailResponse;
-import com.example.userservice.dto.ModifyUserDetailRequest;
-import com.example.userservice.dto.SaveUserRequest;
+import com.example.userservice.dto.*;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final MatchServiceClient matchServiceClient;
@@ -26,7 +26,6 @@ public class UserService {
         return userRepository.save(saveUserRequest.toEntity());
     }
 
-    @Transactional
     public LoadUserDetailResponse findUser(UUID userId, UUID me){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
@@ -77,5 +76,14 @@ public class UserService {
             return "회원 정보 수정 오류";
         }
 
+    }
+
+    @Transactional
+    public void applyGameResult(ApplyGameResultRequest request) {
+        request.getGameresults()
+                .forEach(game -> {
+                    User user = userRepository.findByUserId(game.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + game.getUserId()));
+                    user.updateWinningRate(game.getResult());
+                });
     }
 }

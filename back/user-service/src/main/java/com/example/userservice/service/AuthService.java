@@ -5,9 +5,6 @@ import com.example.userservice.common.dto.auth.JwtDto;
 import com.example.userservice.domain.User;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,14 +12,10 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class AuthService implements UserDetailsService {
+public class AuthService {
     private final UserRepository userRepository;
     private final JwtIssuer jwtIssuer;
 
-    @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        return findByUserId(UUID.fromString(id)).get();
-    }
 
     public JwtDto socialSignIn(UUID userId) {
         User user = findByUserId(userId).get();
