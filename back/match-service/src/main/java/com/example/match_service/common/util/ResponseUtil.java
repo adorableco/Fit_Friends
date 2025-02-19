@@ -11,8 +11,8 @@ public class ResponseUtil {
         return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS,StatusCode.SUCCESS.getMessage(), data));
     }
 
-    public static <T> ResponseEntity<CustomResponseBody<T>> success(T data, String message) {
-        return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS ,StatusCode.SUCCESS.getMessage(), data));
+    public static <T> ResponseEntity<CustomResponseBody<T>> success() {
+        return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS ,StatusCode.SUCCESS.getMessage()));
     }
 
     public static ResponseEntity<CustomResponseBody<Void>> error(HttpStatus httpStatus, String message) {
