@@ -25,18 +25,15 @@ public class JwtIssuer {
     private String SECRET_KEY;
     public static final long EXPIRE_TIME = 864000000;
     public static final long REFRESH_EXPIRE_TIME = 1000 * 60 * 15;
-    public static final String KEY_ROLES = "roles";
 
     @PostConstruct
     void init(){
         SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
     }
 
-    public JwtDto createToken(UUID userId, String role) {
+    public JwtDto createToken(UUID userId) {
 
         Claims claims = Jwts.claims().setSubject(userId.toString());
-
-        claims.put(KEY_ROLES, role);
 
         Date now = new Date();
 
@@ -47,6 +44,7 @@ public class JwtIssuer {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
 
+        log.info(accessToken);
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)

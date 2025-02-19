@@ -1,6 +1,5 @@
 package com.example.userservice.dto;
 
-import com.example.userservice.domain.Role;
 import com.example.userservice.domain.User;
 import lombok.Getter;
 
@@ -24,7 +23,6 @@ public class SaveUserRequest {
         return User.builder()
                 .name(name)
                 .email(email)
-                .role(Role.USER)
                 .level(level)
                 .picture(picture)
                 .gender(gender)
