@@ -1,8 +1,8 @@
 package com.example.match_service.controller;
 
 import com.example.match_service.common.dto.CustomResponseBody;
-import com.example.match_service.common.dto.StatusCode;
 import com.example.match_service.common.resolver.userid.UserId;
+import com.example.match_service.common.util.ResponseUtil;
 import com.example.match_service.dto.GameResultRequest;
 import com.example.match_service.dto.ParticipationsResponse;
 import com.example.match_service.dto.UserParticipationsResponse;
@@ -25,7 +25,7 @@ public class ParticipationController {
     public ResponseEntity<CustomResponseBody<Void>> applyMatch(@UserId UUID userId, @PathVariable Long matchId) {
         //TODO userservice로부터 userTagResponse 받기
         participationService.applyToMatch(matchId,userId);
-        return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS, "참가 신청되었습니다."));
+        return ResponseUtil.success();
     }
 
     //참여자 조회
@@ -34,10 +34,7 @@ public class ParticipationController {
             @UserId UUID userId,
             @PathVariable Long matchId) {
 
-        return ResponseEntity.ok(new CustomResponseBody<>(
-                StatusCode.SUCCESS,
-                "요청이 성공적으로 처리되었습니다.",
-                participationService.getParticipations(userId, matchId)));
+        return ResponseUtil.success(participationService.getParticipations(userId, matchId));
     }
 
     @PostMapping("/participations/{matchId}/match-results")
@@ -45,14 +42,11 @@ public class ParticipationController {
                                                                      @PathVariable Long matchId,
                                                                      @RequestBody List<GameResultRequest> results) {
         participationService.updateMatchResult(userId, matchId, results);
-        return ResponseEntity.ok(new CustomResponseBody<>(StatusCode.SUCCESS, "요청이 성공적으로 처리되었습니다."));
+        return ResponseUtil.success();
     }
 
     @GetMapping("/participations/users/{userId}")
     public ResponseEntity<CustomResponseBody<List<UserParticipationsResponse>>> getUserParticipations(@PathVariable UUID userId) {
-        return ResponseEntity.ok(new CustomResponseBody<>(
-                StatusCode.SUCCESS,
-                "요청이 성공적으로 처리되었습니다.",
-                participationService.getUserParticipations(userId)));
+        return ResponseUtil.success(participationService.getUserParticipations(userId));
     }
 }
