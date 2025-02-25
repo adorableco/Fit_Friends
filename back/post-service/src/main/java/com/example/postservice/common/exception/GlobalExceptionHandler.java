@@ -3,6 +3,7 @@ package com.example.postservice.common.exception;
 
 import com.example.postservice.common.dto.CustomResponseBody;
 import com.example.postservice.common.util.ResponseUtil;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<CustomResponseBody<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        if (ex.getMessage() != null) {
+            return ResponseUtil.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
+        return ResponseUtil.error(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<CustomResponseBody<Void>> handleNotFoundException(NotFoundException ex) {
         if (ex.getMessage() != null) {
             return ResponseUtil.error(HttpStatus.BAD_REQUEST, ex.getMessage());
         }

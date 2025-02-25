@@ -1,6 +1,5 @@
 package com.example.postservice.common.auth;
 
-import com.example.postservice.common.dto.auth.JwtDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,8 +12,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -38,10 +35,8 @@ public class JwtIssuer {
         Claims claims;
         try {
             claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-            log.info("claims = {}" , claims);
         } catch (ExpiredJwtException e) {
             claims = e.getClaims();
-            log.info("claims = {}", claims);
         } catch (Exception e) {
             throw new BadCredentialsException("유효한 토큰이 아닙니다.");
         }
