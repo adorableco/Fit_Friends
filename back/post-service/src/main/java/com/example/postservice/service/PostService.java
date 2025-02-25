@@ -13,6 +13,7 @@ import com.example.postservice.dto.PostIdResponse;
 import com.example.postservice.dto.UpdatePostRequest;
 import com.example.postservice.repository.PostRepository;
 import com.example.postservice.repository.TagRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,8 +85,7 @@ public class PostService {
     public PostIdResponse updatePost(UUID userId, Long postId, UpdatePostRequest dto){
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         if (post.getUserId().equals(userId)){
-
-            Tag tag = tagRepository.findById(post.getTag().getTagId()).get();
+            Tag tag = tagRepository.findById(post.getTag().getTagId()).orElseThrow(NotFoundException::new);
             matchServiceClient.updateMatch(dto.getMatch(), post.getMatchId());
             post.setTitle(dto.getTitle());
             post.setContent(dto.getContent());

@@ -2,11 +2,11 @@ package com.example.postservice.client.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class UpdateMatchRequest {
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int headCnt;
 }

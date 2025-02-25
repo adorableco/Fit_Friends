@@ -2,7 +2,7 @@ package com.example.postservice.client.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -11,7 +11,7 @@ public class MatchResponse {
     private int currentHeadCnt;
     private int headCnt;
     private String place;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private UUID leaderId;
 }
