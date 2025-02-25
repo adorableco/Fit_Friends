@@ -3,6 +3,7 @@ package com.example.postservice.common.resolver;
 import com.example.postservice.common.auth.JwtAuthProvider;
 import com.example.postservice.common.resolver.userid.UserId;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
