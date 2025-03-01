@@ -41,9 +41,6 @@ public class UserService {
                 .participationList(participationList)
                 .build();
 
-        double attendanceRate = matchServiceClient.getAttendanceRate(userId).getAttendanceRate();
-        response.setAttendanceRate(attendanceRate);
-
         if (userId.equals(me)) {
             response.setAge(user.getAge());
             response.setGender(user.getGender());
