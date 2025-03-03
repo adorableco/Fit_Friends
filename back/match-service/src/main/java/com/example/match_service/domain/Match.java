@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @Entity
 @Table(name = "matches")
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class Match extends BaseEntity {
     @NotNull
     private String category;
 
-    //현재 참여한 이용자수 (participations 레코드 수 세는 방법 사용 X 예정)
+    //현재 참여한 이용자수
     @NotNull
     @Column(name = "current_head_cnt")
     private Integer currentAttendanceCount;
