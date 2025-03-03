@@ -37,15 +37,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    ResponseEntity<CustomResponseBody<MappingJacksonValue>> loadUserDetail(@PathVariable UUID userId, @UserId UUID me) {
+    ResponseEntity<CustomResponseBody<LoadUserDetailResponse>> loadUserDetail(@PathVariable UUID userId, @UserId UUID me) {
         LoadUserDetailResponse user = userService.findUser(userId, me);
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("matchId","category","headCnt","place","tag","startTime","endTime","attendanceCnt");
-        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
-
-        MappingJacksonValue mapping = new MappingJacksonValue(user);
-        mapping.setFilters(filters);
-
-        return ResponseUtil.success(mapping);
+        return ResponseUtil.success(user);
     }
 
     @PostMapping("/users/game-results")
