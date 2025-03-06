@@ -10,14 +10,6 @@ eureka:
 spring:
   application:
     name: apigateway-service
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
   cloud:
     gateway:
       routes:
@@ -53,6 +45,14 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/post-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: match-service
+          uri: lb://MATCH-SERVICE
+          predicates:
+            - Path=/match-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/match-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
 token:
