@@ -57,7 +57,7 @@ spring:
 
 token:
   expiration_time: 864000000
-  secret: ${TOKEN.SECRET}
+  secret: ${JWT.SECRET.KEY}
 
 logging:
   level:

@@ -6,6 +6,11 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
   h2:
     console:
       enabled: true
@@ -27,8 +32,8 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: ${EUREKA.SERVICE.URL}
 
