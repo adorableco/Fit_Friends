@@ -1,7 +1,5 @@
 package com.example.postservice.controller;
 
-import com.example.postservice.client.UserServiceClient;
-import com.example.postservice.client.dto.UserResponse;
 import com.example.postservice.common.dto.CustomResponseBody;
 import com.example.postservice.common.resolver.userid.UserId;
 import com.example.postservice.common.util.ResponseUtil;
@@ -20,7 +18,6 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class PostController {
     private final PostService postService;
 
