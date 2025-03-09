@@ -6,6 +6,7 @@ import { Text, StyleSheet, View } from "react-native";
 import MyMatchList from "./MyMatchList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Modal from "react-modal";
+import { EXPO_PUBLIC_API_URL } from "@env";
 
 export default function UserDetailScreen({ route, navigation }) {
   const [userDetail, setUserDetail] = useState();
@@ -14,7 +15,7 @@ export default function UserDetailScreen({ route, navigation }) {
   const [genderVisible, setGenderVisible] = useState(true);
   const [ageVisible, setAgeVisible] = useState(true);
   const [changeName, setChangeName] = useState("");
-  // const userId = route.params.userId;
+  const API_URL = EXPO_PUBLIC_API_URL;
 
   const onChangeName = (e) => {
     setChangeName(e.target.value);
@@ -31,7 +32,7 @@ export default function UserDetailScreen({ route, navigation }) {
     const token = await AsyncStorage.getItem("@accessToken");
     await axios
       .put(
-        "http://localhost:8080/api/user",
+        `${API_URL}/user-service/users`,
         {
           name: changeName,
           ageVisible: ageVisible,
@@ -58,7 +59,7 @@ export default function UserDetailScreen({ route, navigation }) {
       const userId = await AsyncStorage.getItem("@userId");
 
       await axios
-        .get(`http://localhost:8080/api/user/${userId}`, {
+        .get(`${API_URL}/user-service/users/${userId}`, {
           headers: {
             Authorization: token,
           },
@@ -66,7 +67,7 @@ export default function UserDetailScreen({ route, navigation }) {
         .then((res) => {
           setIsLoading(false);
           console.log("res.data=", res.data);
-          setUserDetail(res.data);
+          setUserDetail(res.data.data);
         })
         .catch((e) => console.log(e));
     };
