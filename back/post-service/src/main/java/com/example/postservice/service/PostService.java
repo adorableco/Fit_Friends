@@ -8,10 +8,7 @@ import com.example.postservice.client.dto.UserResponse;
 import com.example.postservice.common.exception.PostNotFoundException;
 import com.example.postservice.domain.Post;
 import com.example.postservice.domain.Tag;
-import com.example.postservice.dto.AddPostRequest;
-import com.example.postservice.dto.PostResponse;
-import com.example.postservice.dto.PostIdResponse;
-import com.example.postservice.dto.UpdatePostRequest;
+import com.example.postservice.dto.*;
 import com.example.postservice.repository.PostRepository;
 import com.example.postservice.repository.TagRepository;
 import jakarta.ws.rs.NotFoundException;
@@ -112,4 +109,15 @@ public class PostService {
     }
 
 
+    public TagByPostResponse findTagByPost(Long matchId) {
+        Post post = postRepository.findOneByMatchId(matchId).orElseThrow(PostNotFoundException::new);
+        Tag tag = post.getTag();
+
+        return new TagByPostResponse(matchId,
+                tag.getTagId(),
+                tag.getGenderType(),
+                tag.getLevelType(),
+                tag.getAgeType());
+
+    }
 }
