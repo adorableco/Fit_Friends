@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { View, StatusBar, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import WebViewScreen from "./WebViewScreen";
-import SignUpScreen from "./SignUpScreen";
-import HomeScreen from "./HomeScreen";
-import UserDetailScreen from "./UserDetailScreen";
-import MatchListScreen from "./MatchListScreen";
-import CameraScreen from "./CameraScreen";
+import WebViewScreen from "./screens/WebViewScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import HomeScreen from "./screens/HomeScreen";
+import UserDetailScreen from "./screens/UserDetailScreen";
+import MatchListScreen from "./screens/MatchListScreen";
+import CameraScreen from "./screens/CameraScreen";
 
 const Stack = createStackNavigator();
 

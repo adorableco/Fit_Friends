@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Text, StyleSheet, View, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import formatDateTime from "./FormatDateTime";
+import formatDateTime from "../FormatDateTime";
 import { EXPO_PUBLIC_API_URL } from "@env";
 
 export default function MatchListScreen() {
