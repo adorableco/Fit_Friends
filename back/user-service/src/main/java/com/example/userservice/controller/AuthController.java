@@ -17,7 +17,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
-@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class AuthController {
     private final SocialOAuth socialOAuth;
     private final AuthService authService;
