@@ -20,7 +20,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
-@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
 
