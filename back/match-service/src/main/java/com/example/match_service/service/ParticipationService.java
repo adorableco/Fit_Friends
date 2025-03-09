@@ -1,6 +1,11 @@
 package com.example.match_service.service;
 
+import com.example.match_service.client.PostServiceClient;
+import com.example.match_service.client.UserServiceClient;
+import com.example.match_service.client.dto.PostTagResponse;
+import com.example.match_service.client.dto.UserTagResponse;
 import com.example.match_service.common.exception.NotMatchLeaderException;
+import com.example.match_service.common.exception.NotValidUserForMatchException;
 import com.example.match_service.domain.Match;
 import com.example.match_service.domain.Participation;
 import com.example.match_service.dto.GameResultRequest;
@@ -20,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParticipationService {
     private final MatchRepository matchRepository;
     private final ParticipationRepository participationRepository;
+    private final PostServiceClient postServiceClient;
+    private final UserServiceClient userServiceClient;
 
 
     /**
@@ -33,10 +40,24 @@ public class ParticipationService {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 매치 정보가 없습니다."));
 
-        //TODO user-service로부터 user 정보 조회
-        //TODO post-service로부터 해당 경기의 tag 받아오기
-        //TODO 신청하는 유저의 유효성 검증 필요
-        //우선 보류 예정
+        UserTagResponse userTagResponse = userServiceClient.getUserTagInfo(userId);
+        PostTagResponse postTagResponse = postServiceClient.getPostInfo(match.getId());
+
+        if (!match.isAvailable()) {
+            throw new IllegalArgumentException("정원이 가득찬 경기입니다.");
+        }
+
+        if (isUserValid(userTagResponse, postTagResponse)) {
+            match.updateCurrentCnt();
+            Participation participation = Participation.builder()
+                    .matchId(matchId)
+                    .userId(userId)
+                    .build();
+            participationRepository.save(participation);
+        }
+        else {
+            throw new NotValidUserForMatchException();
+        }
     }
 
     @Transactional
@@ -55,6 +76,7 @@ public class ParticipationService {
         }
 
         //TODO userService로 경기 결과 전송
+
     }
 
     @Transactional
@@ -81,5 +103,9 @@ public class ParticipationService {
         }
 
         return responses;
+    }
+
+    private boolean isUserValid (UserTagResponse userInfo, PostTagResponse postInfo) {
+        return userInfo.age().equals(postInfo.ageType()) && userInfo.sex() == postInfo.genderType() && userInfo.level().equals(postInfo.levelType());
     }
 }
