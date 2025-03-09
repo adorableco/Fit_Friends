@@ -5,11 +5,13 @@ import axios from "axios";
 import { Text, StyleSheet, View, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import formatDateTime from "./FormatDateTime";
+import { EXPO_PUBLIC_API_URL } from "@env";
 
 export default function MatchListScreen() {
   const [matchList, setMatchList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState("badminton");
+  const API_URL = EXPO_PUBLIC_API_URL;
 
   const fetchMatchList = async (category) => {
     setIsLoading(true);
@@ -17,17 +19,17 @@ export default function MatchListScreen() {
 
     await axios
       .get(
-        `http://localhost:8080/api/posts?category=${category}&levelType=beginner&genderType=F&ageType=teens`,
+        `${API_URL}/post-service/posts?category=${category}&levelType=beginner&genderType=F&ageType=teens`,
 
         {
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:19006",
+            Authorization: token,
           },
         },
       )
       .then((res) => {
         setIsLoading(false);
-        setMatchList(res.data);
+        setMatchList(res.data.data);
       })
       .catch((e) => console.log(e));
   };
@@ -40,11 +42,10 @@ export default function MatchListScreen() {
     const token = await AsyncStorage.getItem("@accessToken");
     await axios
       .post(
-        `http://localhost:8080/api/participation/${matchId}`,
+        `${API_URL}/match-service/participations/${matchId}`,
         {},
         {
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:19006",
             Authorization: token,
           },
         },
