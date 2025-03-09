@@ -65,7 +65,7 @@ class ParticipationServiceTest {
         participationService.applyToMatch(match.getId(),userTag.userId());
 
         //Then
-        assertEquals(6, match.getCurrentAttendanceCount(), "참여자 수가 증가하지 않았습니다.");
+        assertEquals(6, match.getCurrentAttendanceCount());
 
         assertNotNull(participationRepository.findByMatchIdAndUserId(match.getId(), userTag.userId()));
     }
