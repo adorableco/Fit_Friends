@@ -60,4 +60,8 @@ public class Match extends BaseEntity {
     public void updateCurrentCnt() {
         this.currentAttendanceCount = this.currentAttendanceCount + 1;
     }
+
+    public boolean isAvailable() {
+        return currentAttendanceCount < requiredAttendanceCount;
+    }
 }

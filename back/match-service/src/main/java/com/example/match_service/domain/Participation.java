@@ -39,6 +39,7 @@ public class Participation {
     public Participation(UUID userId, Long matchId) {
         this.userId = userId;
         this.matchId = matchId;
+        this.status = "accepted";
     }
 
     //TODO 경기정보 업데이트
