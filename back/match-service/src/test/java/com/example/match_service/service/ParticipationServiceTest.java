@@ -126,8 +126,6 @@ class ParticipationServiceTest {
         when(postServiceClient.getPostInfo(match.getId())).thenReturn(postTag);
         when(userServiceClient.getUserTagInfo(any())).thenReturn(userTag);
 
-
-
         //Then
         assertThrows(NotValidUserForMatchException.class, () -> {
             participationService.applyToMatch(match.getId(),userTag.userId());
