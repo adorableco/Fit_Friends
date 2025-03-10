@@ -1,8 +1,10 @@
 package com.example.match_service.common.dto;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class CustomResponseBody<T> {
     private String result;
     private int code;

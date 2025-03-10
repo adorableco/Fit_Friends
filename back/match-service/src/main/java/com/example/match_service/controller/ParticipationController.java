@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,6 @@ public class ParticipationController {
 
     @PostMapping("/participations/{matchId}")
     public ResponseEntity<CustomResponseBody<Void>> applyMatch(@UserId UUID userId, @PathVariable Long matchId) {
-        //TODO userservice로부터 userTagResponse 받기
         participationService.applyToMatch(matchId,userId);
         return ResponseUtil.success();
     }
