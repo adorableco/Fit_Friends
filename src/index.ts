@@ -31,7 +31,7 @@ async function run() {
       const createdAt = new Date(pull.created_at);
       const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
       
-      if (diffInHours <= 1) {
+      if (diffInHours >= 1) {
         const { data: reviews } = await octokit.rest.pulls.listReviews({
           owner,
           repo,
