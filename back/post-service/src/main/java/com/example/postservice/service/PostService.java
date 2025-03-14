@@ -94,13 +94,19 @@ public class PostService {
     public PostIdResponse updatePost(UUID userId, Long postId, UpdatePostRequest dto){
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         if (post.getUserId().equals(userId)){
+
             Tag tag = tagRepository.findById(post.getTag().getTagId()).orElseThrow(NotFoundException::new);
-            matchServiceClient.updateMatch(dto.getMatch(), post.getMatchId());
-            post.setTitle(dto.getTitle());
-            post.setContent(dto.getContent());
             tag.setAgeType(dto.getTag().getAgeType());
             tag.setGenderType(dto.getTag().getGenderType());
             tag.setLevelType(dto.getTag().getLevelType());
+            matchServiceClient.updateMatch(dto.getMatch(), post.getMatchId());
+
+            post.update(
+                tag,
+                 dto.getTitle(),
+                 dto.getContent(),
+                    dto.getCategory()
+            );
 
             return new PostIdResponse(post.getPostId());
         }else {
