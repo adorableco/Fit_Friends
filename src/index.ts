@@ -1,7 +1,7 @@
 
 import * as core from "@actions/core";
-import * as github from '@actions/github';
 import { addLabels } from "./api";
+import { initialize } from "./initialize";
 
 const updateLabel = async (number: number): Promise<boolean> => {
     return addLabels(number)
@@ -18,16 +18,11 @@ const updateLabel = async (number: number): Promise<boolean> => {
 
 async function run() {
   try {
-    const token = process.env.GITHUB_TOKEN;
-    if (!token) {
-      throw new Error('GITHUB_TOKEN이 설정되지 않았습니다.');
-    }
-    const octokit = github.getOctokit(token);
-    const { owner, repo } = github.context.repo;
+    initialize();
     
     const { data: pulls } = await octokit.rest.pulls.list({
-      owner,
-      repo,
+      owner: global.owner,
+      repo: global.repo,
       state: 'open'
     });
 
