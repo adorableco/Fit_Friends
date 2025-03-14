@@ -52,4 +52,12 @@ public class Post extends BaseEntity{
         this.content = content;
         this.category = category;
     }
+
+    public void update(Tag tag, String title, String content, String category)
+    {
+        if(tag != null) this.tag = tag;
+        if(title != null) this.title = title;
+        if(content != null) this.content = content;
+        if(category != null) this.category = category;
+    }
 }
