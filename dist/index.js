@@ -30000,13 +30000,14 @@ async function run() {
         for (const pull of pulls) {
             const createdAt = new Date(pull.created_at);
             const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
-            if (diffInHours >= 1) {
+            if (diffInHours <= 1) {
                 const { data: reviews } = await octokit.rest.pulls.listReviews({
                     owner,
                     repo,
                     pull_number: pull.number
                 });
                 if (reviews.length === 0) {
+                    core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
                     await octokit.rest.pulls.createReview({
                         owner,
                         repo,
