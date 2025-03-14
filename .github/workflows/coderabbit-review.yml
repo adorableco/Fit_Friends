@@ -1,0 +1,16 @@
+# @format
+
+name: Coderabbit Review
+on:
+  schedule:
+    - cron: "2 * * * *" # 2분마다 실행 (테스트용)
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  coderabbit-review:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Review
+        uses: adorableco/Fit_Friends@coderabbit-action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
