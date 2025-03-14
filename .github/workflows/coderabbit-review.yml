@@ -3,7 +3,7 @@
 name: Coderabbit Review
 on:
   schedule:
-    - cron: "2 * * * *" # 2분마다 실행 (테스트용)
+    - cron: "5 * * * *" # 5분마다 실행 (테스트용)
   pull_request:
     types: [opened, reopened]
 jobs:
