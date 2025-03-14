@@ -45,7 +45,7 @@ async function run() {
             repo,
             pull_number: pull.number,
             event: 'COMMENT',
-            body: '@coderabbitai review 자동 리뷰: 이 PR은 1시간 동안 리뷰가 없는 상태입니다. coderabbit이 리뷰를 남깁니다.'
+            body: '@coderabbitai review : 이 PR은 1시간 동안 리뷰가 없는 상태입니다. coderabbit이 리뷰를 남깁니다.'
           });
           core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
           
