@@ -1,0 +1,11 @@
+# @format
+
+name: Coderabbit Review
+description: "Review Code by Coderabbit when a PR is not reviewed by anyone until an hour"
+inputs:
+  token:
+    description: "Token"
+    required: true
+  runs:
+    using: "node16"
+    main: "dist/index.js"
