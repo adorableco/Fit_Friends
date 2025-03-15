@@ -81,7 +81,9 @@ public class UserService {
         request.getGameresults()
                 .forEach(game -> {
                     User user = userRepository.findByUserId(game.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + game.getUserId()));
+                    user.increaseMatchCount();
                     user.updateWinningRate(game.getResult());
+                    user.updateAttendanceRate(game.isAttendance());
                 });
     }
 }

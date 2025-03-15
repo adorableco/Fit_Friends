@@ -54,9 +54,17 @@ public class User{
     }
 
     public void updateWinningRate(GameResult gameResult){
-        this.matchCount++;
         if(gameResult.equals(GameResult.WIN)) this.winCount++;
         this.winningRate = Math.round(((double) this.winCount / this.matchCount * 100) * 100) / 100.0;
+    }
+
+    public void increaseMatchCount() {
+        this.matchCount++;
+    }
+
+    public void updateAttendanceRate(boolean attendance) {
+        if(attendance) this.attendanceRate += 1;
+        this.attendanceRate = Math.round((this.attendanceRate / this.matchCount * 100) * 100) / 100.0;
     }
 
     @Builder
@@ -74,4 +82,6 @@ public class User{
         this.genderVisible = genderVisible;
         this.ageVisible = ageVisible;
     }
+
+
 }
