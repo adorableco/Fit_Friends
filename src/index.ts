@@ -54,7 +54,7 @@ async function run() {
           ]);
         }
       }else{
-        core.info(`PR #${pull.number}는 1시간이 지나지 않았습니다. 현재 경과 시간 : ${diffInHours}시간`);
+        core.info(`PR #${pull.number}는 1시간이 지나지 않았습니다. 현재 경과 시간 : ${Math.round(diffInHours / 0.0167)}분`);
       }
     }
   } catch (error: any) {
