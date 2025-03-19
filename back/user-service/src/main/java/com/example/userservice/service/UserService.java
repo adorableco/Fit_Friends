@@ -76,6 +76,16 @@ public class UserService {
 
     }
 
+    /**
+     * Processes game results and updates user statistics.
+     *
+     * <p>This method iterates over each game result in the provided request, incrementing the user's match count,
+     * updating their winning rate based on the game result, and adjusting their attendance rate based on the game's attendance status.
+     * A {@link UserNotFoundException} is thrown if a user corresponding to a game result is not found.</p>
+     *
+     * @param request an {@code ApplyGameResultRequest} containing game results to process
+     * @throws UserNotFoundException if a user corresponding to any game result is not found
+     */
     @Transactional
     public void applyGameResult(ApplyGameResultRequest request) {
         request.getGameresults()
