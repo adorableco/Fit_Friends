@@ -34,6 +34,12 @@ public class User{
 
     private int winCount = 0;
 
+    private double winningRate = 0.0;
+
+    private int attendanceCount = 0;
+
+    private double attendanceRate = 0.0;
+
     private String accessToken;
 
     @ColumnDefault("1")
@@ -41,10 +47,6 @@ public class User{
 
     @ColumnDefault("1")
     private boolean ageVisible;
-
-    private double winningRate = 0.0;
-
-    private double attendanceRate = 0.0;
 
     public User update(String name, String picture){
         this.name = name;
@@ -63,8 +65,8 @@ public class User{
     }
 
     public void updateAttendanceRate(boolean attendance) {
-        if(attendance) this.attendanceRate += 1;
-        this.attendanceRate = Math.round((this.attendanceRate / this.matchCount * 100) * 100) / 100.0;
+        if(attendance) this.attendanceCount += 1;
+        this.attendanceRate = Math.round(((double) this.attendanceCount / this.matchCount * 100) * 100) / 100.0;
     }
 
     @Builder
