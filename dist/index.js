@@ -30008,11 +30008,10 @@ async function run() {
                 });
                 if (reviews.length === 0) {
                     core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
-                    await octokit.rest.pulls.createReview({
+                    await octokit.rest.issues.createComment({
                         owner,
                         repo,
-                        pull_number: pull.number,
-                        event: 'COMMENT',
+                        issue_number: pull.number,
                         body: `@coderabbitai review
             이 PR은 1시간 동안 리뷰가 없는 상태입니다. coderabbit이 리뷰를 남깁니다.`
                     });
