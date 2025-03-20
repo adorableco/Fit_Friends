@@ -64,7 +64,7 @@ public class UserService {
     @Transactional
     public String modifyUserDetail(ModifyUserDetailRequest request, UUID userId) {
         try{
-            User user = userRepository.findByUserId(userId).get();
+            User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
             user.setName(request.getName());
             user.setAgeVisible(request.isAgeVisible());
             user.setGenderVisible(request.isGenderVisible());
@@ -83,7 +83,7 @@ public class UserService {
                     User user = userRepository.findByUserId(game.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + game.getUserId()));
                     user.increaseMatchCount();
                     user.updateWinningRate(game.getResult());
-                    user.updateAttendanceRate(game.isAttendance());
+                    user.updateAttendanceRate(game.isAttended());
                 });
     }
 }

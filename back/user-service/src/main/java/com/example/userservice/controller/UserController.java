@@ -6,12 +6,8 @@ import com.example.userservice.common.util.ResponseUtil;
 import com.example.userservice.domain.User;
 import com.example.userservice.dto.*;
 import com.example.userservice.service.UserService;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;

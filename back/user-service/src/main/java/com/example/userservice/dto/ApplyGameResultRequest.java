@@ -13,6 +13,6 @@ public class ApplyGameResultRequest {
     public static class GameResultDto {
         private UUID userId;
         private GameResult result;
-        private boolean attendance;
+        private boolean attended;
     }
 }
