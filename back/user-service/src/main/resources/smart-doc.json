@@ -1,0 +1,6 @@
+{
+  "outPath": "src/main/resources/static",
+  "allInOne" : true,
+  "int" : 1,
+  "style": "xt256"
+}
