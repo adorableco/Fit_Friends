@@ -5,7 +5,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA.SERVICE.URL}
+      defaultZone: ${DOCKER.EUREKA.SERVICE.URL}
 
 spring:
   application:
@@ -15,7 +15,7 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
+    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DOCKER_DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   cloud:
