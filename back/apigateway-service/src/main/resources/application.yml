@@ -5,7 +5,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA.SERVICE.URL}
+      defaultZone: ${DOCKER.EUREKA.SERVICE.URL}
 
 spring:
   application:
@@ -46,18 +46,10 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/post-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
-        - id: match-service
-          uri: lb://MATCH-SERVICE
-          predicates:
-            - Path=/match-service/**
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/match-service/(?<segment>.*), /$\{segment}
-            - AuthorizationHeaderFilter
 
 token:
   expiration_time: 864000000
-  secret: ${JWT.SECRET.KEY}
+  secret: ${TOKEN.SECRET}
 
 logging:
   level:
