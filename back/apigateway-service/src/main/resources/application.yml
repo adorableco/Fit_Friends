@@ -10,14 +10,6 @@ eureka:
 spring:
   application:
     name: apigateway-service
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://address=(protocol=${DATASOURCE_PROTOCOL})(host=${DOCKER_DATASOURCE_HOST})(port=${DATASOURCE_PORT})/${DATABASE}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
   cloud:
     gateway:
       routes:

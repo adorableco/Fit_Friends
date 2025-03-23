@@ -8,6 +8,7 @@ import { Button, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios";
+import { EXPO_PUBLIC_API_URL } from "@env";
 
 // 로그인 버튼 누르면 웹 브라우저가 열리고, 구글 로그인 페이지로 이동함.
 WebBrowser.maybeCompleteAuthSession();
@@ -20,6 +21,7 @@ export default function GoogleLogin({ navigation }) {
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
   });
+  const API_URL = EXPO_PUBLIC_API_URL;
 
   // Google 로그인 처리하는 함수
   const handleSignInWithGoogle = async () => {
@@ -33,7 +35,7 @@ export default function GoogleLogin({ navigation }) {
 
   //구글로그인을 해서 받은 토큰을 백엔드로 보내서 디비에 있는 회원 내용 조회 예정
   const sendToken = async (token) => {
-    await axios.get(`http://localhost:8080/api/login/${token}`).then((res) => {
+    await axios.get(`${API_URL}/user-service/login/${token}`).then((res) => {
       if (res.data.accessToken == null) {
         navigation.navigate("SignUpScreen", { userData: res.data });
       } else {

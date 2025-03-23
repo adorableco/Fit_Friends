@@ -12,10 +12,10 @@ import java.util.UUID;
 @FeignClient(name = "match-service")
 public interface MatchServiceClient {
 
-    @GetMapping("/match-service/{userId}")
+    @GetMapping("/participations/users/{userId}")
     List<ParticipationResponse> getParticipationList(@PathVariable(name = "userId") UUID userId);
 
-    @GetMapping("/match-service/{userId}/attendance-rate")
+    @GetMapping("/matches/{userId}/attendance-rate")
     AttendanceRateResponse getAttendanceRate(@PathVariable(name = "userId") UUID userId);
 
 }

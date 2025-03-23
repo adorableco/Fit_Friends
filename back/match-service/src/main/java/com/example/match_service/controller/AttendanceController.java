@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins="http://localhost:19006", allowedHeaders = "*")
 public class AttendanceController {
     private final AttendanceService attendanceService;
 

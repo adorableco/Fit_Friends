@@ -1,15 +1,19 @@
 package com.example.userservice.client.dto;
 
+import com.example.userservice.dto.GameResult;
 import lombok.Data;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Data
 public class ParticipationResponse {
+    Long matchId;
+    Long participationId;
     Boolean attendance;
-    Boolean isWin;
+    GameResult gameResult;
     String status;
-    Date startTime;
-    Date endTime;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
     String category;
     String place;
 }

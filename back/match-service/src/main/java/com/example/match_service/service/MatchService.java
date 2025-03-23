@@ -15,7 +15,7 @@ public class MatchService {
 
     @Transactional
     public Long createMatch(MatchCreateRequest request) {
-        Match match = request.toEntity();
+        Match match = MatchCreateRequest.toEntity(request);
         return matchRepository.save(match).getId();
     }
 

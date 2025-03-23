@@ -1,10 +1,10 @@
 package com.example.postservice.dto;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@Getter
 public class PostIdResponse {
-    @NonNull
     private Long postId;
 }

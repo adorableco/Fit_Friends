@@ -1,0 +1,12 @@
+name: Coderabbit Review
+on:
+  schedule:
+    - cron: "0 * * * *" # 1시간마다 실행
+jobs:
+  coderabbit-review:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Review
+        uses: adorableco/Fit_Friends@coderabbit-action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

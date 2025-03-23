@@ -1,9 +1,9 @@
 /** @format */
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useState } from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
+import { EXPO_PUBLIC_API_URL } from "@env";
 
 const SignUpScreen = ({ route, navigation }) => {
   const [name, setName] = useState(route.params.userData.name);
@@ -13,27 +13,20 @@ const SignUpScreen = ({ route, navigation }) => {
   const [gender, setGender] = useState("M");
   const [genderVisible, setGenderVisible] = useState(true);
   const [ageVisible, setAgeVisible] = useState(true);
+  const API_URL = EXPO_PUBLIC_API_URL;
 
   const signUp = async () => {
     await axios
-      .post(
-        `http://localhost:8080/api/signup`,
-        {
-          name: name,
-          email: email,
-          picture: picture,
-          gender: gender,
-          age: age,
-          level: "beginner",
-          genderVisible: genderVisible,
-          ageVisible: ageVisible,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:19006",
-          },
-        },
-      )
+      .post(`${API_URL}/user-service/signup`, {
+        name: name,
+        email: email,
+        picture: picture,
+        gender: gender,
+        age: age,
+        level: "beginner",
+        genderVisible: genderVisible,
+        ageVisible: ageVisible,
+      })
       .then(async (res) => {
         console.log(res.data);
       });

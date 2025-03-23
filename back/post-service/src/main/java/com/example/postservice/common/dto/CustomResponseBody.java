@@ -1,8 +1,10 @@
 package com.example.postservice.common.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class CustomResponseBody<T> {
     private String result;
     private int code;

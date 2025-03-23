@@ -1,0 +1,349 @@
+= user-service
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Version |  Update Time  | Status | Author |  Description
+|v2025-03-19 15:09:34|2025-03-19 15:09:34|auto|@parkseyeon|Created by smart-doc
+|====================
+
+
+=== 
+==== 
+*URL:* `/login/{code}`
+
+*Type:* `GET`
+
+
+*Content-Type:* `application/x-www-form-urlencoded`
+
+
+*Path-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|code|string|true|No comments found.|-
+|====================
+
+
+
+*Request-example:*
+----
+curl -X GET -i '/login/{code}'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|result|string|No comments found.|-
+|code|int32|No comments found.|-
+|message|string|No comments found.|-
+|data|object|No comments found.|-
+|└─accessToken|string|No comments found.|-
+|└─refreshToken|string|No comments found.|-
+|└─userId|string|No comments found.|-
+|└─name|string|No comments found.|-
+|└─email|string|No comments found.|-
+|└─picture|string|No comments found.|-
+|====================
+
+*Response-example:*
+----
+{
+  "result": "",
+  "code": 0,
+  "message": "",
+  "data": {
+    "accessToken": "",
+    "refreshToken": "",
+    "userId": "",
+    "name": "",
+    "email": "",
+    "picture": ""
+  }
+}
+----
+
+=== UserController
+==== 사용자 회원가입 처리
+*URL:* `/signup`
+
+*Type:* `POST`
+
+*Author:* Seyeon Park
+
+*Content-Type:* `application/json`
+
+
+
+
+*Body-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|name|string|false|No comments found.|-
+|email|string|false|No comments found.|-
+|picture|string|false|No comments found.|-
+|gender|string|false|No comments found.|-
+|level|string|false|No comments found.|-
+|age|string|false|No comments found.|-
+|genderVisible|boolean|false|No comments found.|-
+|ageVisible|boolean|false|No comments found.|-
+|====================
+
+*Request-example:*
+----
+curl -X POST -H "Content-Type: application/json" -i '/signup' --data '{
+  "name": "",
+  "email": "",
+  "picture": "",
+  "gender": "",
+  "level": "",
+  "age": "",
+  "genderVisible": true,
+  "ageVisible": true
+}'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|userId|string|No comments found.|-
+|name|string|No comments found.|-
+|email|string|No comments found.|-
+|picture|string|No comments found.|-
+|gender|string|No comments found.|-
+|age|string|No comments found.|-
+|level|string|No comments found.|-
+|matchCount|int32|No comments found.|-
+|winCount|int32|No comments found.|-
+|accessToken|string|No comments found.|-
+|genderVisible|boolean|No comments found.|-
+|ageVisible|boolean|No comments found.|-
+|winningRate|double|No comments found.|-
+|attendanceRate|double|No comments found.|-
+|====================
+
+*Response-example:*
+----
+{
+  "userId": "",
+  "name": "",
+  "email": "",
+  "picture": "",
+  "gender": "",
+  "age": "",
+  "level": "",
+  "matchCount": 0,
+  "winCount": 0,
+  "accessToken": "",
+  "genderVisible": true,
+  "ageVisible": true,
+  "winningRate": 0.0,
+  "attendanceRate": 0.0
+}
+----
+
+==== 특정 사용자의 상세 정보 조회
+*URL:* `/users/{userId}`
+
+*Type:* `GET`
+
+*Author:* Seyeon Park
+
+*Content-Type:* `application/x-www-form-urlencoded`
+
+
+*Path-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|userId|string|true|조회할 사용자 ID|-
+|====================
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|me|string|false|현재 요청을 보낸 사용자 ID (인증된 사용자)|-
+|====================
+
+
+*Request-example:*
+----
+curl -X GET -i '/users/{userId}?me='
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|result|string|No comments found.|-
+|code|int32|No comments found.|-
+|message|string|No comments found.|-
+|data|object|No comments found.|-
+|└─name|string|No comments found.|-
+|└─email|string|No comments found.|-
+|└─picture|string|No comments found.|-
+|└─gender|string|No comments found.|-
+|└─age|string|No comments found.|-
+|└─level|string|No comments found.|-
+|└─winningRate|double|No comments found.|-
+|└─attendanceRate|double|No comments found.|-
+|└─isMyDetail|boolean|No comments found.|-
+|└─participationList|array|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─matchId|int64|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─participationId|int64|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─attendance|boolean|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─gameResult|enum|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─status|string|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─startTime|string|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─endTime|string|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─category|string|No comments found.|-
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─place|string|No comments found.|-
+|====================
+
+*Response-example:*
+----
+{
+  "result": "",
+  "code": 0,
+  "message": "",
+  "data": {
+    "name": "",
+    "email": "",
+    "picture": "",
+    "gender": "",
+    "age": "",
+    "level": "",
+    "winningRate": 0.0,
+    "attendanceRate": 0.0,
+    "isMyDetail": true,
+    "participationList": [
+      {
+        "matchId": 0,
+        "participationId": 0,
+        "attendance": true,
+        "gameResult": "WIN",
+        "status": "",
+        "startTime": "yyyy-MM-dd HH:mm:ss",
+        "endTime": "yyyy-MM-dd HH:mm:ss",
+        "category": "",
+        "place": ""
+      }
+    ]
+  }
+}
+----
+
+==== 게임 결과를 적용하여 사용자 정보 업데이트
+*URL:* `/users/game-results`
+
+*Type:* `POST`
+
+*Author:* Seyeon Park
+
+*Content-Type:* `application/json`
+
+
+
+
+*Body-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|gameresults|array|false|No comments found.|-
+|└─userId|string|false|No comments found.|-
+|└─result|enum|false|No comments found.|-
+|====================
+
+*Request-example:*
+----
+curl -X POST -H "Content-Type: application/json" -i '/users/game-results' --data '{
+  "gameresults": [
+    {
+      "userId": "",
+      "result": "WIN"
+    }
+  ]
+}'
+----
+*Response-fields:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Field | Type|Description|Since
+|result|string|No comments found.|-
+|code|int32|No comments found.|-
+|message|string|No comments found.|-
+|data|string|No comments found.|-
+|====================
+
+*Response-example:*
+----
+{
+  "result": "",
+  "code": 0,
+  "message": "",
+  "data": ""
+}
+----
+
+==== 사용자 상세 정보 수정
+*URL:* `/users`
+
+*Type:* `PUT`
+
+*Author:* Seyeon Park
+
+*Content-Type:* `application/json`
+
+
+
+*Query-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|memberId|string|false|수정할 사용자 ID (인증된 사용자)|-
+|====================
+
+*Body-parameters:*
+
+[width="100%",options="header"]
+[stripes=even]
+|====================
+|Parameter | Type|Required|Description|Since
+|name|string|false|No comments found.|-
+|ageVisible|boolean|false|No comments found.|-
+|genderVisible|boolean|false|No comments found.|-
+|====================
+
+*Request-example:*
+----
+curl -X PUT -H "Content-Type: application/json" -i '/users?memberId=' --data '{
+  "name": "",
+  "ageVisible": true,
+  "genderVisible": true
+}'
+----
+
+
+
