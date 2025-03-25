@@ -1,5 +1,5 @@
 {
-  "name": "coderabbit-review",
+  "name": "ai-review-automation",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,11 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
-    "@types/node": "^22.13.10"
+    "@google/generative-ai": "^0.24.0",
+    "@types/node": "^22.13.10",
+    "app-root-path": "^3.1.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.3",
