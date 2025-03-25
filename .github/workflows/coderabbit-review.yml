@@ -12,3 +12,5 @@ jobs:
         uses: adorableco/Fit_Friends@coderabbit-action
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GEMINI_KEY: ${{secrets.GEMINI_KEY}}
