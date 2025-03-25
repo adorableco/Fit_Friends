@@ -2,6 +2,7 @@
 import * as core from "@actions/core";
 import { addLabels } from "./api";
 import { initialize } from "./initialize";
+import {generateReviewByGemini} from "./gemini/GeminiClient";
 
 const updateLabel = async (number: number): Promise<boolean> => {
     return addLabels(number)
@@ -40,18 +41,32 @@ async function run() {
         
         if (reviews.length === 0) {
           core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
-          await octokit.rest.issues.createComment({
-            owner,
-            repo,
-            issue_number: pull.number,
-            body: `@coderabbitai review
-            이 PR은 1시간 동안 리뷰가 없는 상태입니다. coderabbit이 리뷰를 남깁니다.`
-          });
-          core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
           
-          Promise.all([
-            updateLabel(pull.number)
-          ]);
+          const changedFiles = await octokit.rest.pulls.listFiles({
+              owner,
+              repo,
+              pull_number: pull.number,
+            });
+
+          const shas = changedFiles.data.map(file => file.sha);
+
+          const reviews = await generateReviewByGemini(shas);
+
+        for (const review of reviews) {
+            await octokit.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pull.number,
+              body: review
+            });
+          
+        }
+
+        core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
+
+        Promise.all([
+              updateLabel(pull.number)
+            ]);
         }
       }else{
         core.info(`PR #${pull.number}는 1시간이 지나지 않았습니다. 현재 경과 시간 : ${Math.round(diffInHours / 0.0167)}분`);
