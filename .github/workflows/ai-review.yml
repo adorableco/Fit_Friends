@@ -1,0 +1,22 @@
+# @format
+
+name: AI Review Automation
+on:
+  schedule:
+    - cron: "0 * * * *" # 1시간마다 실행
+jobs:
+  coderabbit-review:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Review
+        uses: adorableco/Fit_Friends@ai-review-automation
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GEMINI_KEY: ${{secrets.GEMINI_KEY}}
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: review-log
+          path: ./logs
