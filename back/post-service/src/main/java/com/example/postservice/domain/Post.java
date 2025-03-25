@@ -7,13 +7,12 @@ import org.springframework.data.annotation.CreatedBy;
 
 import java.util.UUID;
 
-
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts")
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +37,9 @@ public class Post extends BaseEntity{
     @Column(name = "Content", nullable = false)
     private String content;
 
-
     @Column(nullable = false)
     private String category;
+
     @Builder
 
     public Post(Long postId, UUID userId, Tag tag, Long matchId, String title, String content, String category) {
@@ -53,11 +52,18 @@ public class Post extends BaseEntity{
         this.category = category;
     }
 
-    public void update(Tag tag, String title, String content, String category)
-    {
-        if(tag != null) this.tag = tag;
-        if(title != null) this.title = title;
-        if(content != null) this.content = content;
-        if(category != null) this.category = category;
+    public void update(Tag tag, String title, String content, String category) {
+        if (tag != null)
+            this.tag = tag;
+        if (title != null)
+            this.title = title;
+        if (content != null)
+            this.content = content;
+        if (category != null)
+            this.category = category;
+    }
+
+    public void updateMatchId(Long matchId) {
+        this.matchId = matchId;
     }
 }
