@@ -1,5 +1,4 @@
-import moment from "moment";
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 const wiston = require('winston');
 const winstonDaily = require('winston-daily-rotate-file');
