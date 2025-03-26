@@ -1,11 +1,18 @@
+import moment from "moment";
+import 'moment-timezone';
+
 const wiston = require('winston');
 const winstonDaily = require('winston-daily-rotate-file');
 const { combine, timestamp, label, printf } = wiston.format;
 
 const logDir = `logs`;
 
-const logFormat = printf(({ level, message, label, timestamp }: { level: string; message: string; label: string; timestamp: string }) => {
-    return `${timestamp} [${label}] ${level}: ${message}`;
+moment.tz.setDefault("Asia/Seoul");
+const timeStamp = () => moment().format('YYYY-MM-DD HH:mm:ss');
+
+
+const logFormat = printf(({ level, message, label }: { level: string; message: string; label: string }) => {
+    return `${timeStamp()} [${label}] ${level}: ${message}`;
 });
 
 const logger = wiston.createLogger({

@@ -1,5 +1,5 @@
-name: Coderabbit Review
-description: "Review Code by Coderabbit when a PR is not reviewed by anyone until an hour"
+name: AI Review Automation
+description: "Review Code by Gemini when a PR is not reviewed by anyone until an hour"
 inputs:
   token:
     description: "Token"

@@ -53477,35 +53477,47 @@ const updateLabel = async (number) => {
 async function run() {
     try {
         (0, initialize_1.initialize)();
+        // PR 목록을 가져옴
         const { data: pulls } = await octokit.rest.pulls.list({
             owner: global.owner,
             repo: global.repo,
             state: 'open'
         });
+        // PR이 없을 경우
+        if (pulls.length === 0) {
+            core.info('열린 PR이 없습니다.');
+            logger.info('No open pull requests found.');
+            return;
+        }
         const now = new Date();
         for (const pull of pulls) {
             const createdAt = new Date(pull.created_at);
             const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
+            // PR이 생성된지 1시간이 지났을 경우
             if (diffInHours >= 1) {
                 const { data: reviews } = await octokit.rest.pulls.listReviews({
                     owner,
                     repo,
                     pull_number: pull.number
                 });
+                // PR에 리뷰가 없을 경우 -> AI 리뷰를 요청해야 함
                 if (reviews.length === 0) {
                     core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
                     logger.info(`No reviews found on PR #${pull.number}.`);
+                    // PR의 변경된 파일 정보 목록을 가져옴
                     const changedFiles = await octokit.rest.pulls.listFiles({
                         owner,
                         repo,
                         pull_number: pull.number,
                     });
+                    // PR의 변경된 파일들을 string 형태로 가져옴
                     const blobContentPromises = changedFiles.data.map(async (file) => await octokit.rest.git.getBlob({
                         owner,
                         repo,
                         file_sha: file.sha,
                     }).then(blob => blob.data.content));
                     const blobContents = await Promise.all(blobContentPromises);
+                    // PR의 변경된 파일들을 AI 리뷰 요청
                     const reviews = await (0, GeminiClient_1.generateReviewByGemini)(blobContents);
                     for (const review of reviews) {
                         await octokit.rest.pulls.createReview({
@@ -53518,6 +53530,7 @@ async function run() {
                     }
                     core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
                     logger.info(`Review submitted on PR #${pull.number}.`);
+                    // PR에 라벨 추가
                     Promise.all([
                         updateLabel(pull.number)
                     ]);
@@ -53598,16 +53611,24 @@ exports.initialize = initialize;
 /***/ }),
 
 /***/ 6642:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ (function(module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const moment_1 = __importDefault(__nccwpck_require__(3350));
+__nccwpck_require__(6779);
 const wiston = __nccwpck_require__(4240);
 const winstonDaily = __nccwpck_require__(7497);
 const { combine, timestamp, label, printf } = wiston.format;
 const logDir = `logs`;
-const logFormat = printf(({ level, message, label, timestamp }) => {
-    return `${timestamp} [${label}] ${level}: ${message}`;
+moment_1.default.tz.setDefault("Asia/Seoul");
+const timeStamp = () => (0, moment_1.default)().format('YYYY-MM-DD HH:mm:ss');
+const logFormat = printf(({ level, message, label }) => {
+    return `${timeStamp()} [${label}] ${level}: ${message}`;
 });
 const logger = wiston.createLogger({
     level: 'info',
@@ -53632,6 +53653,14 @@ const logger = wiston.createLogger({
     ]
 });
 module.exports = logger;
+
+
+/***/ }),
+
+/***/ 6779:
+/***/ ((module) => {
+
+module.exports = eval("require")("moment-timezone");
 
 
 /***/ }),

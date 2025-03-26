@@ -24,18 +24,28 @@ async function run() {
   try {
     initialize();
     
+    // PR 목록을 가져옴
     const { data: pulls } = await octokit.rest.pulls.list({
       owner: global.owner,
       repo: global.repo,
       state: 'open'
     });
 
+    // PR이 없을 경우
+    if(pulls.length === 0){
+      core.info('열린 PR이 없습니다.');
+      logger.info('No open pull requests found.');
+      return;
+    }
+
     const now = new Date();
+    
 
     for (const pull of pulls) {
       const createdAt = new Date(pull.created_at);
       const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
       
+      // PR이 생성된지 1시간이 지났을 경우
       if (diffInHours >= 1) {
         const { data: reviews } = await octokit.rest.pulls.listReviews({
           owner,
@@ -43,15 +53,19 @@ async function run() {
           pull_number: pull.number
         });
         
+        // PR에 리뷰가 없을 경우 -> AI 리뷰를 요청해야 함
         if (reviews.length === 0) {
           core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
           logger.info(`No reviews found on PR #${pull.number}.`);
+
+          // PR의 변경된 파일 정보 목록을 가져옴
           const changedFiles = await octokit.rest.pulls.listFiles({
               owner,
               repo,
               pull_number: pull.number,
             });
           
+            // PR의 변경된 파일들을 string 형태로 가져옴
           const blobContentPromises = changedFiles.data.map(async file =>  await octokit.rest.git.getBlob({
             owner,
             repo,
@@ -60,6 +74,7 @@ async function run() {
 
             const blobContents = await Promise.all(blobContentPromises);
 
+          // PR의 변경된 파일들을 AI 리뷰 요청
           const reviews = await generateReviewByGemini(blobContents);
 
         for (const review of reviews) {
@@ -75,9 +90,12 @@ async function run() {
 
         core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
         logger.info(`Review submitted on PR #${pull.number}.`);
+
+        // PR에 라벨 추가
         Promise.all([
               updateLabel(pull.number)
             ]);
+
         }else{
           core.info(`PR #${pull.number}에 이미 리뷰가 남겨졌습니다.`);
           logger.info(`A review has already been submitted on PR #${pull.number}.`);
