@@ -65,5 +65,5 @@
   
 **코드 자동 리뷰 브랜치**
 
-- `coderabbit-action`
-  - 코드 자동화 또는 GitHub Actions 관련 스크립트를 포함하는 브랜치입니다.
+- `ai-review-automation`
+  - AI 리뷰 프로세스를 위해 GitHub Actions 에서 작동하도록 구현한 Node.js 서비스 브랜치입니다.
