@@ -54140,7 +54140,8 @@ const generateReviewByGemini = async (blobContents) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     var reviews = [];
-    for (const content of blobContents) {
+    const contentsToProcess = blobContents.slice(0, 3);
+    for (const content of contentsToProcess) {
         const prompt = `
             You are a senior developer. Please review the following code and provide your feedback in Korean.
             Use Markdown formatting.
