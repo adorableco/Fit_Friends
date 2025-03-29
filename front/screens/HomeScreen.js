@@ -1,7 +1,7 @@
 /** @format */
 
-import React, { useState } from "react";
-import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { Text, StyleSheet, View, Image } from "react-native";
 import GoogleLogin from "./GoogleLogin";
 
 const HomeScreen = ({ navigation }) => {
@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.imageContainer}>
         <GoogleLogin navigation={navigation} />
         <Image
-          source={require("./assets/home-image.png")}
+          source={require("../assets/home-image.png")}
           style={styles.imageStyle}
         />
       </View>
