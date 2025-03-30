@@ -94,8 +94,11 @@ async function run() {
           
         }
 
-        core.info(`PR #${pull.number}에 리뷰를 남겼습니다.`);
-        logger.info(`Review submitted on PR #${pull.number}.`);
+        const reviewCompletedAt = new Date();
+        const reviewTimeInMinutes = Math.round((reviewCompletedAt.getTime() - createdAt.getTime()) / (1000 * 60));
+        
+        core.info(`PR #${pull.number}에 리뷰를 남겼습니다. (생성 후 ${reviewTimeInMinutes}분)`);
+        logger.info(`Review submitted on PR #${pull.number}. (${reviewTimeInMinutes} minutes after creation)`);
 
         // PR에 라벨 추가
         Promise.all([
