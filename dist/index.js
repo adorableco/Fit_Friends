@@ -54169,8 +54169,8 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateReviewByGemini = void 0;
 const { GoogleGenerativeAI } = __nccwpck_require__(7656);
-const logger = __nccwpck_require__(7227);
 const core = __importStar(__nccwpck_require__(7484));
+const logger = __nccwpck_require__(6642);
 const generateReviewByGemini = async (blobContents) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -54453,14 +54453,6 @@ const logger = wiston.createLogger({
     ]
 });
 module.exports = logger;
-
-
-/***/ }),
-
-/***/ 7227:
-/***/ ((module) => {
-
-module.exports = eval("require")("./winston/logger");
 
 
 /***/ }),

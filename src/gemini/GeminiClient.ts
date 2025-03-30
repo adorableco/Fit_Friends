@@ -1,6 +1,8 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const logger = require('./winston/logger');
 import * as core from "@actions/core";
+
+const logger = require('../winston/logger');
+
 
 interface FileContent {
     fileName: string;
