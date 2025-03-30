@@ -54140,17 +54140,23 @@ const generateReviewByGemini = async (blobContents) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     var reviews = [];
-    const contentsToProcess = blobContents.slice(0, 3);
-    for (const content of contentsToProcess) {
+    for (const file of blobContents) {
+        if (file.content.length > 1000000) {
+            const result = `${file.fileName}: 코드 길이가 너무 길어 AI가 리뷰를 작성할 수 없습니다.`;
+            reviews.push(result);
+            continue;
+        }
         const prompt = `
             You are a senior developer. Please review the following code and provide your feedback in Korean.
             Use Markdown formatting.
             Be concise and to the point.
             Use emojis if helpful.
             Include code examples if possible.
+            The response should start with '## 💭 Code Review: {File Name} '
 
+            File name: ${file.fileName}
             Here is the code:
-            ${content}
+            ${file.content}
         `;
         const result = await model.generateContent(prompt);
         console.log(result.response.text());
@@ -54257,11 +54263,17 @@ async function run() {
                         pull_number: pull.number,
                     });
                     // PR의 변경된 파일들을 string 형태로 가져옴
-                    const blobContentPromises = changedFiles.data.map(async (file) => await octokit.rest.git.getBlob({
-                        owner,
-                        repo,
-                        file_sha: file.sha,
-                    }).then(blob => blob.data.content));
+                    const blobContentPromises = changedFiles.data.map(async (file) => {
+                        const blob = await octokit.rest.git.getBlob({
+                            owner,
+                            repo,
+                            file_sha: file.sha,
+                        });
+                        return {
+                            fileName: file.filename,
+                            content: blob.data.content
+                        };
+                    });
                     const blobContents = await Promise.all(blobContentPromises);
                     // PR의 변경된 파일들을 AI 리뷰 요청
                     const reviews = await (0, GeminiClient_1.generateReviewByGemini)(blobContents);
