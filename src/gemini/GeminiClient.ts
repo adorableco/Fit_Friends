@@ -1,4 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const logger = require('./winston/logger');
+import * as core from "@actions/core";
 
 interface FileContent {
     fileName: string;
@@ -30,9 +32,14 @@ export const generateReviewByGemini = async (blobContents: FileContent[]): Promi
             Here is the code:
             ${file.content}
         `
-        const result = await model.generateContent(prompt);
-        console.log(result.response.text());
-        reviews.push(result.response.text());
+        try {
+            const result = await model.generateContent(prompt);
+            console.log(result.response.text());
+            reviews.push(result.response.text());
+        } catch (error) {
+            logger.error(`Failed to generate review for ${file.fileName}: ${error}`);
+            core.error(`${file.fileName} 리뷰 생성에 실패했습니다: ${error}`);
+        }
     }
 
     return reviews;
