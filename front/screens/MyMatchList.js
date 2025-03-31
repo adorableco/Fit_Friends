@@ -1,105 +1,120 @@
 /** @format */
 
 import React from "react";
-import { Text, StyleSheet, Image, View } from "react-native";
-import { AutoFocus, Camera, CameraType } from "expo-camera";
+import { View, Text, StyleSheet } from "react-native";
+import formatDateTime from "../FormatDateTime";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+const categoryEmojis = {
+  soccer: "⚽",
+  basketball: "🏀",
+  badminton: "🏸",
+  running: "🏃",
+  default: "🏃",
+};
 
 const MyMatchList = ({ detail }) => {
-  const openCameraHandler = async () => {
-    // 카메라에 대한 접근 권한을 얻을 수 있는지 묻는 함수입니다.
-    const { status } = await Camera.requestCameraPermissionsAsync();
-
-    // 권한을 획득하면 status가 granted 상태가 됩니다.
-    if (status === "granted") {
-      // Camera 컴포넌트가 있는 CameraScreen으로 이동합니다.
-      navigation.navigate("CameraScreen");
-    } else {
-      alert("카메라 접근 허용은 필수입니다.");
-    }
-  };
   return (
-    <View style={styles.listBox}>
-      <Text style={styles.detail}>
-        {/* <Image
-          source={require(`./assets/${detail.match.category}.png`)}
-          style={{ width: 30, height: 30, marginRight: 30, marginTop: 10 }}
-        /> */}
-        {detail.match.startTime}
-      </Text>
-      <Text style={{ marginBottom: "5px" }}>{detail.match.place}</Text>
-      <Text>{detail.match.status}</Text>
-      {detail.status == "end" ? (
-        detail.win ? (
-          <Text style={styles.winBox}>승리</Text>
-        ) : (
-          <Text style={styles.loseBox}>패배</Text>
-        )
-      ) : detail.status == "waited" ? (
-        <button style={styles.btn}>참가 취소</button>
-      ) : (
-        <button style={styles.btn} onClick={openCameraHandler}>
-          출석 체크
-        </button>
-      )}
+    <View style={styles.matchItem}>
+      <View style={styles.matchInfo}>
+        <Text style={styles.matchTitle}>{detail.title}</Text>
+        <View style={styles.detailRow}>
+          <Text style={styles.categoryEmoji}>
+            {categoryEmojis[detail.category] || categoryEmojis.default}
+          </Text>
+          <View style={styles.detailColumn}>
+            <Text style={styles.matchDetail}>{detail.place}</Text>
+            <Text style={styles.matchDetail}>
+              {formatDateTime(detail.startTime)}
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={[
+          styles.statusBadge,
+          detail.currentHeadCnt === detail.headCnt
+            ? styles.statusFull
+            : styles.statusOpen,
+        ]}
+      >
+        <Text
+          style={[
+            styles.statusText,
+            detail.currentHeadCnt === detail.headCnt && styles.statusFullText,
+          ]}
+        >
+          {detail.currentHeadCnt === detail.headCnt ? "모집 완료" : "모집 중"}
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  listBox: {
-    marginTop: 15,
-    display: "flex",
+  matchItem: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    width: 250,
-    height: 100,
-    borderRadius: 22,
-    border: "solid #4CAF50 1.5px",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  detail: {
-    display: "flex",
-    alignItems: "center",
-    fontWeight: 700,
-    fontSize: 15,
-    lineHeight: 20,
-    textAlign: "center",
-    color: "#000000",
+  matchInfo: {
+    flex: 1,
+    marginRight: 12,
   },
-  winBox: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#2C79F1",
-    width: 33,
-    height: 33,
-    borderRadius: 33,
-    color: "white",
-    fontSize: 12,
-    marginBottom: 10,
+  matchTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
   },
-  loseBox: {
-    display: "flex",
+  detailRow: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F23562",
-    width: 33,
-    height: 33,
-    borderRadius: 33,
-    color: "white",
-    fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 4,
   },
-  btn: {
+  detailColumn: {
+    flex: 1,
+    marginLeft: 8,
+  },
+  categoryEmoji: {
+    fontSize: 42,
+  },
+  matchDetail: {
+    fontSize: 13,
+    color: "#666",
+  },
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    minWidth: 80,
+    alignItems: "center",
+  },
+  statusOpen: {
+    backgroundColor: "#E8F5E9",
+  },
+  statusFull: {
+    backgroundColor: "#F5F5F5",
+  },
+  statusText: {
     fontSize: 12,
-    fontWeight: 600,
-    marginTop: 5,
-    width: 75,
-    height: 23,
-    backgroundColor: "#4CAF50",
-    borderRadius: 50,
-    border: "none",
-    color: "white",
+    fontWeight: "500",
+    color: "#4CAF50",
+  },
+  statusFullText: {
+    color: "#666",
   },
 });
 
