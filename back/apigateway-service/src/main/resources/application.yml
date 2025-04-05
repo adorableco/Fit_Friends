@@ -12,6 +12,18 @@ spring:
     name: apigateway-service
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:19006"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: user-service-login
           uri: lb://USER-SERVICE
@@ -49,7 +61,7 @@ spring:
 
 token:
   expiration_time: 864000000
-  secret: ${TOKEN.SECRET}
+  secret: ${JWT.SECRET.KEY}
 
 logging:
   level:
