@@ -20,6 +20,8 @@ export default function GoogleLogin({ navigation }) {
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    responseType: "token",
+    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
   });
   const API_URL = EXPO_PUBLIC_API_URL;
 
