@@ -16,15 +16,19 @@
 
 - **프로필 관리**: 개인 운동 목표, 선호 운동 종류 등을 설정하고 관리할 수 있습니다.
 
-  
+
 
 ## 💻 기술 스택
 
-- **백엔드**: Java (61.2%)
+- **백엔드**: Java, Spring boot
 
-- **프론트엔드**: JavaScript (32.8%)
+- **프론트엔드**: JavaScript, React Native
 
-- **기타**: Ruby (3.1%), Objective-C++ (2.4%), Objective-C (0.3%), Swift (0.1%), C (0.1%)
+
+## 📄 개발 위키
+[👟 FitFriend 위키 바로가기](https://cooked-period-368.notion.site/1ccfe78723b68099862dfc011e9ed368?v=1ccfe78723b681fba3a1000cdcb2ae97&pvs=4)
+
+
 
   
 
