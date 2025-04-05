@@ -54113,7 +54113,7 @@ function wrappy (fn, cb) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.addLabels = void 0;
+exports.extractReviewLinesFromPatch = exports.addLabels = void 0;
 const addLabels = async (number) => {
     const { data: labels } = await global.octokit.rest.issues.addLabels({
         owner: global.owner,
@@ -54124,6 +54124,26 @@ const addLabels = async (number) => {
     return labels;
 };
 exports.addLabels = addLabels;
+const extractReviewLinesFromPatch = (patch) => {
+    const lines = patch.split('\n');
+    const reviewLines = [];
+    for (const line of lines) {
+        if (line.startsWith('+++') || line.startsWith('---'))
+            continue;
+        if (line.startsWith('@@'))
+            continue;
+        if (line.startsWith('+') && !line.startsWith('+++')) {
+            const code = line.slice(1);
+            if (code.trim() === '')
+                continue;
+            if (/^\s*(\/\/|#|\/\*|\*)/.test(code))
+                continue;
+            reviewLines.push(code + '\n');
+        }
+    }
+    return reviewLines.join('');
+};
+exports.extractReviewLinesFromPatch = extractReviewLinesFromPatch;
 
 
 /***/ }),
@@ -54298,26 +54318,24 @@ async function run() {
                     core.info(`PR #${pull.number}에 리뷰가 없습니다.`);
                     logger.info(`No reviews found on PR #${pull.number}.`);
                     // PR의 변경된 파일 정보 목록을 가져옴
-                    const changedFiles = await octokit.rest.pulls.listFiles({
+                    const pullRequestFiles = await octokit.rest.pulls.listFiles({
                         owner,
                         repo,
                         pull_number: pull.number,
                     });
-                    // PR의 변경된 파일들을 string 형태로 가져옴
-                    const blobContentPromises = changedFiles.data.map(async (file) => {
-                        const blob = await octokit.rest.git.getBlob({
-                            owner,
-                            repo,
-                            file_sha: file.sha,
-                        });
-                        return {
-                            fileName: file.filename,
-                            content: blob.data.content
-                        };
+                    const changedFiles = [];
+                    pullRequestFiles.data.forEach(file => {
+                        if (file.patch && file.status != "removed" && file.status != 'unchanged') {
+                            const reviewLines = (0, api_1.extractReviewLinesFromPatch)(file.patch);
+                            core.info(`PR #${pull.number}의 변경된 패치 내용 : ${reviewLines}`);
+                            changedFiles.push({
+                                fileName: file.filename,
+                                content: reviewLines
+                            });
+                        }
                     });
-                    const blobContents = await Promise.all(blobContentPromises);
                     // PR의 변경된 파일들을 AI 리뷰 요청
-                    const reviews = await (0, GeminiClient_1.generateReviewByGemini)(blobContents);
+                    const reviews = await (0, GeminiClient_1.generateReviewByGemini)(changedFiles);
                     for (const review of reviews) {
                         await octokit.rest.pulls.createReview({
                             owner,
