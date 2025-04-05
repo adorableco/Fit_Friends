@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import { addLabels } from "./api";
+import { addLabels, extractReviewLinesFromPatch } from "./api";
 import { initialize } from "./initialize";
 import {generateReviewByGemini} from "./gemini/GeminiClient";
 
@@ -45,6 +45,7 @@ async function run() {
       const createdAt = new Date(pull.created_at);
       const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
       
+      
       // PR이 생성된지 1시간이 지났을 경우
       if (diffInHours >= 1) {
         const { data: reviews } = await octokit.rest.pulls.listReviews({
@@ -59,29 +60,27 @@ async function run() {
           logger.info(`No reviews found on PR #${pull.number}.`);
 
           // PR의 변경된 파일 정보 목록을 가져옴
-          const changedFiles = await octokit.rest.pulls.listFiles({
+          const pullRequestFiles = await octokit.rest.pulls.listFiles({
               owner,
               repo,
               pull_number: pull.number,
             });
           
-            // PR의 변경된 파일들을 string 형태로 가져옴
-          const blobContentPromises = changedFiles.data.map(async file => {
-            const blob = await octokit.rest.git.getBlob({
-              owner,
-              repo,
-              file_sha: file.sha,
-            });
-            return {
-              fileName: file.filename,
-              content: blob.data.content
-            };
+          const changedFiles: { fileName: string; content: string }[] = [];
+          
+          pullRequestFiles.data.forEach(file => {
+              if(file.patch && file.status != "removed" && file.status != 'unchanged'){
+                const reviewLines = extractReviewLinesFromPatch(file.patch);
+                core.info(`PR #${pull.number}의 변경된 패치 내용 : ${reviewLines}`);
+              changedFiles.push({
+                fileName: file.filename,
+                content: reviewLines
+              });
+            }
           });
 
-          const blobContents = await Promise.all(blobContentPromises);
-
           // PR의 변경된 파일들을 AI 리뷰 요청
-          const reviews = await generateReviewByGemini(blobContents);
+          const reviews = await generateReviewByGemini(changedFiles);
 
         for (const review of reviews) {
             await octokit.rest.pulls.createReview({

@@ -12,3 +12,21 @@ export const addLabels = async (number: number): Promise<TAddLabelsData> => {
 
     return labels;
 };
+
+export const extractReviewLinesFromPatch = (patch: string) => {
+  const lines = patch.split('\n');
+  const reviewLines = [];
+
+  for (const line of lines) {
+    if (line.startsWith('+++') || line.startsWith('---')) continue; 
+    if (line.startsWith('@@')) continue; 
+    if (line.startsWith('+') && !line.startsWith('+++')) {
+      const code = line.slice(1);
+      if (code.trim() === '') continue; 
+
+      if (/^\s*(\/\/|#|\/\*|\*)/.test(code)) continue;
+      reviewLines.push(code + '\n');
+    }
+  }
+  return reviewLines.join('');
+}
