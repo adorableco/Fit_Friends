@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import MyMatchList from "./MyMatchList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Modal from "react-modal";
@@ -40,22 +40,18 @@ export default function UserDetailScreen({ route, navigation }) {
         },
         {
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:19006",
             Authorization: token,
           },
         },
       )
       .then((res) => {
         setIsModifying(false);
-        console.log(res.data);
       });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@accessToken");
-      console.log(token);
-
       const userId = await AsyncStorage.getItem("@userId");
 
       await axios
@@ -66,7 +62,6 @@ export default function UserDetailScreen({ route, navigation }) {
         })
         .then((res) => {
           setIsLoading(false);
-          console.log("res.data=", res.data.data);
           setUserDetail(res.data.data);
         })
         .catch((e) => console.log(e));
@@ -145,39 +140,60 @@ export default function UserDetailScreen({ route, navigation }) {
         <Text style={styles.sectionTitle}>계정 관리</Text>
         <View style={styles.actionButtons}>
           <Modal isOpen={isModifying} style={styles.modal}>
-            <h2 style={{ color: "#4CAF50" }}>회원 정보 수정</h2>
+            <View style={styles.modalHeader}>
+              <h2 style={{ color: "#4CAF50" }}>회원 정보 수정</h2>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setIsModifying(false)}
+              >
+                <Text style={styles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
             <input
               style={styles.input}
               onChange={onChangeName}
               placeholder='변경할 닉네임'
             />
 
-            <Text style={styles.fileInput}>
-              변경할 프로필 이미지
-              <input type='file' accept='image/*' placeholder='변경할 이미지' />
-            </Text>
-            <label style={styles.checkboxLabel}>
-              성별 공개
-              <input
-                type='checkbox'
-                checked={genderVisible}
-                onChange={() => {
-                  setGenderVisible(!genderVisible);
-                }}
-                name='genderVisible'
-              />
-            </label>
-            <label style={styles.checkboxLabel}>
-              나이대 공개
-              <input
-                type='checkbox'
-                name='ageVisible'
-                checked={ageVisible}
-                onChange={() => {
-                  setAgeVisible(!ageVisible);
-                }}
-              />
-            </label>
+            <View style={styles.imageUploadContainer}>
+              <Text style={styles.inputLabel}>프로필 이미지</Text>
+              <TouchableOpacity style={styles.imageUploadButton}>
+                <Text style={styles.imageUploadText}>📸 이미지 선택</Text>
+                <input type='file' accept='image/*' style={styles.fileInput} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.checkboxContainer}>
+              <TouchableOpacity
+                style={styles.checkboxRow}
+                onPress={() => setGenderVisible(!genderVisible)}
+              >
+                <View
+                  style={[
+                    styles.checkbox,
+                    genderVisible && styles.checkboxChecked,
+                  ]}
+                >
+                  {genderVisible && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.checkboxLabel}>성별 공개</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.checkboxRow, { marginTop: 12 }]}
+                onPress={() => setAgeVisible(!ageVisible)}
+              >
+                <View
+                  style={[
+                    styles.checkbox,
+                    ageVisible && styles.checkboxChecked,
+                  ]}
+                >
+                  {ageVisible && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.checkboxLabel}>나이대 공개</Text>
+              </TouchableOpacity>
+            </View>
 
             <button style={styles.btn} onClick={onClickModifyBtn}>
               정보 수정하기
@@ -350,33 +366,107 @@ const styles = StyleSheet.create({
       backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     content: {
-      top: 200,
-      height: 300,
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "90%",
+      maxWidth: 400,
+      height: "auto",
+      minHeight: 500,
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       alignItems: "center",
-      padding: 20,
-      borderRadius: 10,
+      padding: 32,
+      borderRadius: 20,
       backgroundColor: "white",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     },
   },
+  modalContent: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 20,
+  },
   input: {
-    marginBottom: 10,
-    width: "150px",
-    height: "36px",
-    fontSize: 15,
-
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    borderRadius: 12,
+    padding: 12,
+    height: 48,
+    fontSize: 16,
+    backgroundColor: "#F8F8F8",
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    elevation: 0,
+    shadowColor: "transparent",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+  },
+  imageUploadContainer: {
+    marginBottom: 20,
+  },
+  imageUploadButton: {
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: "#4CAF50",
+    borderRadius: 12,
+    padding: 16,
+    backgroundColor: "#F8F8F8",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  imageUploadText: {
+    color: "#4CAF50",
+    fontSize: 16,
+    fontWeight: "500",
   },
   fileInput: {
-    marginBottom: 10,
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    opacity: 0,
+  },
+  checkboxContainer: {
+    marginBottom: 24,
+    backgroundColor: "#F8F8F8",
+    borderRadius: 12,
+    padding: 16,
+  },
+  checkboxRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: "#4CAF50",
+    marginRight: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  checkboxChecked: {
+    backgroundColor: "#4CAF50",
+  },
+  checkmark: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   checkboxLabel: {
-    marginBottom: 10,
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "500",
   },
   btn: {
     fontWeight: 600,
@@ -393,5 +483,25 @@ const styles = StyleSheet.create({
   actionButtons: {
     display: "flex",
     flexDirection: "row",
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 20,
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#F0F0F0",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonText: {
+    fontSize: 18,
+    color: "#666",
+    fontWeight: "bold",
   },
 });
