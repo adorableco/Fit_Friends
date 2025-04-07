@@ -11,7 +11,7 @@ import CameraScreen from "./screens/CameraScreen";
 import PostingScreen from "./screens/PostingScreen";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import Toast from "react-native-toast-message";
-
+import UserDetailScreen from "./screens/UserDetailScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -38,6 +38,11 @@ export default function App() {
             name='SignUpScreen'
             component={SignUpScreen}
             options={{ title: "회원가입" }}
+          />
+          <Stack.Screen
+            name='UserDetailScreen'
+            component={UserDetailScreen}
+            options={{ title: "회원정보" }}
           />
           <Stack.Screen
             name='MatchListScreen'
