@@ -46,8 +46,8 @@ async function run() {
       const diffInHours = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60);
       
       
-      // PR이 생성된지 1시간이 지났을 경우
-      if (diffInHours >= 1) {
+      // PR이 생성된지 2시간이 지났을 경우
+      if (diffInHours >= 2) {
         const { data: reviews } = await octokit.rest.pulls.listReviews({
           owner,
           repo,
@@ -109,8 +109,8 @@ async function run() {
           logger.info(`A review has already been submitted on PR #${pull.number}.`);
         }
       }else{
-        core.info(`PR #${pull.number}는 1시간이 지나지 않았습니다. 현재 경과 시간 : ${Math.round(diffInHours / 0.0167)}분`);
-        logger.info(`PR #${pull.number} has not passed the 1-hour threshold yet. Elapsed time: ${Math.round(diffInHours / 0.0167)} minutes.`);
+        core.info(`PR #${pull.number}는 2시간이 지나지 않았습니다. 현재 경과 시간 : ${Math.round(diffInHours / 0.0167)}분`);
+        logger.info(`PR #${pull.number} has not passed the 2-hour threshold yet. Elapsed time: ${Math.round(diffInHours / 0.0167)} minutes.`);
       }
     }
   } catch (error: any) {
