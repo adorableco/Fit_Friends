@@ -67,10 +67,4 @@ public class AuthController {
 
     }
 
-//    @GetMapping("/auth")
-//    public ResponseEntity<CustomResponseBody<UserIdResponse>> getUserId(@RequestHeader(name = "Authorization") String jwtToken) {
-//
-//    }
-
-
 }
