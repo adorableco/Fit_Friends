@@ -38,12 +38,11 @@ export default function GoogleLogin({ navigation }) {
   //구글로그인을 해서 받은 토큰을 백엔드로 보내서 디비에 있는 회원 내용 조회 예정
   const sendToken = async (token) => {
     await axios.get(`${API_URL}/user-service/login/${token}`).then((res) => {
-      if (res.data.accessToken == null) {
+      if (res.data.userId == null) {
         navigation.navigate("SignUpScreen", { userData: res.data });
       } else {
         AsyncStorage.setItem("@accessToken", res.data.accessToken);
         AsyncStorage.setItem("@userId", res.data.userId);
-        console.log(res.data);
         navigation.navigate("UserDetailScreen", { userId: res.data.userId });
       }
     });
